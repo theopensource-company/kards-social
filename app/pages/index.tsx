@@ -12,7 +12,7 @@ const Landing: NextPage = () => {
     <div className={styles.container}>
       <div className={styles.content}>
         <div className="image-frame">
-          <Image src={LogoVector} />
+          <Image src={LogoVector} alt="The Kards logo" />
         </div>
 
         <h1>Opening up soon</h1>
