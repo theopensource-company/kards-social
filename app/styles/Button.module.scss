@@ -1,0 +1,115 @@
+@use 'color';
+
+.default {
+    border-radius: 15px;
+    text-align: center;
+    outline: none;
+    border: none;
+    font-size: 20px;
+    display: flex;
+    cursor: pointer;
+
+    span {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+// COLORS
+
+.colorTint {
+    background: linear-gradient(86.35deg, #FA9F38 -1.28%, color.$tint 21.32%, #DB7706 115.98%);
+    color: color.$light;
+}
+
+.colorLight {
+    background: color.$light;
+    color: color.$dark;
+}
+
+.colorDark {
+    background: color.$dark;
+    color: color.$light;
+}
+
+// ICON PROPERTIES
+
+.iconRound {
+    img {
+        border-radius: 50%;
+    }
+}
+
+// SMALL BUTTONS
+
+.smallText {
+    width: 120px;
+    height: 40px;
+    line-height: 40px;
+}
+
+.smallIcon {
+    width: 40px;
+    height: 40px;
+}
+
+.smallTextIcon {
+    width: 160px;
+    height: 40px;
+    line-height: 40px;
+
+    span {
+        padding-right: 20px;
+    }
+}
+
+.iconSmall {
+    min-width: 40px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        width: 25px !important;
+        height: 25px !important;
+    }
+}
+
+// LARGE BUTTONS
+
+.largeText {
+    width: 150px;
+    height: 50px;
+    line-height: 50px;
+}
+
+.largeIcon {
+    width: 50px;
+    height: 50px;
+}
+
+.largeTextIcon {
+    width: 200px;
+    height: 50px;
+    line-height: 50px;
+
+    span {
+        padding-right: 20px;
+    }
+}
+
+.iconLarge {
+    min-width: 50px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        width: 35px !important;
+        height: 35px !important;
+    }
+}
