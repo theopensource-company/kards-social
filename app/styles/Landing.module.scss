@@ -1,0 +1,35 @@
+@use 'color';
+
+.container {
+    width: 100vw;
+    height: 100vh;
+
+    font-size: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content {
+    text-align: center;
+
+    [class~=image-frame] {
+        width: 20vh;
+        display: inline-block;
+    }
+
+    h1 {
+        font-size: 2em;
+        font-weight: 300;
+    }
+
+    a {
+        display: block;
+        margin: 30px 0 100px;
+    }
+
+    p {
+        max-width: 500px;
+    }
+}
