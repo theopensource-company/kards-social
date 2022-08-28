@@ -137,8 +137,8 @@ const verificationEmail = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transiti
           "
         >
           <img
-            src="https://kards.social/Logo.svg"
-            alt="MTDV logo"
+            src="https://kards.social/Logo.png"
+            alt="Kards logo"
             style="border-width: 0; display: inline-block; max-width: 250px; vertical-align: middle"
           />
         </td>
