@@ -49,7 +49,7 @@ function verificationEmailConfig(body, link) {
         content: [
             {
                 type: "text/plain",
-                value: "Use the following link to confirm your entry on the waitlist"
+                value: "Use the following link to confirm your entry on the waitlist: " + link
             },
             {
                 type: "text/html",
