@@ -65,7 +65,7 @@ export default function JoinWaitlist() {
           onClick={() => router.push("/")}
         />
       </div>
-      <Container>
+      <Container className={styles.container}>
         <div className={styles.form}>
           <Image src={Logo} alt="Kards logo" />
           <div className={styles.inputs}>

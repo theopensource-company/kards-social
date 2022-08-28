@@ -1,12 +1,21 @@
 @use 'color';
 
+.container {
+    padding: 100px 25px 50px;
+}
+
 .form {
-    width: 500px;
+    width: 100%;
+    max-width: 500px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 30px;
     padding-bottom: 50px;
+
+    img {
+        max-width: 50vw !important;
+    }
 
     div:last-child {
         margin-top: 10px;
@@ -22,7 +31,7 @@
 }
 
 .back {
-    position: fixed;
+    position: absolute;
     top: 25px;
     left: 25px;
 }
