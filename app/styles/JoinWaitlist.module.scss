@@ -7,10 +7,14 @@
     align-items: center;
     gap: 30px;
     padding-bottom: 50px;
+
+    div:last-child {
+        margin-top: 10px;
+    }
 }
 
 .inputs {
-    margin: 40px 0px 40px;
+    margin: 40px 0px 30px;
     display: flex;
     flex-direction: column;
     gap: 30px;
@@ -21,4 +25,10 @@
     position: fixed;
     top: 25px;
     left: 25px;
+}
+
+.success {
+    text-align: center;
+    font-size: 20px;
+    margin: 0px;
 }

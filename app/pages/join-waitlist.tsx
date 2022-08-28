@@ -8,6 +8,8 @@ import Image from "next/image";
 
 import styles from "../styles/JoinWaitlist.module.scss";
 import Logo from "../assets/image/Logo.svg";
+import axios from "axios";
+import Link from "next/link";
 
 export default function JoinWaitlist() {
   const router = useRouter();
@@ -15,8 +17,9 @@ export default function JoinWaitlist() {
   const [email, setEmail] = useState("");
   const [nameLabel, setNameLabel] = useState("");
   const [emailLabel, setEmailLabel] = useState("");
+  const [success, setSuccess] = useState(false);
 
-  const submit = () => {
+  const submit = async () => {
     setNameLabel("");
     setEmailLabel("");
     let valid = true;
@@ -31,7 +34,24 @@ export default function JoinWaitlist() {
     }
 
     if (valid) {
-      alert("success");
+      const result: any = await axios.post(
+        `${location.origin}/api/join-waitlist`,
+        {
+          name,
+          email,
+          origin: location.origin,
+        }
+      );
+
+      if (!result.body)
+        return alert(
+          "Something went wrong, please try again later or contact hi@kards.social"
+        );
+      if (result.body?.success) {
+        setSuccess(true);
+      } else {
+        alert(`${result.body?.message} (${result.body?.error})`);
+      }
     }
   };
 
@@ -63,6 +83,15 @@ export default function JoinWaitlist() {
               type="Email"
             />
           </div>
+          {success && (
+            <p className={styles.success}>
+              Check your email! (
+              <Link href="/">
+                <a>back</a>
+              </Link>
+              )
+            </p>
+          )}
           <Button onClick={submit} text="Join waitlist" />
         </div>
       </Container>
