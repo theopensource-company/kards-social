@@ -12,7 +12,7 @@ type Props = {
   color?: ColorType;
   size?: ButtonSize;
   text?: string;
-  icon?: StaticImageData;
+  icon?: StaticImageData | React.ReactNode;
   iconAlt?: string;
   iconRound?: boolean;
 };
@@ -49,7 +49,14 @@ export default function Button({
             .filter((a) => !!a)
             .join(" ")}
         >
-          <Image src={icon} alt={iconAlt ?? text ?? "Button icon"} />
+          {React.isValidElement(icon) ? (
+            icon
+          ) : (
+            <Image
+              src={icon as StaticImageData}
+              alt={iconAlt ?? text ?? "Button icon"}
+            />
+          )}
         </div>
       )}
       {text && <span>{text}</span>}
