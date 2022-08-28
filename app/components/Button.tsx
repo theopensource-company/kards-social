@@ -35,9 +35,11 @@ export default function Button({
 
   const classes = [
     styles.default,
-    (color ? styles[`color${color}`] : 0),
+    color ? styles[`color${color}`] : 0,
     styles[`${size.toLowerCase()}${text ? "Text" : ""}${icon ? "Icon" : ""}`],
-  ].filter(a => !!a).join(" ");
+  ]
+    .filter((a) => !!a)
+    .join(" ");
 
   return (
     <div className={classes} onClick={onClick}>
