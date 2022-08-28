@@ -73,7 +73,7 @@ export default function JoinWaitlist() {
               value={name}
               label={nameLabel}
               setValue={setName}
-              placeholder="Name"
+              placeholder="Full Name"
             />
             <InputField
               value={email}
