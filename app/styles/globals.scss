@@ -10,13 +10,22 @@ body {
   margin: 0;
   color: color.$dark;
   background: color.$light;
+  overflow-y: auto;
+
+  @media (max-width: 550px) {
+    font-size: 12px;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 10px;
+  }
 }
 
 a {
   color: inherit;
-  &:not(:hover) {
+  /*&:not(:hover) {
     text-decoration: none;
-  }
+  }*/
 }
 
 * {

@@ -1,0 +1,40 @@
+@use 'color';
+
+.container {
+    width: 100vw;
+    min-height: 100vh;
+    padding: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media (max-width: 360px) {
+        padding: 30px;
+    }
+}
+
+.content {
+    text-align: center;
+
+    [class~=image-frame] {
+        width: min(70vw, 25vh);
+        max-width: 50vw;
+        display: inline-block;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        font-weight: 300;
+    }
+
+    span {
+        font-size: 1.2rem;
+    }
+
+    p {
+        max-width: 500px;
+        margin-top: 60px;
+        font-size: 1.5rem;
+    }
+}

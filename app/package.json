@@ -2,6 +2,8 @@
   "name": "kards-app",
   "version": "0.1.0",
   "description": "Frontend app for kards social. Build with next as a PWA.",
+  "author": "The Open Source Company",
+  "license": "AGPL-3.0-only",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
