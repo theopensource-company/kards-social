@@ -13,23 +13,33 @@
         width: 100%;
         text-align: center;
     }
+
+    background: color.$dark;
+    color: color.$light;
+
+    @media (prefers-color-scheme: dark) {
+        background: color.$light;
+        color: color.$dark;
+    }
+
+    transition: color .2s ease, background .2s ease;
 }
 
 // COLORS
 
 .colorTint {
-    background: linear-gradient(86.35deg, #FA9F38 -1.28%, color.$tint 21.32%, #DB7706 115.98%);
-    color: color.$light;
+    background: linear-gradient(86.35deg, #FA9F38 -1.28%, color.$tint 21.32%, #DB7706 115.98%) !important;
+    color: color.$light !important;
 }
 
 .colorLight {
-    background: color.$light;
-    color: color.$dark;
+    background: color.$light !important;
+    color: color.$dark !important;
 }
 
 .colorDark {
-    background: color.$dark;
-    color: color.$light;
+    background: color.$dark !important;
+    color: color.$light !important;
 }
 
 // ICON PROPERTIES

@@ -12,12 +12,26 @@
     background-color: color.$light;
     color: color.$dark;
     border: 3px solid color.$dark;
+
+    @media (prefers-color-scheme: dark) {
+        background-color: color.$dark;
+        color: color.$light;
+        border: 3px solid color.$light;
+    }
+
+    transition: color .2s ease, background .2s ease;
+}
+
+.colorLight {
+    background-color: color.$light !important;
+    color: color.$dark !important;
+    border: 3px solid color.$dark !important;
 }
 
 .colorDark {
-    background-color: color.$dark;
-    color: color.$light;
-    border: 3px solid color.$light;
+    background-color: color.$dark !important;
+    color: color.$light !important;
+    border: 3px solid color.$light !important;
 }
 
 .sizeSmall {
