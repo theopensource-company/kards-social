@@ -49,10 +49,14 @@ export default function Button({
             .filter((a) => !!a)
             .join(" ")}
         >
-          {React.isValidElement(icon) ?
-            icon :
-            <Image src={icon as StaticImageData} alt={iconAlt ?? text ?? "Button icon"} />
-}
+          {React.isValidElement(icon) ? (
+            icon
+          ) : (
+            <Image
+              src={icon as StaticImageData}
+              alt={iconAlt ?? text ?? "Button icon"}
+            />
+          )}
         </div>
       )}
       {text && <span>{text}</span>}

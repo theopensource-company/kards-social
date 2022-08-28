@@ -19,7 +19,7 @@ const Landing: NextPage = () => {
         <span>
           <Link href="/join-waitlist">
             <a>Reserve your spot now</a>
-          </Link> 
+          </Link>
         </span>
 
         <p>
