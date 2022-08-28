@@ -43,14 +43,14 @@ export default function JoinWaitlist() {
         }
       );
 
-      if (!result.body)
+      if (!result.data)
         return alert(
           "Something went wrong, please try again later or contact hi@kards.social"
         );
-      if (result.body?.success) {
+      if (result.data?.success) {
         setSuccess(true);
       } else {
-        alert(`${result.body?.message} (${result.body?.error})`);
+        alert(`${result.data?.message} (${result.data?.error})`);
       }
     }
   };
