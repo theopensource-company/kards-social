@@ -19,6 +19,7 @@ importers:
       prettier: ^2.7.1
       react: 18.2.0
       react-dom: 18.2.0
+      react-media-hook: ^0.4.9
       sass: ^1.54.5
       typescript: 4.8.2
       uuid: ^8.3.2
@@ -26,6 +27,7 @@ importers:
       next: 12.2.5_drkpjgevzdykik2puzxtfkrafi
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+      react-media-hook: 0.4.9_react@18.2.0
       uuid: 8.3.2
     devDependencies:
       '@types/node': 18.7.13
@@ -1679,6 +1681,14 @@ packages:
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
     dev: true
+
+  /react-media-hook/0.4.9_react@18.2.0:
+    resolution: {integrity: sha512-FZr/2xA1+23vDJ1IZ794yLqMRRkBoCNOiJATdtTfB5GyVc5djf8FL2qEB/68pSkiNgHdHsmKknMSDr0sC4zBKQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /react/18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
