@@ -16,9 +16,10 @@ const Landing: NextPage = () => {
         </div>
 
         <h1>Opening up soon</h1>
-        <Link href="/signup">
+        <span>You can reserve your spot soon</span>
+        {/* <Link href="/signup">
           <a>Reserve your spot now</a>
-        </Link>
+        </Link> */}
 
         <p>
           Kards is an open social media platform, free from abusive data

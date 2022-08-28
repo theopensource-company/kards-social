@@ -2,34 +2,39 @@
 
 .container {
     width: 100vw;
-    height: 100vh;
-
-    font-size: 24px;
+    min-height: 100vh;
+    padding: 50px;
 
     display: flex;
     align-items: center;
     justify-content: center;
+
+    @media (max-width: 360px) {
+        padding: 30px;
+    }
 }
 
 .content {
     text-align: center;
 
     [class~=image-frame] {
-        width: min(70vw, 30vh);
+        width: min(70vw, 25vh);
+        max-width: 50vw;
         display: inline-block;
     }
 
     h1 {
-        font-size: 2em;
+        font-size: 2.5rem;
         font-weight: 300;
     }
 
-    a {
-        display: block;
-        margin: 30px 0 100px;
+    span {
+        font-size: 1.2rem;
     }
 
     p {
         max-width: 500px;
+        margin-top: 60px;
+        font-size: 1.5rem;
     }
 }
