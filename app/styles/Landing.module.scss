@@ -15,7 +15,7 @@
     text-align: center;
 
     [class~=image-frame] {
-        width: 20vh;
+        width: min(70vw, 30vh);
         display: inline-block;
     }
 
