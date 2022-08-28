@@ -20,9 +20,9 @@ type Props = {
 class InvalidButtonError extends Error {}
 
 export default function Button({
-  color = "Tint",
   size = "Large",
   iconRound = false,
+  color,
   onClick,
   text,
   icon,
@@ -35,9 +35,11 @@ export default function Button({
 
   const classes = [
     styles.default,
-    styles[`color${color}`],
+    color ? styles[`color${color}`] : 0,
     styles[`${size.toLowerCase()}${text ? "Text" : ""}${icon ? "Icon" : ""}`],
-  ].join(" ");
+  ]
+    .filter((a) => !!a)
+    .join(" ");
 
   return (
     <div className={classes} onClick={onClick}>

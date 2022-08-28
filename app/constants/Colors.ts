@@ -1,3 +1,4 @@
+export type BasicColorType = 'Light' | 'Dark';
 export type ColorType = 'Tint' | 'Light' | 'Dark';
 export const Color = {
     Tint: "#F98C10",
