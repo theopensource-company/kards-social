@@ -1,0 +1,35 @@
+@use 'color';
+
+.default {
+    border-radius: 15px;
+    box-sizing: border-box;
+    outline: none;
+
+    &:focus {
+        border-color: color.$tint;
+    }
+
+    background-color: color.$light;
+    color: color.$dark;
+    border: 3px solid color.$dark;
+}
+
+.colorDark {
+    background-color: color.$dark;
+    color: color.$light;
+    border: 3px solid color.$light;
+}
+
+.sizeSmall {
+    height: 50px;
+    width: 100%;
+    padding: 0px 20px;
+    font-size: 1.1rem;
+}
+
+.sizeLarge {
+    height: 60px;
+    width: 100%;
+    padding: 0px 25px;
+    font-size: 1.2rem;
+}
