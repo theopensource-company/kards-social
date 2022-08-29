@@ -18,7 +18,7 @@ export default function Layout({
   return (
     <>
       <Head>
-        <title>{title ? `${title} - Kards` : "Kards"}</title>
+        <title>{title ? `${title} - Kards` : "Kards: Socially Social"}</title>
 
         <meta name="charset" content="UTF-8" />
         <meta
