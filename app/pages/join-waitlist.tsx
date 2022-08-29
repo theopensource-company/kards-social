@@ -28,7 +28,9 @@ export default function JoinWaitlist() {
       setNameLabel("Please enter your full name");
     }
 
-    if (!/^[A-ZÀ-ÖØ-öø-ÿ0-9._%+-]+@[A-ZÀ-ÖØ-öø-ÿ0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+    if (
+      !/^[A-ZÀ-ÖØ-öø-ÿ0-9._%+-]+@[A-ZÀ-ÖØ-öø-ÿ0-9.-]+\.[A-Z]{2,}$/i.test(email)
+    ) {
       valid = false;
       setEmailLabel("Please enter a valid email");
     }
