@@ -27,9 +27,9 @@ export default function Layout({
         />
         <meta name="robots" content={robots ?? "index, follow"} />
 
-        <meta name="title" content={title ?? "Kards social"} />
+        <meta name="title" content={title ?? "Kards"} />
 
-        <meta name="og:title" content={title ?? "Kards social"} />
+        <meta name="og:title" content={title ?? "Kards"} />
         <meta name="og:type" content="website" />
         <meta name="og:url" content="https://kards.social/" />
         <meta
@@ -37,9 +37,9 @@ export default function Layout({
           itemProp="image primaryImageOfPage"
           content="https://kards.social/Logo.png"
         />
-        <meta name="og:site_name" content={title ?? "Kards social"} />
+        <meta name="og:site_name" content={title ?? "Kards"} />
 
-        <meta name="twitter:title" content={title ?? "Kards social"} />
+        <meta name="twitter:title" content={title ?? "Kards"} />
         <meta name="twitter:card" content="summary" />
 
         <meta
