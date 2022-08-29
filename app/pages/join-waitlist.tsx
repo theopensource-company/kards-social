@@ -10,6 +10,7 @@ import styles from "../styles/JoinWaitlist.module.scss";
 import Logo from "../assets/image/Logo.svg";
 import axios from "axios";
 import Link from "next/link";
+import Layout from "../components/Layout";
 
 export default function JoinWaitlist() {
   const router = useRouter();
@@ -58,7 +59,7 @@ export default function JoinWaitlist() {
   };
 
   return (
-    <>
+    <Layout>
       <div className={styles.back}>
         <Button
           text="Back"
@@ -97,6 +98,6 @@ export default function JoinWaitlist() {
           <Button onClick={submit} text="Join waitlist" />
         </div>
       </Container>
-    </>
+    </Layout>
   );
 }
