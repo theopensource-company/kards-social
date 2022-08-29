@@ -82,8 +82,8 @@ export async function onRequestPost(context) {
     const body = await request.json();
     if (!body) return Error({ error: "incorrect_body", message: "An incorrect body was provided" });
     if (!body.name || !body.email) return Error({ error: "missing_data", message: "One or more body properties are missing" });
-    if (!/^\w+ [\w][\w ]*$/i.test(body.name)) return Error({ error: "incorrect_name", message: "Please enter both your first and last name" });
-    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(body.email)) return Error({ error: "incorrect_email", message: "Please enter a valid email" });
+    if (!/^[A-ZÀ-ÖØ-öø-ÿ]+ [A-ZÀ-ÖØ-öø-ÿ][A-ZÀ-ÖØ-öø-ÿ ]*$/i.test(body.name)) return Error({ error: "incorrect_name", message: "Please enter both your first and last name" });
+    if (!/^[A-ZÀ-ÖØ-öø-ÿ0-9._%+-]+@[A-ZÀ-ÖØ-öø-ÿ0-9.-]+\.[A-Z]{2,}$/i.test(body.email)) return Error({ error: "incorrect_email", message: "Please enter a valid email" });
     if (!env.SENDGRID_API_KEY) return Error({ error: "incorrect_server_configuration", message: "The server is configured incorrectly", status: 500 });
     if (!await allowedByRateLimit(env.WAITLIST_RL, `mail:${body.email}`)) return Error({ error: "too_many_requests", message: "This request has been performed too often, please try again later.", status: 429 });
     if (!await allowedByRateLimit(env.WAITLIST_RL, `ip:${request.headers['cf-connecting-ip'] || request.headers['x-real-ip']}`, 15, 24)) return Error({ error: "too_many_requests", message: "This request has been performed too often, please try again later.", status: 429 });

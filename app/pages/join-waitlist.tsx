@@ -23,12 +23,12 @@ export default function JoinWaitlist() {
     setNameLabel("");
     setEmailLabel("");
     let valid = true;
-    if (!/^\w+ [\w][\w ]*$/i.test(name)) {
+    if (!/^[A-ZÀ-ÖØ-öø-ÿ]+ [A-ZÀ-ÖØ-öø-ÿ][A-ZÀ-ÖØ-öø-ÿ ]*$/i.test(name)) {
       valid = false;
       setNameLabel("Please enter your full name");
     }
 
-    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+    if (!/^[A-ZÀ-ÖØ-öø-ÿ0-9._%+-]+@[A-ZÀ-ÖØ-öø-ÿ0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
       valid = false;
       setEmailLabel("Please enter a valid email");
     }
