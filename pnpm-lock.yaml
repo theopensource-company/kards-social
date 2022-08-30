@@ -8,6 +8,7 @@ importers:
   app:
     specifiers:
       '@cloudflare/workers-types': ^3.14.1
+      '@next/env': ^12.2.5
       '@tsndr/cloudflare-worker-jwt': ^2.0.1
       '@types/node': 18.7.13
       '@types/react': 18.0.17
@@ -19,6 +20,7 @@ importers:
       eslint-config-prettier: ^8.5.0
       eslint-plugin-prettier: ^4.2.1
       next: 12.2.5
+      next-sitemap: ^3.1.21
       prettier: ^2.7.1
       react: 18.2.0
       react-dom: 18.2.0
@@ -28,9 +30,11 @@ importers:
       uuid: ^8.3.2
     dependencies:
       '@cloudflare/workers-types': 3.14.1
+      '@next/env': 12.2.5
       '@tsndr/cloudflare-worker-jwt': 2.0.1
       axios: 0.27.2
       next: 12.2.5_drkpjgevzdykik2puzxtfkrafi
+      next-sitemap: 3.1.21_gzpnnaylvtfluxe3m63vhk6hhm
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-media-hook: 0.4.9_react@18.2.0
@@ -67,6 +71,10 @@ packages:
 
   /@cloudflare/workers-types/3.14.1:
     resolution: {integrity: sha512-B1/plF62pt+H2IJHvApK8fdOJAVsvojvacuac8x8s+JIyqbropMyqNqHTKLm3YD8ZFLGwYeFTudU+PQ7vGvBdA==}
+    dev: false
+
+  /@corex/deepmerge/4.0.29:
+    resolution: {integrity: sha512-q/yVUnqckA8Do+EvAfpy7RLdumnBy9ZsducMUtZTvpdbJC7azEf1hGtnYYxm0QfphYxjwggv6XtH64prvS1W+A==}
     dev: false
 
   /@eslint/eslintrc/1.3.1:
@@ -1491,7 +1499,6 @@ packages:
 
   /minimist/1.2.6:
     resolution: {integrity: sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==}
-    dev: true
 
   /ms/2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
@@ -1514,6 +1521,20 @@ packages:
   /natural-compare/1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
+
+  /next-sitemap/3.1.21_gzpnnaylvtfluxe3m63vhk6hhm:
+    resolution: {integrity: sha512-8upGCtI91FvjNBpeKDZzrzRBlY4BH6qjG7dMe89sdBzJ9B++PVLTzRPlpLHJYOEPukBROsxi2zVuAvePBtsrdw==}
+    engines: {node: '>=14.18'}
+    hasBin: true
+    peerDependencies:
+      '@next/env': '*'
+      next: '*'
+    dependencies:
+      '@corex/deepmerge': 4.0.29
+      '@next/env': 12.2.5
+      minimist: 1.2.6
+      next: 12.2.5_drkpjgevzdykik2puzxtfkrafi
+    dev: false
 
   /next/12.2.5_drkpjgevzdykik2puzxtfkrafi:
     resolution: {integrity: sha512-tBdjqX5XC/oFs/6gxrZhjmiq90YWizUYU6qOWAfat7zJwrwapJ+BYgX2PmiacunXMaRpeVT4vz5MSPSLgNkrpA==}
