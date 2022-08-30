@@ -59,7 +59,7 @@ function verificationEmailConfig(body, link) {
     });
 }
 
-export async function onRequest(context) {
+export async function onRequestGet(context) {
     const {
         request,
         env
@@ -86,7 +86,7 @@ export async function onRequestPost(context) {
     if (!/^[A-ZÀ-ÖØ-öø-ÿ0-9._%+-]+@[A-ZÀ-ÖØ-öø-ÿ0-9.-]+\.[A-Z]{2,}$/i.test(body.email)) return Error({ error: "incorrect_email", message: "Please enter a valid email" });
     if (!env.SENDGRID_API_KEY) return Error({ error: "incorrect_server_configuration", message: "The server is configured incorrectly", status: 500 });
     if (!await allowedByRateLimit(env.WAITLIST_RL, `mail:${body.email}`)) return Error({ error: "too_many_requests", message: "This request has been performed too often, please try again later.", status: 429 });
-    if (!await allowedByRateLimit(env.WAITLIST_RL, `ip:${request.headers['cf-connecting-ip'] || request.headers['x-real-ip']}`, 15, 24)) return Error({ error: "too_many_requests", message: "This request has been performed too often, please try again later.", status: 429 });
+    if (!await allowedByRateLimit(env.WAITLIST_RL, `ip:${request.headers.get('cf-connecting-ip') || request.headers.get('x-real-ip')}`, 15, 24)) return Error({ error: "too_many_requests", message: "This request has been performed too often, please try again later.", status: 429 });
 
     const token = await jwt.sign({ name: body.name, email: body.email, origin: body.origin ?? 'https://kards.social' }, env.WAITLIST_JWT_SECRET ?? 'very-secret-local-testing-secret');
     await fetch('https://api.sendgrid.com/v3/mail/send', {
