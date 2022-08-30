@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from "react";
+import React, { MouseEventHandler, ReactNode, useState } from "react";
 import Image from "next/image";
 
 import styles from "../styles/Button.module.scss";
@@ -15,6 +15,7 @@ type Props = {
   icon?: StaticImageData | React.ReactNode;
   iconAlt?: string;
   iconRound?: boolean;
+  showSpinner?: boolean;
 };
 
 class InvalidButtonError extends Error {}
@@ -27,11 +28,18 @@ export default function Button({
   text,
   icon,
   iconAlt,
+  showSpinner = false
 }: Props) {
+  const [shownIcon, setShownIcon] = useState<ReactNode | StaticImageData | undefined>("");
+
   if (!text && !icon)
     throw new InvalidButtonError(
       "Neither a button text or icon have been provided."
     );
+
+  if (icon) {
+    setShownIcon(icon);
+  }
 
   const classes = [
     styles.default,
@@ -42,18 +50,18 @@ export default function Button({
     .join(" ");
 
   return (
-    <div className={classes} onClick={onClick}>
+    <div className={classes} onClick={(event) => { onClick(event); }}>
       {icon && (
         <div
           className={[styles[`icon${size}`], iconRound ? styles.iconRound : 0]
             .filter((a) => !!a)
             .join(" ")}
         >
-          {React.isValidElement(icon) ? (
-            icon
+          {React.isValidElement(shownIcon) ? (
+            shownIcon
           ) : (
             <Image
-              src={icon as StaticImageData}
+              src={shownIcon as StaticImageData}
               alt={iconAlt ?? text ?? "Button icon"}
             />
           )}
