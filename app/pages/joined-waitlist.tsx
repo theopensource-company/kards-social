@@ -12,7 +12,7 @@ export default function JoinWaitlist() {
   const router = useRouter();
 
   return (
-    <Layout>
+    <Layout robots="noindex, follow">
       <Container>
         <div className={styles.form}>
           <Image src={Logo} alt="Kards logo" />
