@@ -5,7 +5,7 @@ import { ColoredSvgProps } from "../../constants/Types";
 
 export default function ArrowBack({ color, size = 20 }: ColoredSvgProps) {
   const isDarkMode = useMediaPredicate("(prefers-color-scheme: dark)");
-  const chosenColor = Color[color ?? (isDarkMode ? "Dark" : "Light")];
+  const chosenColor = Color[color ?? (isDarkMode ? "Light" : "Dark")];
   return (
     <svg
       width={size}
