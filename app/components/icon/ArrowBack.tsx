@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useMediaPredicate } from "react-media-hook";
 import { Color } from "../../constants/Colors";
-import { ColoredSvgProps } from '../../constants/Types';
+import { ColoredSvgProps } from "../../constants/Types";
 
 export default function ArrowBack({ color, size = 20 }: ColoredSvgProps) {
   const isDarkMode = useMediaPredicate("(prefers-color-scheme: dark)");
