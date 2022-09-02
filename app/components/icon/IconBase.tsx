@@ -2,9 +2,14 @@ import React from "react";
 import { Color } from "../../constants/Colors";
 import { ColoredSvgProps } from "../../constants/Types";
 
-export default function ArrowBack({ children, icon, color, size = 20 }: ColoredSvgProps & {
-    children: React.ReactNode
-    icon: string;
+export default function ArrowBack({
+  children,
+  icon,
+  color,
+  size = 20,
+}: ColoredSvgProps & {
+  children: React.ReactNode;
+  icon: string;
 }) {
   return (
     <svg
