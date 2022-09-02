@@ -4,13 +4,12 @@ import Container from "../components/Container";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 import ArrowBack from "../components/icon/ArrowBack";
-import Image from "next/image";
 
 import styles from "../styles/JoinWaitlist.module.scss";
-import Logo from "../assets/image/Logo.svg";
 import axios from "axios";
 import Link from "next/link";
 import Layout from "../components/Layout";
+import Logo from "../components/Logo";
 
 export default function JoinWaitlist() {
   const router = useRouter();
@@ -70,7 +69,7 @@ export default function JoinWaitlist() {
       </div>
       <Container className={styles.container}>
         <div className={styles.form}>
-          <Image src={Logo} alt="Kards logo" />
+          <Logo />
           <div className={styles.inputs}>
             <InputField
               value={name}

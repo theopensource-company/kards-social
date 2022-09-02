@@ -2,11 +2,9 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
-import Button from "../components/Button";
-
-import LogoVector from "../assets/image/Logo.svg";
 import styles from "../styles/Landing.module.scss";
 import Layout from "../components/Layout";
+import Logo from "../components/Logo";
 
 const Landing: NextPage = () => {
   return (
@@ -14,7 +12,7 @@ const Landing: NextPage = () => {
       <div className={styles.container}>
         <div className={styles.content}>
           <div className="image-frame">
-            <Image src={LogoVector} alt="The Kards logo" />
+            <Logo />
           </div>
 
           <h1>Opening up soon</h1>
