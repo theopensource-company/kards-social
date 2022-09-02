@@ -9,14 +9,15 @@ export default function ArrowBack({ color, size = 20 }: ColoredSvgProps) {
       height={size}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="svg-ArrowBack-styles"
     >
       <style type="text/css">
         {color
-          ? `g path { stroke: ${Color[color]}; }`
+          ? `.svg-ArrowBack-styles g path { stroke: ${Color[color]}; }`
           : `
-        g path { stroke: ${Color.Light}; }
+          .svg-ArrowBack-styles g path { stroke: ${Color.Light}; }
         @media (prefers-color-scheme: dark) {
-          g path { stroke: ${Color.Dark}; }
+          .svg-ArrowBack-styles g path { stroke: ${Color.Dark}; }
         }
       `}
       </style>
