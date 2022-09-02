@@ -1,11 +1,8 @@
 import * as React from "react";
-import { useMediaPredicate } from "react-media-hook";
 import { Color } from "../../constants/Colors";
 import { ColoredSvgProps } from "../../constants/Types";
 
 export default function ArrowBack({ color, size = 20 }: ColoredSvgProps) {
-  const isDarkMode = useMediaPredicate("(prefers-color-scheme: dark)");
-  const chosenColor = Color[color ?? (isDarkMode ? "Light" : "Dark")];
   return (
     <svg
       width={size}
@@ -13,10 +10,19 @@ export default function ArrowBack({ color, size = 20 }: ColoredSvgProps) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <style type="text/css">
+        {color
+          ? `g path { stroke: ${Color[color]}; }`
+          : `
+        g path { stroke: ${Color.Light}; }
+        @media (prefers-color-scheme: dark) {
+          g path { stroke: ${Color.Dark}; }
+        }
+      `}
+      </style>
       <g clipPath="url(#a)">
         <path
           d="M6.455 99.995h187.09M6.4 99.971l75.724-75.724M6.43 100l75.724 75.724"
-          stroke={chosenColor}
           strokeWidth={12.91}
           strokeLinecap="round"
           transform={`scale(${size / 200})`}
