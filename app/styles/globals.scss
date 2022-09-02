@@ -1,6 +1,67 @@
 @use 'color';
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
+:root:root {
+  --toastify-color-light: #{color.$dark};
+  --toastify-color-dark: #{color.$light};
+  --toastify-color-info: #{color.$light};
+  --toastify-color-success: #{color.$light};
+  --toastify-color-warning: #{color.$light};
+  --toastify-color-error: #{color.$light};
+  --toastify-color-transparent: rgba(255, 255, 255, 0.5);
+
+  --toastify-icon-color-info: var(--toastify-color-info);
+  --toastify-icon-color-success: var(--toastify-color-success);
+  --toastify-icon-color-warning: var(--toastify-color-warning);
+  --toastify-icon-color-error: var(--toastify-color-error);
+
+  --toastify-toast-width: 600px;
+  --toastify-toast-background: #{color.$dark};
+  --toastify-toast-min-height: 64px;
+  --toastify-toast-max-height: 800px;
+  --toastify-font-family: sans-serif;
+  --toastify-z-index: 9999;
+
+  --toastify-text-color-light: #{color.$light};
+  --toastify-text-color-dark: #{color.$dark};
+
+  //Used only for colored theme
+  --toastify-text-color-info: #{color.$light};
+  --toastify-text-color-success: #{color.$light};
+  --toastify-text-color-warning: #{color.$light};
+  --toastify-text-color-error: #{color.$light};
+
+  --toastify-spinner-color: #{color.$dark};
+  --toastify-spinner-color-empty-area: #{color.$light};
+
+  // Used when no type is provided
+  // toast("**hello**")
+
+  --toastify-color-progress-light: #{color.$tint};
+  // --toastify-color-progress-light: linear-gradient(
+  //   to right,
+  //   #4cd964,
+  //   #5ac8fa,
+  //   #007aff,
+  //   #34aadc,
+  //   #5856d6,
+  //   #ff2d55
+  // );
+  // Used when no type is provided
+  --toastify-color-progress-dark: #{color.$tint};
+  --toastify-color-progress-info: var(--toastify-color-info);
+  --toastify-color-progress-success: var(--toastify-color-success);
+  --toastify-color-progress-warning: var(--toastify-color-warning);
+  --toastify-color-progress-error: var(--toastify-color-error);
+
+  @media (prefers-color-scheme: dark) {
+    --toastify-color-light: #{color.$light};
+    --toastify-color-dark: #{color.$dark};
+    --toastify-text-color-light: #{color.$dark};
+    --toastify-text-color-dark: #{color.$light};
+  }
+}
+
 html,
 body {
   width: 100%;
@@ -39,5 +100,31 @@ a {
   body {
     color: color.$light;
     background: color.$dark;
+  }
+}
+
+// // TOAST NOTIFICATIONS
+
+.Toastify__toast {
+  border-radius: 10px !important;
+
+  &--info {
+    background-color: color.$blue !important;
+    color: color.$light !important;
+  }
+
+  &--success {
+    background-color: color.$green !important;
+    color: color.$light !important;
+  }
+
+  &--warning {
+    background-color: color.$tint !important;
+    color: color.$light !important;
+  }
+
+  &--error {
+    background-color: color.$red !important;
+    color: color.$light !important;
   }
 }
