@@ -12,7 +12,7 @@
     "postbuild": "next-sitemap"
   },
   "dependencies": {
-    "@cloudflare/workers-types": "^3.14.1",
+    "@cloudflare/workers-types": "^3.16.0",
     "@next/env": "^12.2.5",
     "@tsndr/cloudflare-worker-jwt": "^2.0.1",
     "axios": "^0.27.2",
@@ -34,7 +34,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.7.1",
-    "sass": "^1.54.5",
+    "sass": "1.54.5",
     "typescript": "4.8.2"
   }
 }
