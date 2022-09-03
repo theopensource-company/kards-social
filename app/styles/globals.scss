@@ -126,5 +126,9 @@ a {
   &--error {
     background-color: color.$red !important;
     color: color.$light !important;
+
+    .Toastify__toast-icon {
+      margin-left: 2.5px;
+    }
   }
 }

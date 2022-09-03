@@ -4,7 +4,6 @@ import Link from "next/link";
 import styles from "../styles/Landing.module.scss";
 import Layout from "../components/Layout";
 import Logo from "../components/Logo";
-import { toast } from "react-toastify";
 
 const Landing: NextPage = () => {
   return (
@@ -26,14 +25,6 @@ const Landing: NextPage = () => {
             Kards is an open social media platform, free from abusive data
             harvesting and damaging algorithms.
           </p>
-
-          <button
-            onClick={() => {
-              toast.error("Something went wrong!");
-            }}
-          >
-            click me
-          </button>
         </div>
       </div>
     </Layout>
