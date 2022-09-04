@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, ReactNode, useState } from "react";
+import React, { MouseEventHandler } from "react";
 import Image from "next/image";
 
 import styles from "../styles/Button.module.scss";
