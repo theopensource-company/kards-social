@@ -26,11 +26,27 @@ export default function Spinner({ color, size = 20 }: ColoredSvgProps) {
             repeatCount="indefinite"
           />
 
-          <circle r={(15 / 200) * size} cx={(30 / 200) * size} cy={(100 / 200) * size} />
-          <circle r={(15 / 200) * size} cx={(170 / 200) * size} cy={(100 / 200) * size} />
+          <circle
+            r={(15 / 200) * size}
+            cx={(30 / 200) * size}
+            cy={(100 / 200) * size}
+          />
+          <circle
+            r={(15 / 200) * size}
+            cx={(170 / 200) * size}
+            cy={(100 / 200) * size}
+          />
 
-          <circle r={(15 / 200) * size} cx={(100 / 200) * size} cy={(30 / 200) * size} />
-          <circle r={(15 / 200) * size} cx={(100 / 200) * size} cy={(170 / 200) * size} />
+          <circle
+            r={(15 / 200) * size}
+            cx={(100 / 200) * size}
+            cy={(30 / 200) * size}
+          />
+          <circle
+            r={(15 / 200) * size}
+            cx={(100 / 200) * size}
+            cy={(170 / 200) * size}
+          />
           {/*<circle r={25} cx={175} cy={100} />
           <circle r={25} cx={100} cy={25} />
           <circle r={25} cx={100} cy={175} />*/}

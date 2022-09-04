@@ -105,7 +105,12 @@ export default function JoinWaitlist() {
               )
             </p>
           )}
-          <Button onClick={submit} text="Join waitlist" icon={<Spinner />} loading={working} />
+          <Button
+            onClick={submit}
+            text="Join waitlist"
+            icon={<Spinner />}
+            loading={working}
+          />
         </div>
       </Container>
     </>
