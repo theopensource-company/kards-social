@@ -17,8 +17,9 @@ export default function Spinner({ color, size = 20 }: Props) {
       viewBox="0 0 200 200"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="spinnerIcon"
     >
-      <g transform-origin="center">
+      <g>
         <animateTransform
           attributeName="transform"
           attributeType="XML"
@@ -28,7 +29,7 @@ export default function Spinner({ color, size = 20 }: Props) {
           repeatCount="indefinite"
         />
 
-        <g transform-origin="center">
+        <g>
           <animateTransform
             attributeName="transform"
             attributeType="XML"
