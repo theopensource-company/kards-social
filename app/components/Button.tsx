@@ -4,6 +4,7 @@ import Image from "next/image";
 import styles from "../styles/Button.module.scss";
 import { ColorType } from "../constants/Colors";
 import { StaticImageData } from "next/image";
+import Spinner from "./icon/Spinner";
 
 export type ButtonSize = "Small" | "Large";
 
@@ -15,7 +16,7 @@ type Props = {
   icon?: StaticImageData | React.ReactNode;
   iconAlt?: string;
   iconRound?: boolean;
-  showSpinner?: boolean;
+  loading?: boolean;
 };
 
 class InvalidButtonError extends Error {}
@@ -28,40 +29,41 @@ export default function Button({
   text,
   icon,
   iconAlt,
-  showSpinner = false
+  loading = false,
 }: Props) {
-  const [shownIcon, setShownIcon] = useState<ReactNode | StaticImageData | undefined>("");
-
   if (!text && !icon)
     throw new InvalidButtonError(
       "Neither a button text or icon have been provided."
     );
 
-  if (icon) {
-    setShownIcon(icon);
-  }
-
   const classes = [
     styles.default,
     color ? styles[`color${color}`] : 0,
-    styles[`${size.toLowerCase()}${text ? "Text" : ""}${icon ? "Icon" : ""}`],
+    styles[`${size.toLowerCase()}${text ? "Text" : ""}${icon || loading ? "Icon" : ""}`],
   ]
     .filter((a) => !!a)
     .join(" ");
 
   return (
-    <div className={classes} onClick={(event) => { onClick(event); }}>
-      {icon && (
+    <div
+      className={classes}
+      onClick={(event) => {
+        onClick(event);
+      }}
+    >
+      {(icon || loading) && (
         <div
           className={[styles[`icon${size}`], iconRound ? styles.iconRound : 0]
             .filter((a) => !!a)
             .join(" ")}
         >
-          {React.isValidElement(shownIcon) ? (
-            shownIcon
+          {loading ? (
+            <Spinner />
+          ) : React.isValidElement(icon) ? (
+            icon
           ) : (
             <Image
-              src={shownIcon as StaticImageData}
+              src={icon as StaticImageData}
               alt={iconAlt ?? text ?? "Button icon"}
             />
           )}

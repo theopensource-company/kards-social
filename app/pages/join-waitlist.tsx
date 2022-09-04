@@ -18,6 +18,7 @@ export default function JoinWaitlist() {
   const [email, setEmail] = useState("");
   const [nameLabel, setNameLabel] = useState("");
   const [emailLabel, setEmailLabel] = useState("");
+  const [working, setWorking] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const submit = async () => {
@@ -35,6 +36,8 @@ export default function JoinWaitlist() {
     }
 
     if (valid) {
+      setWorking(true);
+
       const result: any = await axios.post(
         `${location.origin}/api/join-waitlist`,
         {
@@ -53,6 +56,8 @@ export default function JoinWaitlist() {
       } else {
         alert(`${result.data?.message} (${result.data?.error})`);
       }
+
+      setWorking(false);
     }
   };
 
@@ -93,7 +98,7 @@ export default function JoinWaitlist() {
               )
             </p>
           )}
-          <Button onClick={submit} icon={<Spinner />} text="Join waitlist" />
+          <Button onClick={submit} text="Join waitlist" loading={working} />
         </div>
       </Container>
     </>
