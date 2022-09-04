@@ -4,6 +4,7 @@ import Container from "../components/Container";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 import ArrowBack from "../components/icon/ArrowBack";
+import { toast } from "react-toastify";
 
 import styles from "../styles/JoinWaitlist.module.scss";
 import axios from "axios";
@@ -17,7 +18,6 @@ export default function JoinWaitlist() {
   const [email, setEmail] = useState("");
   const [nameLabel, setNameLabel] = useState("");
   const [emailLabel, setEmailLabel] = useState("");
-  const [success, setSuccess] = useState(false);
 
   const submit = async () => {
     setNameLabel("");
@@ -36,23 +36,27 @@ export default function JoinWaitlist() {
     }
 
     if (valid) {
-      const result: any = await axios.post(
-        `${location.origin}/api/join-waitlist`,
-        {
-          name,
-          email,
-          origin: location.origin,
-        }
-      );
-
-      if (!result.data)
-        return alert(
-          "Something went wrong, please try again later or contact hi@kards.social"
+      try {
+        const result: any = await axios.post(
+          `${location.origin}/api/join-waitlist`,
+          {
+            name,
+            email,
+            origin: location.origin,
+          }
         );
-      if (result.data?.success) {
-        setSuccess(true);
-      } else {
-        alert(`${result.data?.message} (${result.data?.error})`);
+
+        if (!result.data)
+          return toast.error(
+            "Something went wrong, please try again later or contact hi@kards.social"
+          );
+        if (result.data?.success) {
+          toast.success("Check you inbox and spam for a verification email!");
+        } else {
+          toast.error(`${result.data?.message} (${result.data?.error})`);
+        }
+      } catch (e) {
+        toast.error("An error occured while performing the request.");
       }
     }
   };
@@ -85,15 +89,6 @@ export default function JoinWaitlist() {
               type="Email"
             />
           </div>
-          {success && (
-            <p className={styles.success}>
-              Check your email! (
-              <Link href="/">
-                <a>back</a>
-              </Link>
-              )
-            </p>
-          )}
           <Button onClick={submit} text="Join waitlist" />
         </div>
       </Container>
