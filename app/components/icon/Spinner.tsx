@@ -1,24 +1,10 @@
 import * as React from "react";
-import { useMediaPredicate } from "react-media-hook";
-import { ColorType, Color } from "../../constants/Colors";
+import IconBase from "./IconBase";
+import { ColoredSvgProps } from "../../constants/Types";
 
-type Props = {
-  color?: ColorType;
-  size?: number;
-};
-
-export default function Spinner({ color, size = 20 }: Props) {
-  const isDarkMode = useMediaPredicate("(prefers-color-scheme: dark)");
-  const chosenColor = Color[color ?? (isDarkMode ? "Dark" : "Light")];
+export default function Spinner({ color, size = 20 }: ColoredSvgProps) {
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 200 200"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="spinnerIcon"
-    >
+    <IconBase icon="Spinner" color={color} size={size}>
       <g>
         <animateTransform
           attributeName="transform"
@@ -40,12 +26,16 @@ export default function Spinner({ color, size = 20 }: Props) {
             repeatCount="indefinite"
           />
 
-          <circle r={25} cx={25} cy={100} fill={chosenColor} />
-          <circle r={25} cx={175} cy={100} fill={chosenColor} />
-          <circle r={25} cx={100} cy={25} fill={chosenColor} />
-          <circle r={25} cx={100} cy={175} fill={chosenColor} />
+          <circle r={(15 / 200) * size} cx={(30 / 200) * size} cy={(100 / 200) * size} />
+          <circle r={(15 / 200) * size} cx={(170 / 200) * size} cy={(100 / 200) * size} />
+
+          <circle r={(15 / 200) * size} cx={(100 / 200) * size} cy={(30 / 200) * size} />
+          <circle r={(15 / 200) * size} cx={(100 / 200) * size} cy={(170 / 200) * size} />
+          {/*<circle r={25} cx={175} cy={100} />
+          <circle r={25} cx={100} cy={25} />
+          <circle r={25} cx={100} cy={175} />*/}
         </g>
       </g>
-    </svg>
+    </IconBase>
   );
 }

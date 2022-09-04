@@ -63,7 +63,7 @@ export default function JoinWaitlist() {
       } catch (e) {
         toast.error("An error occured while performing the request.");
       }
-      
+
       setWorking(false);
     }
   };
@@ -105,7 +105,7 @@ export default function JoinWaitlist() {
               )
             </p>
           )}
-          <Button onClick={submit} text="Join waitlist" loading={working} />
+          <Button onClick={submit} text="Join waitlist" icon={<Spinner />} loading={working} />
         </div>
       </Container>
     </>

@@ -93,11 +93,6 @@ a {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
-.spinnerIcon * {
-  transform-box: fill-box;
-  transform-origin: center;
-}
-
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
