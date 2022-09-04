@@ -6,6 +6,7 @@ import Button from "../components/Button";
 import ArrowBack from "../components/icon/ArrowBack";
 import Spinner from "../components/icon/Spinner";
 import Image from "next/image";
+import { toast } from "react-toastify";
 
 import styles from "../styles/JoinWaitlist.module.scss";
 import Logo from "../assets/image/Logo.svg";
@@ -25,12 +26,14 @@ export default function JoinWaitlist() {
     setNameLabel("");
     setEmailLabel("");
     let valid = true;
-    if (!/^\w+ [\w][\w ]*$/i.test(name)) {
+    if (!/^[A-ZÀ-ÖØ-öø-ÿ]+ [A-ZÀ-ÖØ-öø-ÿ][A-ZÀ-ÖØ-öø-ÿ ]*$/i.test(name)) {
       valid = false;
       setNameLabel("Please enter your full name");
     }
 
-    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+    if (
+      !/^[A-ZÀ-ÖØ-öø-ÿ0-9._%+-]+@[A-ZÀ-ÖØ-öø-ÿ0-9.-]+\.[A-Z]{2,}$/i.test(email)
+    ) {
       valid = false;
       setEmailLabel("Please enter a valid email");
     }
@@ -38,25 +41,29 @@ export default function JoinWaitlist() {
     if (valid) {
       setWorking(true);
 
-      const result: any = await axios.post(
-        `${location.origin}/api/join-waitlist`,
-        {
-          name,
-          email,
-          origin: location.origin,
-        }
-      );
-
-      if (!result.data)
-        return alert(
-          "Something went wrong, please try again later or contact hi@kards.social"
+      try {
+        const result: any = await axios.post(
+          `${location.origin}/api/join-waitlist`,
+          {
+            name,
+            email,
+            origin: location.origin,
+          }
         );
-      if (result.data?.success) {
-        setSuccess(true);
-      } else {
-        alert(`${result.data?.message} (${result.data?.error})`);
-      }
 
+        if (!result.data)
+          return toast.error(
+            "Something went wrong, please try again later or contact hi@kards.social"
+          );
+        if (result.data?.success) {
+          toast.success("Check you inbox and spam for a verification email!");
+        } else {
+          toast.error(`${result.data?.message} (${result.data?.error})`);
+        }
+      } catch (e) {
+        toast.error("An error occured while performing the request.");
+      }
+      
       setWorking(false);
     }
   };
