@@ -39,7 +39,11 @@ export default function Button({
   const classes = [
     styles.default,
     color ? styles[`color${color}`] : 0,
-    styles[`${size.toLowerCase()}${text ? "Text" : ""}${icon || loading ? "Icon" : ""}`],
+    styles[
+      `${size.toLowerCase()}${text ? "Text" : ""}${
+        icon || loading ? "Icon" : ""
+      }`
+    ],
   ]
     .filter((a) => !!a)
     .join(" ");

@@ -39,30 +39,10 @@ export default function Spinner({ color, size = 20 }: Props) {
             repeatCount="indefinite"
           />
 
-          <circle
-            r={25}
-            cx={25}
-            cy={100}
-            fill={chosenColor}
-          />
-          <circle
-            r={25}
-            cx={175}
-            cy={100}
-            fill={chosenColor}
-          />
-          <circle
-            r={25}
-            cx={100}
-            cy={25}
-            fill={chosenColor}
-          />
-          <circle
-            r={25}
-            cx={100}
-            cy={175}
-            fill={chosenColor}
-          />
+          <circle r={25} cx={25} cy={100} fill={chosenColor} />
+          <circle r={25} cx={175} cy={100} fill={chosenColor} />
+          <circle r={25} cx={100} cy={25} fill={chosenColor} />
+          <circle r={25} cx={100} cy={175} fill={chosenColor} />
         </g>
       </g>
     </svg>
