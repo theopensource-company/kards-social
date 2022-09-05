@@ -7,7 +7,9 @@ export default function ArrowBack({
   icon,
   color,
   size = 20,
+  styles = "",
 }: ColoredSvgProps & {
+  styles?: string;
   children: React.ReactNode;
   icon: string;
 }) {
@@ -21,11 +23,11 @@ export default function ArrowBack({
     >
       <style type="text/css">
         {color
-          ? `.svg-${icon}-styles * { transform-origin: center; transform-box: fill-box; stroke: ${Color[color]}; fill: ${Color[color]}; color: ${Color[color]}; }`
+          ? `.svg-${icon}-styles * { ${styles} fill-box; stroke: ${Color[color]}; fill: ${Color[color]}; color: ${Color[color]}; }`
           : `
-          .svg-${icon}-styles * { transform-origin: center; transform-box: fill-box; stroke: ${Color.Light}; fill: ${Color.Light}; color: ${Color.Light}; }
+          .svg-${icon}-styles * { ${styles} stroke: ${Color.Light}; fill: ${Color.Light}; color: ${Color.Light}; }
         @media (prefers-color-scheme: dark) {
-          .svg-${icon}-styles * { transform-origin: center; transform-box: fill-box; stroke: ${Color.Dark}; fill: ${Color.Dark}; color: ${Color.Dark}; }
+          .svg-${icon}-styles * { ${styles} stroke: ${Color.Dark}; fill: ${Color.Dark}; color: ${Color.Dark}; }
         }
       `}
       </style>

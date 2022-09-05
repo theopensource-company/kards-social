@@ -5,13 +5,13 @@ import InputField from "../components/InputField";
 import Button from "../components/Button";
 import ArrowBack from "../components/icon/ArrowBack";
 import Spinner from "../components/icon/Spinner";
-import Image from "next/image";
 import { toast } from "react-toastify";
 
 import styles from "../styles/JoinWaitlist.module.scss";
-import Logo from "../assets/image/Logo.svg";
 import axios from "axios";
 import Link from "next/link";
+import Layout from "../components/Layout";
+import Logo from "../components/Logo";
 
 export default function JoinWaitlist() {
   const router = useRouter();
@@ -20,7 +20,6 @@ export default function JoinWaitlist() {
   const [nameLabel, setNameLabel] = useState("");
   const [emailLabel, setEmailLabel] = useState("");
   const [working, setWorking] = useState(false);
-  const [success, setSuccess] = useState(false);
 
   const submit = async () => {
     setNameLabel("");
@@ -69,7 +68,7 @@ export default function JoinWaitlist() {
   };
 
   return (
-    <>
+    <Layout>
       <div className={styles.back}>
         <Button
           text="Back"
@@ -80,7 +79,7 @@ export default function JoinWaitlist() {
       </div>
       <Container className={styles.container}>
         <div className={styles.form}>
-          <Image src={Logo} alt="Kards logo" />
+          <Logo />
           <div className={styles.inputs}>
             <InputField
               value={name}
@@ -96,23 +95,9 @@ export default function JoinWaitlist() {
               type="Email"
             />
           </div>
-          {success && (
-            <p className={styles.success}>
-              Check your email! (
-              <Link href="/">
-                <a>back</a>
-              </Link>
-              )
-            </p>
-          )}
-          <Button
-            onClick={submit}
-            text="Join waitlist"
-            icon={<Spinner />}
-            loading={working}
-          />
+          <Button onClick={submit} text="Join waitlist" loading={working} />
         </div>
       </Container>
-    </>
+    </Layout>
   );
 }

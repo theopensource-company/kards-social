@@ -4,7 +4,12 @@ import { ColoredSvgProps } from "../../constants/Types";
 
 export default function Spinner({ color, size = 20 }: ColoredSvgProps) {
   return (
-    <IconBase icon="Spinner" color={color} size={size}>
+    <IconBase
+      icon="Spinner"
+      color={color}
+      size={size}
+      styles="transform-origin: center; transform-box: fill-box;"
+    >
       <g>
         <animateTransform
           attributeName="transform"
