@@ -23,7 +23,7 @@ export default function ArrowBack({
     >
       <style type="text/css">
         {color
-          ? `.svg-${icon}-styles * { ${styles} fill-box; stroke: ${Color[color]}; fill: ${Color[color]}; color: ${Color[color]}; }`
+          ? `.svg-${icon}-styles * { ${styles} stroke: ${Color[color]}; fill: ${Color[color]}; color: ${Color[color]}; }`
           : `
           .svg-${icon}-styles * { ${styles} stroke: ${Color.Light}; fill: ${Color.Light}; color: ${Color.Light}; }
         @media (prefers-color-scheme: dark) {
