@@ -4,6 +4,7 @@ import Image from "next/image";
 import styles from "../styles/Button.module.scss";
 import { ColorType } from "../constants/Colors";
 import { StaticImageData } from "next/image";
+import Spinner from "./icon/Spinner";
 
 export type ButtonSize = "Small" | "Large";
 
@@ -15,6 +16,7 @@ type Props = {
   icon?: StaticImageData | React.ReactNode;
   iconAlt?: string;
   iconRound?: boolean;
+  loading?: boolean;
 };
 
 class InvalidButtonError extends Error {}
@@ -27,6 +29,7 @@ export default function Button({
   text,
   icon,
   iconAlt,
+  loading = false,
 }: Props) {
   if (!text && !icon)
     throw new InvalidButtonError(
@@ -36,20 +39,31 @@ export default function Button({
   const classes = [
     styles.default,
     color ? styles[`color${color}`] : 0,
-    styles[`${size.toLowerCase()}${text ? "Text" : ""}${icon ? "Icon" : ""}`],
+    styles[
+      `${size.toLowerCase()}${text ? "Text" : ""}${
+        icon || loading ? "Icon" : ""
+      }`
+    ],
   ]
     .filter((a) => !!a)
     .join(" ");
 
   return (
-    <div className={classes} onClick={onClick}>
-      {icon && (
+    <div
+      className={classes}
+      onClick={(event) => {
+        onClick(event);
+      }}
+    >
+      {(icon || loading) && (
         <div
           className={[styles[`icon${size}`], iconRound ? styles.iconRound : 0]
             .filter((a) => !!a)
             .join(" ")}
         >
-          {React.isValidElement(icon) ? (
+          {loading ? (
+            <Spinner />
+          ) : React.isValidElement(icon) ? (
             icon
           ) : (
             <Image

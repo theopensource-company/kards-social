@@ -4,6 +4,7 @@ import Container from "../components/Container";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 import ArrowBack from "../components/icon/ArrowBack";
+import Spinner from "../components/icon/Spinner";
 import { toast } from "react-toastify";
 
 import styles from "../styles/JoinWaitlist.module.scss";
@@ -18,6 +19,7 @@ export default function JoinWaitlist() {
   const [email, setEmail] = useState("");
   const [nameLabel, setNameLabel] = useState("");
   const [emailLabel, setEmailLabel] = useState("");
+  const [working, setWorking] = useState(false);
 
   const submit = async () => {
     setNameLabel("");
@@ -36,6 +38,8 @@ export default function JoinWaitlist() {
     }
 
     if (valid) {
+      setWorking(true);
+
       try {
         const result: any = await axios.post(
           `${location.origin}/api/join-waitlist`,
@@ -58,6 +62,8 @@ export default function JoinWaitlist() {
       } catch (e) {
         toast.error("An error occured while performing the request.");
       }
+
+      setWorking(false);
     }
   };
 
@@ -89,7 +95,7 @@ export default function JoinWaitlist() {
               type="Email"
             />
           </div>
-          <Button onClick={submit} text="Join waitlist" />
+          <Button onClick={submit} text="Join waitlist" loading={working} />
         </div>
       </Container>
     </Layout>
