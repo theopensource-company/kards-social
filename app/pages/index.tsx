@@ -4,11 +4,12 @@ import Link from "next/link";
 import styles from "../styles/Landing.module.scss";
 import Layout from "../components/Layout";
 import Logo from "../components/Logo";
+import Container from "../components/Container";
 
 const Landing: NextPage = () => {
   return (
     <Layout>
-      <div className={styles.container}>
+      <Container>
         <div className={styles.content}>
           <div className="image-frame">
             <Logo />
@@ -26,7 +27,7 @@ const Landing: NextPage = () => {
             harvesting and damaging algorithms.
           </p>
         </div>
-      </div>
+      </Container>
     </Layout>
   );
 };
