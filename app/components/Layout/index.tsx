@@ -20,6 +20,8 @@ export default function Layout({
       <Head>
         <title>{title ? `${title} - Kards` : "Kards: Socially Social"}</title>
 
+        <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+
         <meta name="charset" content="UTF-8" />
         <meta
           name="viewport"
