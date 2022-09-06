@@ -78,7 +78,8 @@ export default function Layout({
       </Head>
       <div id="app-container">{children}</div>
       <footer>
-        &copy; 2022 <a href="https://theopensource.company">The Open Source Company</a>
+        &copy; 2022{" "}
+        <a href="https://theopensource.company">The Open Source Company</a>
       </footer>
     </>
   );
