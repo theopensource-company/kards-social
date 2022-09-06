@@ -79,7 +79,8 @@ export default function Layout({
       <div id="app-container">{children}</div>
       <footer>
         &copy; 2022{" "}
-        <a href="https://theopensource.company">The Open Source Company</a>
+        <a href="https://theopensource.company">The Open Source Company</a>, All
+        Rights Reserved.
       </footer>
     </>
   );
