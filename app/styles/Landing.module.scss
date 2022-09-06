@@ -1,19 +1,5 @@
 @use 'color';
 
-.container {
-    width: 100vw;
-    min-height: 100vh;
-    padding: 50px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    @media (max-width: 360px) {
-        padding: 30px;
-    }
-}
-
 .content {
     text-align: center;
 

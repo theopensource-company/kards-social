@@ -1,7 +1,8 @@
 .container {
     width: 100vw;
-    min-height: 100vh;
-    padding: 50px;
+    min-height: calc(100vh - 80px);
+
+    padding-top: 30px;
 
     display: flex;
     flex-direction: column;
@@ -10,5 +11,6 @@
 
     @media (max-width: 360px) {
         padding: 30px;
+        padding-top: 40px;
     }
 }
