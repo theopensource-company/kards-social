@@ -1,0 +1,19 @@
+{
+    "lang": "en",
+    "dir": "ltr",
+
+    "name": "Kards",
+    "short_name": "Kards",
+    "id": "kards",
+    "description": "Socially social: Kards.",
+
+    "icons": [{ }],
+    "display": "fullscreen",
+    "orientation": "any",
+
+    "scope": "/",
+    "start_url": "/",
+
+    "theme_color": "#F98C10",
+    "background_color": "#F7F3E3"
+  }
