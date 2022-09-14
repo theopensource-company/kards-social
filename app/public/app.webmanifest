@@ -10,23 +10,28 @@
     "icons": [
         {
             "src": "images/icon_64x64.png",
-            "sizes": "64x64"
+            "sizes": "64x64",
+            "purpose": "any"
         },
         {
             "src": "images/icon_128x128.png",
-            "sizes": "128x128"
+            "sizes": "128x128",
+            "purpose": "any"
         },
         {
             "src": "images/icon_192x192.png",
-            "sizes": "192x192"
+            "sizes": "192x192",
+            "purpose": "any"
         },
         {
             "src": "images/icon_256x256.png",
-            "sizes": "256x256"
+            "sizes": "256x256",
+            "purpose": "any maskable"
         },
         {
             "src": "images/icon_512x512.png",
-            "sizes": "512x512"
+            "sizes": "512x512",
+            "purpose": "any maskable"
         },
         {
             "src": "LogoSmall.svg",
