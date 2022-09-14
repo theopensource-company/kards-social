@@ -1,0 +1,50 @@
+{
+    "lang": "en",
+    "dir": "ltr",
+
+    "name": "Kards",
+    "short_name": "Kards",
+    "id": "kards",
+    "description": "Socially social: Kards.",
+
+    "icons": [
+        {
+            "src": "images/icon_64x64.png",
+            "sizes": "64x64",
+            "purpose": "any"
+        },
+        {
+            "src": "images/icon_128x128.png",
+            "sizes": "128x128",
+            "purpose": "any"
+        },
+        {
+            "src": "images/icon_192x192.png",
+            "sizes": "192x192",
+            "purpose": "any"
+        },
+        {
+            "src": "images/icon_256x256.png",
+            "sizes": "256x256",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "images/icon_512x512.png",
+            "sizes": "512x512",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "LogoSmall.svg",
+            "sizes": "any"
+        }
+    ],
+
+    "display": "fullscreen",
+    "orientation": "any",
+
+    "scope": "/",
+    "start_url": ".",
+
+    "theme_color": "#F98C10",
+    "background_color": "#F7F3E3"
+  }

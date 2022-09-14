@@ -2,6 +2,8 @@ import React from "react";
 import Head from "next/head";
 import { ReactNode } from "react";
 
+import { Color } from "../../constants/Colors";
+
 type Props = {
   title?: string;
   description?: string;
@@ -20,7 +22,16 @@ export default function Layout({
       <Head>
         <title>{title ? `${title} - Kards` : "Kards: Socially Social"}</title>
 
-        <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+        <link
+          rel="manifest"
+          href="/app.webmanifest"
+          type="application/manifest+json"
+        />
+
+        <meta name="application-name" content="Kards" />
+        <meta name="theme-color" content={Color.Tint} />
+
+        <link rel="apple-touch-icon" href="/images/icon_192x192.png" />
 
         <meta name="charset" content="UTF-8" />
         <meta
