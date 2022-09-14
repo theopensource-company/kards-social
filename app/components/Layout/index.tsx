@@ -31,7 +31,7 @@ export default function Layout({
         <meta name="application-name" content="Kards" />
         <meta name="theme-color" content={Color.Tint} />
 
-        <link rel="apple-touch-icon" href="/imagesicon_192x192.png" />
+        <link rel="apple-touch-icon" href="/images/icon_192x192.png" />
 
         <meta name="charset" content="UTF-8" />
         <meta
