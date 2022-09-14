@@ -19,8 +19,12 @@ export default function Layout({
     <>
       <Head>
         <title>{title ? `${title} - Kards` : "Kards: Socially Social"}</title>
-        
-        <link rel="manifest" href="/app.webmanifest" type="application/manifest+json" />
+
+        <link
+          rel="manifest"
+          href="/app.webmanifest"
+          type="application/manifest+json"
+        />
 
         <meta name="application-name" content="Kards" />
 
