@@ -2,6 +2,8 @@ import React from "react";
 import Head from "next/head";
 import { ReactNode } from "react";
 
+import { Color } from "../../constants/Colors";
+
 type Props = {
   title?: string;
   description?: string;
@@ -27,6 +29,7 @@ export default function Layout({
         />
 
         <meta name="application-name" content="Kards" />
+        <meta name="theme-color" content={Color.Tint} />
 
         <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
 
