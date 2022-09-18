@@ -1,0 +1,25 @@
+# wrangler.toml for local dev environment, wrangler.prod.toml for production publish
+
+name = "kards-waitlist-api"
+main = "src/index.ts"
+compatibility_date = "2002-09-08"
+
+[[kv_namespaces]]
+  binding = "WAITLIST_RL"
+  id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  preview_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+# Only needed in wrangler.prod.toml
+routes = ["https://api.kards.social/waitlist/*"]
+
+[vars]
+HOST="https://xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+USER="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+PASS="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+NAMESPACE="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+DATABASE="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+SENDGRID_API_KEY="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+DOMAIN = "https://api.kards.social"
+
+# For development
+DOMAIN = "http://127.0.0.1:8787"
