@@ -4,7 +4,7 @@ import { Success, Error, Redirect } from '../../../app/constants/ApiResponse';
 import jwt from '@tsndr/cloudflare-worker-jwt'
 
 import { Env } from '.';
-import { allowedByRateLimit, createSha256Hash } from './ratelimit';
+import { allowedByRateLimit } from './ratelimit';
 import { verificationEmailConfig } from './verificationEmail';
 
 export default function Router(db: Surreal) {
@@ -49,7 +49,7 @@ export default function Router(db: Surreal) {
     
         const token = await jwt.sign({ name: body.name, email: body.email, origin: body.origin ?? 'https://kards.social' }, env.WAITLIST_JWT_SECRET ?? 'very-secret-local-testing-secret');
         await fetch('https://api.sendgrid.com/v3/mail/send', {
-              body: verificationEmailConfig(body, `${env.DOMAIN ?? (new URL(request.url)).origin}/waitlist/join?token=${token}`),
+              body: verificationEmailConfig(body, `${env.KARDS_API ?? (new URL(request.url)).origin}/waitlist/join?token=${token}`),
               headers: {
                   'Authorization': `Bearer ${env.SENDGRID_API_KEY}`,
                   'Content-Type': 'application/json',

@@ -1,7 +1,9 @@
 {
   "name": "kards-worker-waitlist",
   "description": "Kards is an open source social media platform.",
+  "main": "src/index.ts",
   "scripts": {
+    "dev": "wrangler dev",
     "publish": "wrangler publish --config wrangler.prod.toml"
   },
   "author": "The Open Source Company",

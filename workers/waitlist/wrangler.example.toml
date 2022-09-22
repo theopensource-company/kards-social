@@ -19,7 +19,3 @@ PASS="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 NAMESPACE="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 DATABASE="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 SENDGRID_API_KEY="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-DOMAIN = "https://api.kards.social"
-
-# For development
-DOMAIN = "http://127.0.0.1:8787"

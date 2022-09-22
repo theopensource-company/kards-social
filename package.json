@@ -1,9 +1,21 @@
 {
   "name": "kards-social",
+  "type": "module",
   "description": "Kards is an open source social media platform.",
   "scripts": {
-    
+    "dev": "node cli/devserver.js"
   },
   "author": "The Open Source Company",
-  "license": "AGPL-3.0-only"
+  "license": "AGPL-3.0-only",
+  "devDependencies": {
+    "@theopensource-company/surrealdb-cloudflare": "^1.0.2",
+    "concurrently": "^7.4.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "http-proxy": "^1.18.1",
+    "node-fetch": "^3.2.10",
+    "nodemon": "^2.0.20",
+    "readline": "^1.3.0",
+    "wrangler": "v2"
+  }
 }
