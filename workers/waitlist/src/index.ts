@@ -14,7 +14,7 @@ export type Env = {
     SENDGRID_API_KEY: string;
     KARDS_API?: string;
     
-    WAITLIST_RL: KVNamespace;
+    RATELIMIT: KVNamespace;
     WAITLIST_JWT_SECRET?: string;
 }
 

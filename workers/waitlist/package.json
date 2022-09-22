@@ -4,7 +4,7 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "wrangler dev",
-    "publish": "wrangler publish --config wrangler.prod.toml"
+    "publish": "wrangler publish --env=prod"
   },
   "author": "The Open Source Company",
   "license": "AGPL-3.0-only",

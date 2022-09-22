@@ -3,7 +3,8 @@
   "type": "module",
   "description": "Kards is an open source social media platform.",
   "scripts": {
-    "dev": "node cli/devserver.js"
+    "dev": "node cli/devserver.js",
+    "conf": "node cli/config.js"
   },
   "author": "The Open Source Company",
   "license": "AGPL-3.0-only",
