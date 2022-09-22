@@ -20,10 +20,6 @@ apiProxy.all("/waitlist/*", (req, res) => proxyserver.web(req, res, {target: tar
 const runners = concurrently(
     [
         {
-            name: "kards-surreal",
-            command: "surreal start --user root --pass root file:dev.db"
-        },
-        {
             name: "kards-app",
             command: "cd app && pnpm run dev",
             env: {
