@@ -41,9 +41,7 @@ export default function JoinWaitlist() {
       setWorking(true);
       try {
         const result: any = await axios.post(
-          `${
-            process.env.NEXT_PUBLIC_KARDS_API ?? "https://api.kards.social"
-          }/waitlist/join`,
+          `${location.origin}/api/waitlist/join`,
           {
             name,
             email,

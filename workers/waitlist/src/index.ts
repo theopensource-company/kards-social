@@ -12,7 +12,7 @@ export type Env = {
     DATABASE: string;
 
     SENDGRID_API_KEY: string;
-    KARDS_API?: string;
+    KARDS_ORIGIN?: string;
     
     RATELIMIT: KVNamespace;
     WAITLIST_JWT_SECRET?: string;

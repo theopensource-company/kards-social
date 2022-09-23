@@ -1,6 +1,7 @@
 import Surreal from '@theopensource-company/surrealdb-cloudflare';
 import { Router as IttyRouter } from 'itty-router';
-import { Success, Error, Redirect } from '../../../app/constants/ApiResponse';
+import { Success, Error, Redirect } from '../../../shared/ApiResponse';
+import { RequestOrigin } from '../../../shared/RequestOrigin';
 import jwt from '@tsndr/cloudflare-worker-jwt'
 
 import { Env } from '.';
@@ -8,7 +9,7 @@ import { allowedByRateLimit } from './ratelimit';
 import { verificationEmailConfig } from './verificationEmail';
 
 export default function Router(db: Surreal) {
-    const router = IttyRouter({ base: '/waitlist' });
+    const router = IttyRouter({ base: '/api/waitlist' });
 
     router.get('/join', async (request: Request, env: Env) => {        
         const token = new URL(request.url).searchParams?.get('token');
@@ -17,8 +18,7 @@ export default function Router(db: Surreal) {
         
         const { payload: {
             email,
-            name,
-            origin
+            name
         } } = jwt.decode(token);
 
         await db.query(`
@@ -30,14 +30,13 @@ export default function Router(db: Surreal) {
             END
         `);
         
-        return Redirect({ location: `${origin ?? "https://kards.social"}/joined-waitlist` });
+        return Redirect({ location: `${RequestOrigin(request, env)}/joined-waitlist` });
     });
 
     router.post('/join', async (request: Request, env: Env) => {
         const body: {
             name: string;
             email: string;
-            origin?: string;
         } = await request.json();
         if (!body) return Error({ error: "incorrect_body", message: "An incorrect body was provided" });
         if (!body.name || !body.email) return Error({ error: "missing_data", message: "One or more body properties are missing" });
@@ -47,9 +46,9 @@ export default function Router(db: Surreal) {
         if (!await allowedByRateLimit(env.RATELIMIT, `waitlist:mail:${body.email}`)) return Error({ error: "too_many_requests", message: "This request has been performed too often, please try again later.", status: 429 });
         if (!await allowedByRateLimit(env.RATELIMIT, `waitlist:ip:${request.headers.get('cf-connecting-ip') || request.headers.get('x-real-ip')}`, 15, 24)) return Error({ error: "too_many_requests", message: "This request has been performed too often, please try again later.", status: 429 });
     
-        const token = await jwt.sign({ name: body.name, email: body.email, origin: body.origin ?? 'https://kards.social' }, env.WAITLIST_JWT_SECRET ?? 'very-secret-local-testing-secret');
+        const token = await jwt.sign({ name: body.name, email: body.email}, env.WAITLIST_JWT_SECRET ?? 'very-secret-local-testing-secret');
         await fetch('https://api.sendgrid.com/v3/mail/send', {
-              body: verificationEmailConfig(body, `${env.KARDS_API ?? (new URL(request.url)).origin}/waitlist/join?token=${token}`),
+              body: verificationEmailConfig(body, `${RequestOrigin(request, env)}/api/waitlist/join?token=${token}`),
               headers: {
                   'Authorization': `Bearer ${env.SENDGRID_API_KEY}`,
                   'Content-Type': 'application/json',
