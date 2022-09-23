@@ -1,1 +1,0 @@
-surreal start --user root --pass root file:dev.db

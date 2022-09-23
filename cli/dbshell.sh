@@ -1,1 +1,0 @@
-surreal sql --conn http://127.0.0.1:8000 --user root --pass root --ns theopensource-company --db kards-social --pretty
