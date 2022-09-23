@@ -24,7 +24,7 @@ export default function Router(db: Surreal) {
         await db.query(`
             LET $email = "${email}"; LET $name = "${name}";
             IF (SELECT $email FROM waitlist WHERE email=$email) CONTAINS $email THEN
-                (UPDATE waitlist MERGE name=$name WHERE email=$email)
+                (UPDATE waitlist SET name=$name WHERE email=$email)
             ELSE
                 (CREATE waitlist SET name=$name, email=$email)
             END
