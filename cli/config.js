@@ -71,7 +71,7 @@ const migrateDatabase = async (c) => {
       console.log(' + Executing');
       await db.query(q);
     } catch(e) {
-      console.log(' ! An error occured while importing file: ' + f);
+      console.log(' ! An error occured while processing file: ' + f);
       console.log(e);
     }
   }
@@ -114,31 +114,31 @@ const start = async () => {
     console.log('  !!! Error saving config');
   }
 
-  if (!envIsValid(config.dev)) {
-    console.log("Create a development environment configuration\n==========\n");
-    config.dev = await createEnvironment(config.dev ?? {...config.prod, ...jwtdummysecrets} ?? {
+  if (!config.guidedDevConfig && !envIsValid(config.dev)) {
+    config.guidedDevConfig = true;
+    if ((await prompt('Do you want to create a development environment? [y/n]')).toLowerCase() === 'y') config.dev = await createEnvironment(config.dev ?? {...config.prod, ...jwtdummysecrets} ?? {
       surreal_user: 'root',
       surreal_db: 'kards-social'
     });
     return start();
   }
 
-  if (!envIsValid(config.prod)) {
-    console.log("Create a production environment configuration (enter random stuff if you don't have them :D)\n==========\n");
-    config.prod = await createEnvironment(config.prod ?? {...config.dev, ...jwtdummysecrets} ?? {
+  if (!config.guidedProdConfig && !envIsValid(config.prod)) {
+    config.guidedProdConfig = true;
+    if ((await prompt('Do you want to create a production environment? [y/n]')).toLowerCase() === 'y') config.prod = await createEnvironment(config.prod ?? {...config.dev, ...jwtdummysecrets} ?? {
       surreal_user: 'root',
       surreal_db: 'kards-social'
     });
     return start();
   }
 
-  if (!config.guidedDevMigration) {
+  if (envIsValid(config.dev) && !config.guidedDevMigration) {
     config.guidedDevMigration = true;
     if ((await prompt('Do you want to migrate your dev database? [y/n]')).toLowerCase() === 'y') await migrateDatabase(config.dev);
     return start();
   }
 
-  if (!config.guidedProdMigration) {
+  if (envIsValid(config.prod) && !config.guidedProdMigration) {
     config.guidedProdMigration = true;
     if ((await prompt('Do you want to migrate your prod database? [y/n]')).toLowerCase() === 'y') await migrateDatabase(config.prod);
     return start();
@@ -163,18 +163,34 @@ const start = async () => {
   console.clear();
   switch(parseInt(option)) {
     case 1:
-      config.dev = await createEnvironment(config.dev);
+      config.dev = await createEnvironment(envIsValid(config.dev) ? config.dev : (config.dev ?? {...config.prod, ...jwtdummysecrets} ?? {
+        surreal_user: 'root',
+        surreal_db: 'kards-social'
+      }));
       return start();
     case 2:
-      config.prod = await createEnvironment(config.prod);
+      config.prod = await createEnvironment(envIsValid(config.prod) ? config.prod : (config.prod ?? {...config.dev, ...jwtdummysecrets} ?? {
+        surreal_user: 'root',
+        surreal_db: 'kards-social'
+      }));
       return start();
     case 3:
+      if (!envIsValid(config.dev)) {
+        console.log('Your development environment is not valid!');
+        return start();
+      }
       await migrateDatabase(config.dev);
       return start();
     case 4:
+      if (!envIsValid(config.prod)) {
+        console.log('Your production environment is not valid!');
+        return start();
+      }
       await migrateDatabase(config.prod);
       return start();
     case 5:
+      if (!envIsValid(config.dev) && (await prompt('Your development environment is not valid, do you want to continue? [y/n]')).toLowerCase() !== 'y') return start();
+      if (!envIsValid(config.prod) && (await prompt('Your production environment is not valid, do you want to continue? [y/n]')).toLowerCase() !== 'y') return start();
       await createConfigFiles(config);
       return start();
     case 6:
