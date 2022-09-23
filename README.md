@@ -1,8 +1,8 @@
 <br><br>
 
-<center>
+<p align="center">
     <img src="app/public/Logo.svg" width="180">
-</center>
+</p>
 
 <br><br>
 
