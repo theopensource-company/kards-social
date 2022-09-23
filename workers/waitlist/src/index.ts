@@ -1,8 +1,13 @@
 import Surreal from '@theopensource-company/surrealdb-cloudflare';
-import Router from './router';
+import CreateJoinRoutes from './routes/join';
+import { Router } from 'itty-router';
 
 const db = new Surreal();
-const router = Router(db);
+const JoinRoutes = CreateJoinRoutes(db);
+
+const router = Router({ base: '/api/waitlist' });
+router.get('/join', JoinRoutes.get);
+router.post('/join', JoinRoutes.post);
 
 export type Env = {
 	HOST: string;

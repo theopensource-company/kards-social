@@ -1,39 +1,14 @@
-import Surreal from '@theopensource-company/surrealdb-cloudflare';
-import { Router as IttyRouter } from 'itty-router';
-import { Success, Error, Redirect } from '../../../shared/ApiResponse';
-import { RequestOrigin } from '../../../shared/RequestOrigin';
+import Surreal from "@theopensource-company/surrealdb-cloudflare";
+import { Success, Error, Redirect } from '../../../../shared/ApiResponse';
+import { RequestOrigin } from '../../../../shared/RequestOrigin';
 import jwt from '@tsndr/cloudflare-worker-jwt'
 
-import { Env } from '.';
-import { allowedByRateLimit } from './ratelimit';
-import { verificationEmailConfig } from './verificationEmail';
+import { Env } from '..';
+import { allowedByRateLimit } from '../../../../shared/ratelimit';
+import { verificationEmailConfig } from '../assets/verificationEmail';
 
-export default function Router(db: Surreal) {
-    const router = IttyRouter({ base: '/api/waitlist' });
-
-    router.get('/join', async (request: Request, env: Env) => {        
-        const token = new URL(request.url).searchParams?.get('token');
-        if (!token) return Error({ error: "missing_token", message: "No confirmation token was provided" });
-        if (!await jwt.verify(token, env.WAITLIST_JWT_SECRET ?? 'very-secret-local-testing-secret')) return Error({ error: "invalid_token", message: "An invalid confirmation token was provided" });
-        
-        const { payload: {
-            email,
-            name
-        } } = jwt.decode(token);
-
-        await db.query(`
-            LET $email = "${email}"; LET $name = "${name}";
-            IF (SELECT $email FROM waitlist WHERE email=$email) CONTAINS $email THEN
-                (UPDATE waitlist SET name=$name WHERE email=$email)
-            ELSE
-                (CREATE waitlist SET name=$name, email=$email)
-            END
-        `);
-        
-        return Redirect({ location: `${RequestOrigin(request, env)}/joined-waitlist` });
-    });
-
-    router.post('/join', async (request: Request, env: Env) => {
+export default (db: Surreal) => ({
+    post: async (request: Request, env: Env) => {
         const body: {
             name: string;
             email: string;
@@ -57,7 +32,26 @@ export default function Router(db: Surreal) {
         });    
       
         return Success({ message: "Check your email!" });
-    });
-
-    return router;
-}
+    },
+    get: async (request: Request, env: Env) => {        
+        const token = new URL(request.url).searchParams?.get('token');
+        if (!token) return Error({ error: "missing_token", message: "No confirmation token was provided" });
+        if (!await jwt.verify(token, env.WAITLIST_JWT_SECRET ?? 'very-secret-local-testing-secret')) return Error({ error: "invalid_token", message: "An invalid confirmation token was provided" });
+        
+        const { payload: {
+            email,
+            name
+        } } = jwt.decode(token);
+    
+        await db.query(`
+            LET $email = "${email}"; LET $name = "${name}";
+            IF (SELECT $email FROM waitlist WHERE email=$email) CONTAINS $email THEN
+                (UPDATE waitlist SET name=$name WHERE email=$email)
+            ELSE
+                (CREATE waitlist SET name=$name, email=$email)
+            END
+        `);
+        
+        return Redirect({ location: `${RequestOrigin(request, env)}/joined-waitlist` });
+    }
+})
