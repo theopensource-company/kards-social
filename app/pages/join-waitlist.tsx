@@ -39,10 +39,9 @@ export default function JoinWaitlist() {
 
     if (valid) {
       setWorking(true);
-
       try {
         const result: any = await axios.post(
-          `${location.origin}/api/join-waitlist`,
+          `${location.origin}/api/waitlist/join`,
           {
             name,
             email,
