@@ -1,7 +1,7 @@
 <br><br>
 
 <p align="center">
-    <img src="app/public/Logo.svg" width="180">
+    <img src="app/public/Logo.svg" width="250">
 </p>
 
 <br><br>
