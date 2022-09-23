@@ -4,5 +4,6 @@
         "module": "CommonJS",
         "lib": ["ES2020", "ES2015.Promise"],
         "types": ["@cloudflare/workers-types"]
-    }
+    },
+    "include": ["**/src/*.ts", "**/src/**/*.ts", "**/src/**/**/*.ts", "../shared/*.ts"],
 }
