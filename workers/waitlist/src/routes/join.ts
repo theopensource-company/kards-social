@@ -44,7 +44,7 @@ export default (db: Surreal) => ({
         } } = jwt.decode(token);
     
         await db.query(`
-            LET $email = "${email}"; LET $name = "${name}";
+            LET $email = ${JSON.stringify(email)}; LET $name = ${JSON.stringify(name)};
             IF (SELECT $email FROM waitlist WHERE email=$email) CONTAINS $email THEN
                 (UPDATE waitlist SET name=$name WHERE email=$email)
             ELSE
