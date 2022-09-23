@@ -1,8 +1,4 @@
 node_modules
 
-# Keep environment variables out of version control
-.dev.vars
-
-# Got some stuff stored in wrangler(.prod).toml file, so cannot be published...
+# Got some stuff stored in wrangler.toml file, so cannot be published...
 wrangler.toml
-wrangler.prod.toml
