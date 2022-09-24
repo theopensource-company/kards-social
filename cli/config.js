@@ -92,7 +92,7 @@ const createConfigFiles = async (c) => {
         a = a.toLowerCase().slice(1, -1);
         const env = a.split('_')[1];
         const opt = a.split('_').slice(2).join('_');
-        if (!c[env]) return "MISSING_ENV";
+        if (!c[env]) return "\"MISSING_ENV\"";
         if (!c[env][opt]) console.log(` ! Unknown option "${opt}" for env "${env}"`);
         return `"${c[env][opt] ?? "UNKNOWN_OPTION"}"`;
       }));
