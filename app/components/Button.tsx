@@ -55,24 +55,27 @@ export default function Button({
         onClick(event);
       }}
     >
-      {(icon || loading) && (
-        <div
-          className={[styles[`icon${size}`], iconRound ? styles.iconRound : 0]
-            .filter((a) => !!a)
-            .join(" ")}
-        >
-          {loading ? (
-            <Spinner />
-          ) : React.isValidElement(icon) ? (
-            icon
-          ) : (
-            <Image
-              src={icon as StaticImageData}
-              alt={iconAlt ?? text ?? "Button icon"}
-            />
-          )}
-        </div>
-      )}
+      <div className={[styles.iconContainer, icon || loading ? styles.iconContainerFilled : 0].filter((a) => !!a).join(" ")}>
+        {(icon || loading) && (
+          <div
+            className={[styles[`icon${size}`], iconRound ? styles.iconRound : 0]
+              .filter((a) => !!a)
+              .join(" ")}
+          >
+            {loading ? (
+              <Spinner />
+            ) : React.isValidElement(icon) ? (
+              icon
+            ) : (
+              <Image
+                src={icon as StaticImageData}
+                alt={iconAlt ?? text ?? "Button icon"}
+              />
+            )}
+          </div>
+        )}
+      </div>
+      
       {text && <span>{text}</span>}
     </div>
   );

@@ -94,7 +94,7 @@ export default function JoinWaitlist() {
               type="Email"
             />
           </div>
-          <Button onClick={submit} text="Join waitlist" loading={working} />
+          <Button onClick={() => {setWorking(true); setTimeout(submit, 60000);}} text="Join waitlist" loading={working} />
         </div>
       </Container>
     </Layout>
