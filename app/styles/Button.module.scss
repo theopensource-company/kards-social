@@ -57,12 +57,14 @@
     transform-origin: right;
     opacity: 0;
 
-    transition: transform .2s ease, opacity .2s ease;
+    transition: transform .2s ease .5s, opacity .2s ease .5s;
 }
 
 .iconContainerFilled {
     transform: scaleX(1);
     opacity: 1;
+
+    transition: transform .2s ease, opacity .2s ease;
 }
 
 // SMALL BUTTONS
