@@ -94,11 +94,7 @@ export default function JoinWaitlist() {
               type="Email"
             />
           </div>
-          <Button
-            onClick={submit}
-            text="Join waitlist"
-            loading={working}
-          />
+          <Button onClick={submit} text="Join waitlist" loading={working} />
         </div>
       </Container>
     </Layout>
