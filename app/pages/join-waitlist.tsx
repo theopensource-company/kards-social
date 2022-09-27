@@ -62,7 +62,9 @@ export default function JoinWaitlist() {
         toast.error("An error occured while performing the request.");
       }
 
-      setTimeout(() => { setWorking(false) }, 500);
+      setTimeout(() => {
+        setWorking(false);
+      }, 500);
     }
   };
 
