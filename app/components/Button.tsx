@@ -55,7 +55,14 @@ export default function Button({
         onClick(event);
       }}
     >
-      <div className={[styles.iconContainer, icon || loading ? styles.iconContainerFilled : 0].filter((a) => !!a).join(" ")}>
+      <div
+        className={[
+          styles.iconContainer,
+          icon || loading ? styles.iconContainerFilled : 0,
+        ]
+          .filter((a) => !!a)
+          .join(" ")}
+      >
         {(icon || loading) && (
           <div
             className={[styles[`icon${size}`], iconRound ? styles.iconRound : 0]
@@ -75,7 +82,7 @@ export default function Button({
           </div>
         )}
       </div>
-      
+
       {text && <span>{text}</span>}
     </div>
   );
