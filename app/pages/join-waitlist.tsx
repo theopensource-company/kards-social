@@ -95,10 +95,7 @@ export default function JoinWaitlist() {
             />
           </div>
           <Button
-            onClick={() => {
-              setWorking(true);
-              setTimeout(submit, 60000);
-            }}
+            onClick={submit}
             text="Join waitlist"
             loading={working}
           />
