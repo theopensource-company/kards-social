@@ -50,6 +50,21 @@
     }
 }
 
+// ICON CONTAINER (for transitions)
+
+.iconContainer {
+    transform: scaleX(0);
+    transform-origin: right;
+    opacity: 0;
+
+    transition: transform .2s ease, opacity .2s ease;
+}
+
+.iconContainerFilled {
+    transform: scaleX(1);
+    opacity: 1;
+}
+
 // SMALL BUTTONS
 
 .smallText {
