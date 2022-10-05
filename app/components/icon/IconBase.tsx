@@ -2,7 +2,7 @@ import React from "react";
 import { Color } from "../../constants/Colors";
 import { ColoredSvgProps } from "../../constants/Types";
 
-export default function ArrowBack({
+export default function IconBase({
   children,
   icon,
   color,
