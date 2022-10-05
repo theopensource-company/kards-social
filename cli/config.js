@@ -16,7 +16,8 @@ const rl = readline.createInterface({
 
 const dbfiles = [
   'event.sql',
-  'waitlist.sql'
+  'user.sql',
+  'waitlist.sql',
 ]
 
 const conffiles = [
