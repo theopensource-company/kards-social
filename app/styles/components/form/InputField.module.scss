@@ -1,4 +1,4 @@
-@use 'color';
+@use '../../color';
 
 .default {
     border-radius: 15px;
@@ -46,4 +46,8 @@
     width: 100%;
     padding: 0px 25px;
     font-size: 1.2rem;
+}
+
+.invalid {
+    border: 3px solid color.$red !important;
 }

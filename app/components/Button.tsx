@@ -9,7 +9,7 @@ import Spinner from "./icon/Spinner";
 export type ButtonSize = "Small" | "Large";
 
 type Props = {
-  onClick: MouseEventHandler;
+  onClick?: MouseEventHandler;
   color?: ColorType;
   size?: ButtonSize;
   text?: string;
@@ -49,11 +49,16 @@ export default function Button({
     .join(" ");
 
   return (
-    <div
+    <button
       className={classes}
-      onClick={(event) => {
-        onClick(event);
-      }}
+      type={onClick ? "button" : "submit"}
+      onClick={
+        onClick
+          ? (event) => {
+              onClick(event);
+            }
+          : undefined
+      }
     >
       {(icon || loading) && (
         <div
@@ -74,7 +79,7 @@ export default function Button({
         </div>
       )}
       {text && <span>{text}</span>}
-    </div>
+    </button>
   );
 }
 
