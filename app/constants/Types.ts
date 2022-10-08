@@ -10,6 +10,19 @@ export type ColoredSvgProps = SvgBaseProps & {
     color?: ColorType;
 }
 
+/* LAYOUT COMPONENTS */
+
+export type TPageLayout = {
+    title?: string;
+    description?: string;
+    robots?: string;
+    children: ReactNode;
+};
+
+export type TPageLayoutContentMiddle = TPageLayout & {
+    containerClassName?: string;
+};
+
 /* KARDS API */
 
 export type TApiSuccessResponse<TResultType = any> = {
