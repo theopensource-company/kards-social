@@ -26,6 +26,7 @@ export class FormInputField extends FormItem<TFormInput> {
 
     return (
       <input
+        defaultValue={this.config.default}
         ref={this.ref}
         placeholder={this.config.placeholder}
         name={this.config.name}
