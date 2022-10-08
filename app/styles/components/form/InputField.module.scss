@@ -1,0 +1,53 @@
+@use '../../color';
+
+.default {
+    border-radius: 15px;
+    box-sizing: border-box;
+    outline: none;
+
+    &:focus {
+        border-color: color.$tint;
+    }
+
+    background-color: color.$light;
+    color: color.$dark;
+    border: 3px solid color.$dark;
+
+    @media (prefers-color-scheme: dark) {
+        background-color: color.$dark;
+        color: color.$light;
+        border: 3px solid color.$light;
+    }
+
+    transition: color .2s ease, background .2s ease;
+
+    &[class~=invalid] {
+        border: 3px solid red !important;
+    }
+}
+
+.colorLight {
+    background-color: color.$light !important;
+    color: color.$dark !important;
+    border: 3px solid color.$dark !important;
+}
+
+.colorDark {
+    background-color: color.$dark !important;
+    color: color.$light !important;
+    border: 3px solid color.$light !important;
+}
+
+.sizeSmall {
+    height: 50px;
+    width: 100%;
+    padding: 0px 20px;
+    font-size: 1.1rem;
+}
+
+.sizeLarge {
+    height: 60px;
+    width: 100%;
+    padding: 0px 25px;
+    font-size: 1.2rem;
+}
