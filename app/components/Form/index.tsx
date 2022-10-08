@@ -1,6 +1,5 @@
 import React from "react";
-import { TForm, TFormItem } from "../../constants/Types";
-import { FormItem } from "./FormItem";
+import { TForm } from "../../constants/Types";
 
 export function Form({
   inputs,
