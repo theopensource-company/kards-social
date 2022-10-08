@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import Container from "../components/Container";
 import Button from "../components/Button";
 import ArrowBack from "../components/icon/ArrowBack";
 import { toast } from "react-toastify";
 
 import styles from "../styles/JoinWaitlist.module.scss";
 import axios from "axios";
-import Layout from "../components/Layout";
 import Logo from "../components/Logo";
 import { Form } from "../components/Form";
 import { FormInputField } from "../components/Form/InputField";
 import { TApiResponse, TForm } from "../constants/Types";
+import LayoutContentMiddle from "../components/Layout/ContentMiddle";
 
 export default function JoinWaitlist() {
   const router = useRouter();
@@ -64,7 +63,7 @@ export default function JoinWaitlist() {
   });
 
   return (
-    <Layout>
+    <LayoutContentMiddle>
       <div className={styles.back}>
         <Button
           text="Back"
@@ -73,20 +72,18 @@ export default function JoinWaitlist() {
           onClick={() => router.push("/")}
         />
       </div>
-      <Container className={styles.container}>
-        <Form
-          className={styles.form}
-          inputs={[inputName, inputEmail]}
-          onSubmit={submitForm}
-        >
-          <Logo />
-          <div className={styles.inputs}>
-            <inputName.render />
-            <inputEmail.render />
-          </div>
-          <Button text="Join waitlist" loading={working} />
-        </Form>
-      </Container>
-    </Layout>
+      <Form
+        className={styles.form}
+        inputs={[inputName, inputEmail]}
+        onSubmit={submitForm}
+      >
+        <Logo />
+        <div className={styles.inputs}>
+          <inputName.render />
+          <inputEmail.render />
+        </div>
+        <Button text="Join waitlist" loading={working} />
+      </Form>
+    </LayoutContentMiddle>
   );
 }

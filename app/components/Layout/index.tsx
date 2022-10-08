@@ -1,22 +1,15 @@
 import React from "react";
 import Head from "next/head";
-import { ReactNode } from "react";
 
 import { Color } from "../../constants/Colors";
-
-type Props = {
-  title?: string;
-  description?: string;
-  robots?: string;
-  children: ReactNode;
-};
+import { TPageLayout } from "../../constants/Types";
 
 export default function Layout({
   title,
   description,
   robots,
   children,
-}: Props) {
+}: TPageLayout) {
   return (
     <>
       <Head>
