@@ -41,7 +41,7 @@ export abstract class FormItem<
   }
 
   /*
-   *  If defined for the field, uses it's validation function to see if the field has a valid value. 
+   *  If defined for the field, uses it's validation function to see if the field has a valid value.
    *  Adds an a component defined invalid class, or simply the "invalid" class to the field.
    */
 
