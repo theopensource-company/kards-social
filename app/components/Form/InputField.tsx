@@ -5,6 +5,7 @@ import { FormItem } from "./FormItem";
 
 export class FormInputField extends FormItem<TFormInput> {
   constructor(config: TFormInput) {
+    if (!config.invalidClass) config.invalidClass = styles.invalid;
     if (!config.type) config.type = "Text";
     super(config);
   }

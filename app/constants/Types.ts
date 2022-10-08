@@ -40,6 +40,7 @@ export type TFormItem<TValueType = any> = {
     placeholder?: string;
     color?: BasicColorType;
     default?: TValueType;
+    invalidClass?: string;
     isValid?: (value: TValueType) => boolean;
     process?: (value: TValueType) => TValueType;
 };
