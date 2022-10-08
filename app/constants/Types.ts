@@ -10,6 +10,23 @@ export type ColoredSvgProps = SvgBaseProps & {
     color?: ColorType;
 }
 
+/* KARDS API */
+
+export type TApiSuccessResponse<TResultType = any> = {
+    success: true,
+    message?: string,
+    result?: TResultType
+}
+
+export type TApiErrorResponse = {
+    success: false,
+    message: string,
+    error: string
+}
+
+export type TApiResponse<TResultType = any> = TApiSuccessResponse<TResultType> | TApiErrorResponse;
+
+
 /* FORM TYPES */
 
 export type TForm = {

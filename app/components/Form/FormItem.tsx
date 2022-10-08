@@ -8,6 +8,13 @@ import React, {
 import { TFormItem } from "../../constants/Types";
 import { v4 as uuidv4 } from "uuid";
 
+type DummyFormItem = {
+  config: {
+    id?: string;
+  };
+  renderer(): ReactNode;
+};
+
 /*
  *  Used only as a template class for other form item components.
  *  Handles a lot of the logic for them.
@@ -48,7 +55,7 @@ export abstract class FormItem<
   isValid(): boolean {
     const res = this.config.isValid ? this.config.isValid(this.value()) : true;
     (this.ref.current as HTMLElement).classList[res ? "remove" : "add"](
-      this.config.invalidClass!
+      this.config.invalidClass || `invalid`
     );
     return res;
   }
@@ -57,7 +64,7 @@ export abstract class FormItem<
   protected abstract renderer(): ReactNode;
 
   render() {
-    return RenderFormItem(this);
+    return RenderFormItem(this as unknown as DummyFormItem);
   }
 }
 
@@ -66,7 +73,7 @@ export abstract class FormItem<
  *  Solution: Place the hooks in a functional component and let the class component use the functional component.
  */
 
-const RenderFormItem = (t: any) => {
+const RenderFormItem = (t: DummyFormItem) => {
   const [randId, setRandId] = useState("");
   useEffect(() => setRandId(`kards:formitem:${uuidv4()}`), []);
   if (!t.config.id) t.config.id = randId;

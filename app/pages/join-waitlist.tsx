@@ -11,7 +11,7 @@ import Layout from "../components/Layout";
 import Logo from "../components/Logo";
 import { Form } from "../components/Form";
 import { FormInputField } from "../components/Form/InputField";
-import { TForm } from "../constants/Types";
+import { TApiResponse, TForm } from "../constants/Types";
 
 export default function JoinWaitlist() {
   const router = useRouter();
@@ -24,7 +24,7 @@ export default function JoinWaitlist() {
 
     setWorking(true);
     try {
-      const result: any = await axios.post(
+      const result = await axios.post<TApiResponse>(
         `${location.origin}/api/waitlist/join`,
         {
           name: values.name,
@@ -37,10 +37,10 @@ export default function JoinWaitlist() {
         return toast.error(
           "Something went wrong, please try again later or contact hi@kards.social"
         );
-      if (result.data?.success) {
+      if (result.data.success) {
         toast.success("Check you inbox and spam for a verification email!");
       } else {
-        toast.error(`${result.data?.message} (${result.data?.error})`);
+        toast.error(`${result.data.message} (${result.data.error})`);
       }
     } catch (e) {
       toast.error("An error occured while performing the request.");

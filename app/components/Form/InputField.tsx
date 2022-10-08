@@ -31,7 +31,7 @@ export class FormInputField extends FormItem<TFormInput> {
         placeholder={this.config.placeholder}
         name={this.config.name}
         className={classes}
-        type={this.config.type!.toLowerCase()}
+        type={this.config.type || "".toLowerCase()}
         id={this.config.id}
       />
     );
