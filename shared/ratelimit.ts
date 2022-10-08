@@ -1,5 +1,5 @@
 export async function allowedByRateLimit(rl, key, max = 5, period = 1) {
-    key = `${key.split(':')[0]}${key.split(':')[1]}:${await createSha256Hash(key.split(':')[2])}`;
+    key = `${key.split(':')[0]}:${key.split(':')[1]}:${await createSha256Hash(key.split(':')[2])}`;
     const requests = ((await rl.get(key)) ?? '')
         .split(',')
         .map((r) => parseInt(r))
