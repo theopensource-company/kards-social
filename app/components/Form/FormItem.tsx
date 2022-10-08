@@ -63,8 +63,8 @@ export abstract class FormItem<
   protected abstract getValue(): TValueType;
   protected abstract renderer(): ReactNode;
 
-  render() {
-    return RenderFormItem(this as unknown as DummyFormItem);
+  render(): JSX.Element {
+    return RenderFormItem(this as unknown as DummyFormItem) as JSX.Element;
   }
 }
 
@@ -73,7 +73,7 @@ export abstract class FormItem<
  *  Solution: Place the hooks in a functional component and let the class component use the functional component.
  */
 
-const RenderFormItem = (t: DummyFormItem) => {
+const RenderFormItem = (t: DummyFormItem): ReactNode => {
   const [randId, setRandId] = useState("");
   useEffect(() => setRandId(`kards:formitem:${uuidv4()}`), []);
   if (!t.config.id) t.config.id = randId;
