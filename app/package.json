@@ -34,6 +34,7 @@
     "eslint": "8.23.0",
     "eslint-config-next": "12.2.5",
     "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-json": "^3.1.0",
     "eslint-plugin-only-error": "^1.0.2",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.8",
