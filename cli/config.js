@@ -24,6 +24,10 @@ const conffiles = [
   {
     source: 'workers/waitlist/wrangler.example.toml',
     target: 'workers/waitlist/wrangler.toml'
+  },
+  {
+    source: 'workers/user/wrangler.example.toml',
+    target: 'workers/user/wrangler.toml'
   }
 ];
 
