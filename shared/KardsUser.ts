@@ -6,6 +6,17 @@ import { Error, Success } from "./ApiResponse";
 import { CreateSHA1Hash } from "./Hasher";
 import Log from "./Log";
 
+// Stolen names are additional names reserved by big contributors, as a reward for their work on our project!
+// Stolen names cannot validate the rules of normal usernames, as important logic relies on that.
+// Users with a Stolen name alongside their normal username cannot change their username or delete their account manually, as the code for this also needs to be updated. 
+export const StolenNames = {
+    // Micha de Vries, CEO of The Open Source Company
+    'kearfy': 'micha',
+
+    // Morgan Hofmann, Developer at The Open Source Company
+    'leaf': 'morgan'
+};
+
 export async function Create(db: Surreal, user: TCreateKardsUser): Promise<Response> {
     const isNameInvalid = await ValidateUserPropertyName(user.name);
     if (isNameInvalid) return isNameInvalid;
@@ -15,6 +26,12 @@ export async function Create(db: Surreal, user: TCreateKardsUser): Promise<Respo
     if (isUsernameValid) return isUsernameValid;
     const isPasswordValid = await ValidateUserPropertyPassword(user.password);
     if (isPasswordValid) return isPasswordValid;
+
+    if (StolenNames[user.username]) return Error({
+        status: 422,
+        error: "username_already_taken",
+        message: "The specified username is already associated to an account, please choose a different one."
+    });
 
     const query = `
         let $name = ${JSON.stringify(user.name)};
@@ -63,7 +80,8 @@ export async function Create(db: Surreal, user: TCreateKardsUser): Promise<Respo
 }
 
 export async function Info(db: Surreal, match: string): Promise<TRegisteredKardsUser | undefined | false> {
-    const type = match.includes('@') ? 'email' : match.includes(':') ? 'id' : 'username';
+    const type = TypeForIdentifier(match);
+    if (type == "username" && StolenNames[match]) match = StolenNames[match];
     const query = `SELECT * FROM user WHERE ${type} = ${JSON.stringify(match)}`;
     const result = (await db.query(query)).slice(-1)[0];
     if (result.status == "ERR") {
@@ -105,11 +123,9 @@ export async function IdFromToken(request: Request, env: {
 }
 
 export async function VerifyCredentials(db: Surreal, user: TUserSigninDetails): Promise<Response | string> {
+    const type = TypeForIdentifier(user.identifier);
     const query = `
-        LET $identifier = ${JSON.stringify(user.identifier)};
-        LET $password = ${JSON.stringify(user.password)};
-
-        SELECT id FROM user WHERE (username = $identifier OR email = $identifier) AND crypto::argon2::compare(password, $password);
+        SELECT id FROM user WHERE ${type} = ${JSON.stringify(user.identifier)} AND crypto::argon2::compare(password, ${JSON.stringify(user.password)});
     `;
 
     const result = (await db.query(query)).slice(-1)[0];
@@ -140,6 +156,10 @@ export async function VerifyCredentials(db: Surreal, user: TUserSigninDetails): 
             message: "An unknown error has occured, your request can not be processed at this time."
         });
     }
+}
+
+export function TypeForIdentifier(v: string): "id" | "email" | "username" {
+    return v.includes('@') ? 'email' : v.includes(':') ? 'id' : 'username';
 }
 
 export async function ValidateUserPropertyName(v): Promise<Response | undefined> {
