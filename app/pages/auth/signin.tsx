@@ -37,7 +37,7 @@ export default function Signin() {
         );
       if (result.data.success) {
         toast.success("Check you inbox and spam for a verification email!");
-        router.push('/account');
+        router.push("/account");
       } else {
         toast.error(`${result.data.message} (${result.data.error})`);
       }
@@ -51,15 +51,14 @@ export default function Signin() {
   const inputIdentifier = new FormInputField({
     name: "identifier",
     placeholder: "Username or email",
-    isValid: (value) =>
-      value != ""
+    isValid: (value) => value != "",
   });
 
   const inputPassword = new FormInputField({
     name: "password",
     placeholder: "Password",
     type: "Password",
-    isValid: (value) => value != ""
+    isValid: (value) => value != "",
   });
 
   return (
