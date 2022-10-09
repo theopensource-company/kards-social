@@ -1,0 +1,41 @@
+name = "kards-user-api"
+main = "src/index.ts"
+compatibility_date = "2002-09-08"
+
+[[kv_namespaces]]
+  binding = "RATELIMIT"
+  id = "INSERT_PROD_KV_RATELIMIT"
+  preview_id = "INSERT_DEV_KV_RATELIMIT"
+
+[env.prod]
+routes = ["https://kards.social/api/user/*", "https://www.kards.social/api/user/*"]
+kv_namespaces = [
+  { binding = "RATELIMIT", id = "INSERT_PROD_KV_RATELIMIT", preview_id = "INSERT_DEV_KV_RATELIMIT" }
+]
+
+[env.prod.vars]
+HOST="INSERT_PROD_SURREAL_HOST"
+USER="INSERT_PROD_SURREAL_USER"
+PASS="INSERT_PROD_SURREAL_PASS"
+NAMESPACE="INSERT_PROD_SURREAL_NS"
+DATABASE="INSERT_PROD_SURREAL_DB"
+SENDGRID_API_KEY="INSERT_PROD_SENDGRID_KEY"
+WAITLIST_JWT_SECRET="INSERT_PROD_USER_JWT_SECRET"
+
+[env.dev] 
+kv_namespaces = [
+  { binding = "RATELIMIT", id = "INSERT_PROD_KV_RATELIMIT", preview_id = "INSERT_DEV_KV_RATELIMIT" }
+]
+
+[env.dev.vars]
+HOST="INSERT_DEV_SURREAL_HOST"
+USER="INSERT_DEV_SURREAL_USER"
+PASS="INSERT_DEV_SURREAL_PASS"
+NAMESPACE="INSERT_DEV_SURREAL_NS"
+DATABASE="INSERT_DEV_SURREAL_DB"
+SENDGRID_API_KEY="INSERT_DEV_SENDGRID_KEY"
+WAITLIST_JWT_SECRET="INSERT_DEV_USER_JWT_SECRET"
+KARDS_ORIGIN="http://localhost:12000"
+
+[dev]
+port = 12012

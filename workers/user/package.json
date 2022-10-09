@@ -1,5 +1,5 @@
 {
-  "name": "kards-worker-waitlist",
+  "name": "kards-worker-user",
   "description": "Kards is an open source social media platform.",
   "main": "src/index.ts",
   "scripts": {

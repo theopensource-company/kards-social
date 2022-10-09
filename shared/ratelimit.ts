@@ -1,5 +1,7 @@
+import { CreateSHA256Hash } from "./Hasher";
+
 export async function allowedByRateLimit(rl, key, max = 5, period = 1) {
-    key = `${key.split(':')[0]}:${key.split(':')[1]}:${await createSha256Hash(key.split(':')[2])}`;
+    key = `${key.split(':')[0]}:${key.split(':')[1]}:${await CreateSHA256Hash(key.split(':')[2])}`;
     const requests = ((await rl.get(key)) ?? '')
         .split(',')
         .map((r) => parseInt(r))
@@ -9,16 +11,3 @@ export async function allowedByRateLimit(rl, key, max = 5, period = 1) {
     await rl.put(key, requests.join(','));
     return !(requests.length > max);
 }
-  
-export async function createSha256Hash(str) {
-    return btoa(
-        new Uint8Array(
-            await crypto.subtle.digest(
-                {
-                    name: 'SHA-256',
-                },
-                new TextEncoder().encode(str)
-            )
-        ).toString()
-    );
-  }

@@ -4,13 +4,15 @@ import express from 'express';
 
 const target = {
     app:            'http://127.0.0.1:12010',
-    waitlistApi:    'http://127.0.0.1:12011'
+    waitlistApi:    'http://127.0.0.1:12011',
+    userApi:        'http://127.0.0.1:12012'
 };
 
 const appProxy = express();
 const proxyserver = httpProxy.createProxyServer({ target: target.app, ws: true });
 
 appProxy.all("/api/waitlist/*", (req, res) => proxyserver.web(req, res, {target: target.waitlistApi}));
+appProxy.all("/api/user/*", (req, res) => proxyserver.web(req, res, {target: target.userApi}));
 appProxy.all("/*", (req, res) => proxyserver.web(req, res, {target: target.app}));
 
 const runners = concurrently(
@@ -23,11 +25,15 @@ const runners = concurrently(
             name: "kards-worker-waitlist",
             command: "cd workers/waitlist && wrangler dev --env=dev"
         },
+        {
+            name: "kards-worker-user",
+            command: "cd workers/user && wrangler dev --env=dev"
+        },
     ],
 );
 
 setTimeout(() => {
-    const appProxyServer = appProxy.listen(12000, () => console.log('[PROXY-APP] APP: http://127.0.0.1:12000'));
+    const appProxyServer = appProxy.listen(12000, () => console.log('[PROXY-APP] APP: http://localhost:12000'));
     appProxyServer.on('upgrade', (req, socket, head) => proxyserver.ws(req, socket, head));
 
     async function exit() {
@@ -46,4 +52,4 @@ setTimeout(() => {
 
     process.on('uncaughtException', exit);
     process.on('SIGINT', exit);
-}, 3000);
+}, 5000);
