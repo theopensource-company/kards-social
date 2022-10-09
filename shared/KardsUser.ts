@@ -124,6 +124,7 @@ export async function IdFromToken(request: Request, env: {
 
 export async function VerifyCredentials(db: Surreal, user: TUserSigninDetails): Promise<Response | string> {
     const type = TypeForIdentifier(user.identifier);
+    if (type == "username" && StolenNames[user.identifier]) user.identifier = StolenNames[user.identifier];
     const query = `
         SELECT id FROM user WHERE ${type} = ${JSON.stringify(user.identifier)} AND crypto::argon2::compare(password, ${JSON.stringify(user.password)});
     `;
