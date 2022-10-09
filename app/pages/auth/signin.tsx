@@ -22,13 +22,13 @@ export default function Signin() {
         .get<TApiResponse>(`${location.origin}/api/user/me`)
         .then((result) => {
           if (result.data?.success) {
-            router.push('/account');
+            router.push("/account");
           }
-        }).catch(e=>{});
+        });
     } catch (e) {
       toast.error("An error occured while performing the request.");
     }
-  }, []);
+  }, [router]);
 
   const submitForm: TForm["onSubmit"] = async ({ values, faulty }) => {
     if (faulty.identifier) toast.error("Please enter your username or email");
@@ -36,25 +36,26 @@ export default function Signin() {
     if (Object.keys(faulty).length > 0) return;
 
     setWorking(true);
-    axios.post<TApiResponse>(
-      `${location.origin}/api/user/signin`,
-      {
+    axios
+      .post<TApiResponse>(`${location.origin}/api/user/signin`, {
         identifier: values.identifier,
         password: values.password,
-      }
-    ).then(result => {
-      if (result.data.success) {
-        router.push("/account");
-      } else {
-        toast.error(`${result.data.message} (${result.data.error})`);
-      }
-    }).catch(error => {
-      if (error.response.status == 401) {
-        toast.error("The username/email or password was invalid!");
-      } else {
-        toast.error("An error occured while performing the request.");
-      }
-    }).finally(() => setWorking(false));
+      })
+      .then((result) => {
+        if (result.data.success) {
+          router.push("/account");
+        } else {
+          toast.error(`${result.data.message} (${result.data.error})`);
+        }
+      })
+      .catch((error) => {
+        if (error.response.status == 401) {
+          toast.error("The username/email or password was invalid!");
+        } else {
+          toast.error("An error occured while performing the request.");
+        }
+      })
+      .finally(() => setWorking(false));
   };
 
   const inputIdentifier = new FormInputField({

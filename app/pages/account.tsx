@@ -28,15 +28,18 @@ export default function Account() {
         } else {
           toast.error(`${result.data.message} (${result.data.error})`);
         }
-      }).catch(res => {
+      })
+      .catch((res) => {
         if (res.response.status == 401) {
           toast.info("Please signin first!");
-          router.push('/auth/signin');
+          router.push("/auth/signin");
         } else {
-          toast.error("An error occured while retrieving your profile details.");
+          toast.error(
+            "An error occured while retrieving your profile details."
+          );
         }
       });
-  }, []);
+  }, [router]);
 
   return (
     <LayoutContentMiddle>
