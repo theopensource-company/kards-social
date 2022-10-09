@@ -6,10 +6,10 @@ import { Error, Success } from "./ApiResponse";
 import { CreateSHA1Hash } from "./Hasher";
 import Log from "./Log";
 
-// Stolen names are additional names reserved by big contributors, as a reward for their work on our project!
-// Stolen names cannot validate the rules of normal usernames, as important logic relies on that.
-// Users with a Stolen name alongside their normal username cannot change their username or delete their account manually, as the code for this also needs to be updated. 
-export const StolenNames = {
+// Seized names are additional names reserved by big contributors, as a reward for their work on our project!
+// Seized names cannot validate the rules of normal usernames, as important logic relies on that.
+// Users with a Seized name alongside their normal username cannot change their username or delete their account manually, as the code for this also needs to be updated. 
+export const SeizedNames = {
     // Micha de Vries, CEO of The Open Source Company
     'kearfy': 'micha',
 
@@ -27,7 +27,7 @@ export async function Create(db: Surreal, user: TCreateKardsUser): Promise<Respo
     const isPasswordValid = await ValidateUserPropertyPassword(user.password);
     if (isPasswordValid) return isPasswordValid;
 
-    if (StolenNames[user.username]) return Error({
+    if (MatchSeizedName(user.username)) return Error({
         status: 422,
         error: "username_already_taken",
         message: "The specified username is already associated to an account, please choose a different one."
@@ -81,7 +81,7 @@ export async function Create(db: Surreal, user: TCreateKardsUser): Promise<Respo
 
 export async function Info(db: Surreal, match: string): Promise<TRegisteredKardsUser | undefined | false> {
     const type = TypeForIdentifier(match);
-    if (type == "username" && StolenNames[match]) match = StolenNames[match];
+    if (type == "username") match = MatchSeizedName(match, match)!;
     const query = `SELECT * FROM user WHERE ${type} = ${JSON.stringify(match)}`;
     const result = (await db.query(query)).slice(-1)[0];
     if (result.status == "ERR") {
@@ -124,7 +124,7 @@ export async function IdFromToken(request: Request, env: {
 
 export async function VerifyCredentials(db: Surreal, user: TUserSigninDetails): Promise<Response | string> {
     const type = TypeForIdentifier(user.identifier);
-    if (type == "username" && StolenNames[user.identifier]) user.identifier = StolenNames[user.identifier];
+    if (type == "username") user.identifier = MatchSeizedName(user.identifier, user.identifier)!;
     const query = `
         SELECT id FROM user WHERE ${type} = ${JSON.stringify(user.identifier)} AND crypto::argon2::compare(password, ${JSON.stringify(user.password)});
     `;
@@ -161,6 +161,18 @@ export async function VerifyCredentials(db: Surreal, user: TUserSigninDetails): 
 
 export function TypeForIdentifier(v: string): "id" | "email" | "username" {
     return v.includes('@') ? 'email' : v.includes(':') ? 'id' : 'username';
+}
+
+export function MatchSeizedName(v: string, fallback?: string): string | void {
+    if (SeizedNames[v]) return SeizedNames[v];
+
+    // Names along the lines of our brands are protected. 
+    // This is possible because these limitations have been applied before any profiles were created, so no users got overwritten by this rule.
+    // In edge cases it might be possible to apply business protection of this level, contact support for possibilities.
+    if (v.match(/(?:the[.-_]?open[.-_]?source[.-_]?company)|tosc/i)) return 'tosc';
+    if (v.match(/(?:kards[.-_]?social)|kards/i)) return 'kards';
+
+    if (fallback) return fallback;
 }
 
 export async function ValidateUserPropertyName(v): Promise<Response | undefined> {
