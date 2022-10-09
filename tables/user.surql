@@ -1,8 +1,8 @@
 DEFINE TABLE user SCHEMAFULL;
 
-DEFINE FIELD name ON TABLE user TYPE string ASSERT $value != NONE;
+DEFINE FIELD name ON TABLE user TYPE string ASSERT $value != NONE AND array::len(string::words($value)) > 1;
 DEFINE FIELD email ON TABLE user TYPE string ASSERT is::email($value);
-DEFINE FIELD username ON TABLE user TYPE string ASSERT $value != NONE AND $value = /^[a-zA-Z0-9._-]{1,20}$/;
+DEFINE FIELD username ON TABLE user TYPE string ASSERT $value != NONE AND $value = /^[a-z0-9](?:[a-z0-9._-]{1,18}[a-z0-9.])$/;
 DEFINE FIELD password ON TABLE user TYPE string ASSERT $value != NONE;
 
 DEFINE FIELD created ON TABLE user TYPE datetime VALUE $before OR time::now();
@@ -25,6 +25,6 @@ DEFINE EVENT username ON TABLE user WHEN $before.username != $after.username AND
   CREATE event SET from=$before.username, to=$after.username, event="user_username_changed", field=$after.id
 );
 
-DEFINE EVENT password ON TABLE user WHEN $before.password != $after.password AND $after.id != NONE THEN ( 
+DEFINE EVENT password ON TABLE user WHEN $before.password != $after.password AND $before.password != NONE AND $after.id != NONE THEN ( 
   CREATE event SET event="user_password_changed", field=$after.id
 );

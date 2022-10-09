@@ -33,7 +33,7 @@ const runners = concurrently(
 );
 
 setTimeout(() => {
-    const appProxyServer = appProxy.listen(12000, () => console.log('[PROXY-APP] APP: http://127.0.0.1:12000'));
+    const appProxyServer = appProxy.listen(12000, () => console.log('[PROXY-APP] APP: http://localhost:12000'));
     appProxyServer.on('upgrade', (req, socket, head) => proxyserver.ws(req, socket, head));
 
     async function exit() {
@@ -52,4 +52,4 @@ setTimeout(() => {
 
     process.on('uncaughtException', exit);
     process.on('SIGINT', exit);
-}, 3000);
+}, 5000);

@@ -1,9 +1,15 @@
 import Surreal from '@theopensource-company/surrealdb-cloudflare';
+import CreateSigninRoutes from './routes/signin';
+import CreateInfoRoutes from './routes/info';
 import { Router } from 'itty-router';
 
 const db = new Surreal();
+const SigninRoutes = CreateSigninRoutes(db);
+const InfoRoutes = CreateInfoRoutes(db);
 
 const router = Router({ base: '/api/user' });
+router.post('/signin', SigninRoutes.signin);
+router.get('/me', InfoRoutes.me);
 
 export type Env = {
 	HOST: string;
@@ -16,7 +22,7 @@ export type Env = {
     KARDS_ORIGIN?: string;
     
     RATELIMIT: KVNamespace;
-    WAITLIST_JWT_SECRET?: string;
+    USER_JWT_SECRET: string;
 }
 
 export default {
