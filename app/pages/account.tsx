@@ -20,24 +20,22 @@ export default function Account() {
   } | null>(null);
 
   useEffect(() => {
-    try {
-      axios
-        .get<TApiResponse>(`${location.origin}/api/user/me`)
-        .then((result) => {
-          if (!result.data)
-            return toast.error(
-              "Something went wrong, please try again later or contact hi@kards.social"
-            );
-
-          if (result.data.success) {
-            setUser(result.data.result);
-          } else {
-            toast.error(`${result.data.message} (${result.data.error})`);
-          }
-        });
-    } catch (e) {
-      toast.error("An error occured while performing the request.");
-    }
+    axios
+      .get<TApiResponse>(`${location.origin}/api/user/me`)
+      .then((result) => {
+        if (result.data.success) {
+          setUser(result.data.result);
+        } else {
+          toast.error(`${result.data.message} (${result.data.error})`);
+        }
+      }).catch(res => {
+        if (res.response.status == 401) {
+          toast.info("Please signin first!");
+          router.push('/auth/signin');
+        } else {
+          toast.error("An error occured while retrieving your profile details.");
+        }
+      });
   }, []);
 
   return (
