@@ -16,6 +16,7 @@ const safeProxy = (req, res, opt) => {
         return res;
     } catch(e) {
         console.log("One of the processes seems to be unavailable, closing the devserver.");
+        console.log(" - " + opt.target);
         return exit();
     }
 }

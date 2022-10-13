@@ -51,8 +51,8 @@ const createEnvironment = async (current) => {
     surreal_ns:           await prompt(`Surreal namespace`, current.surreal_ns),
     surreal_db:           await prompt(`Surreal database`, current.surreal_db),
     kv_ratelimit:         await prompt(`Ratelimit KV ID`, current.kv_ratelimit),
-    waitlist_jwt_secret:  await prompt(`Waitlist JWT secret`, current.waitlist_jwt_secret ?? await createSecureSecret()),
-    user_jwt_secret:      await prompt(`User JWT secret`, current.user_jwt_secret ?? await createSecureSecret()),
+    waitlist_jwt_secret:  await prompt(`Waitlist JWT secret`, current.waitlist_jwt_secret || await createSecureSecret()),
+    user_jwt_secret:      await prompt(`User JWT secret`, current.user_jwt_secret || await createSecureSecret()),
     sendgrid_key:         await prompt(`Sendgrid API key`, current.sendgrid_key)
   };
 }
