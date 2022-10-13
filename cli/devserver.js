@@ -12,8 +12,7 @@ const appProxy = express();
 const proxyserver = httpProxy.createProxyServer({ target: target.app, ws: true });
 const safeProxy = (req, res, opt) => {
     try {
-        let res = proxyserver.web(req, res, opt);
-        return res;
+        return proxyserver.web(req, res, opt);
     } catch(e) {
         console.log("One of the processes seems to be unavailable, closing the devserver.");
         console.log(" - " + opt.target);
