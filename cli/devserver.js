@@ -32,6 +32,11 @@ const runners = concurrently(
             name: "kards-app",
             command: "cd app && pnpm run dev",
         },
+        // TODO: Currently no local network calls are yet supported...
+        // {
+        //     name: "surrealdb",
+        //     command: "surreal start --user root --pass root --bind 0.0.0.0:12001 file:dev.db"
+        // },
         {
             name: "kards-worker-waitlist",
             command: "cd workers/waitlist && wrangler dev --env=dev --experimental-local"

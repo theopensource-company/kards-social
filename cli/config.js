@@ -3,6 +3,7 @@ import { Surreal } from '@theopensource-company/surrealdb-cloudflare';
 import fetch from 'node-fetch';
 import fs from 'fs';
 import crypto from 'crypto';
+import concurrently from 'concurrently';
 
 var config = {};
 try {
@@ -57,9 +58,26 @@ const createEnvironment = async (current) => {
   };
 }
 
+let runners;
 const migrateDatabase = async (c) => {
   if ((await prompt('Are you sure? [y/n]')).toLowerCase() !== 'y') return;
-  if ((await prompt('Is your database reachable? [y/n]')).toLowerCase() !== 'y') return;
+  if (c.surreal_host.includes('localhost') || c.surreal_host.includes('127.0.0.1') || c.surreal_host.includes('0.0.0.0')) {
+    if (!runners && (await prompt('Do you want to spin up a local database instance? [y/n]')).toLowerCase() == 'y') {
+      runners = concurrently(
+        [
+          {
+            name: "surrealdb",
+            command: "surreal start --user root --pass root --bind 0.0.0.0:12001 file:dev.db"
+          }
+        ]
+      );
+
+      await new Promise((resolve) => setTimeout(() => resolve(), 1000));
+    } else if (runners) {
+      console.log("Local database instance is already running");
+    }
+  }
+
   const db = new Surreal({
     host: c.surreal_host,
     username: c.surreal_user,
@@ -85,6 +103,7 @@ const migrateDatabase = async (c) => {
   }
 
   console.log('\nFinished database migrations');
+  if (runners) console.log("Local database instance will be closed once you exit the configuration tool.");
 }
 
 const createConfigFiles = async (c) => {
@@ -125,8 +144,11 @@ const start = async () => {
 
   if (!config.guidedDevConfig && !envIsValid(config.dev)) {
     config.guidedDevConfig = true;
-    if ((await prompt('Do you want to create a development environment? [y/n]')).toLowerCase() === 'y') config.dev = await createEnvironment(config.dev ?? {...config.prod, ...jwtdummysecrets} ?? {
+    if ((await prompt('Do you want to create a development environment? [y/n]')).toLowerCase() === 'y') config.dev = await createEnvironment(config.dev ?? config.prod ? {...config.prod, ...jwtdummysecrets} : null ?? {
+      // surreal_host: 'http://127.0.0.1:12001',
       surreal_user: 'root',
+      // surreal_pass: 'root',
+      // surreal_ns: 'dev',
       surreal_db: 'kards-social'
     });
     return start();
@@ -134,7 +156,7 @@ const start = async () => {
 
   if (!config.guidedProdConfig && !envIsValid(config.prod)) {
     config.guidedProdConfig = true;
-    if ((await prompt('Do you want to create a production environment? [y/n]')).toLowerCase() === 'y') config.prod = await createEnvironment(config.prod ?? {...config.dev, ...jwtdummysecrets} ?? {
+    if ((await prompt('Do you want to create a production environment? [y/n]')).toLowerCase() === 'y') config.prod = await createEnvironment(config.prod ?? config.dev ? {...config.dev, ...jwtdummysecrets} : null ?? {
       surreal_user: 'root',
       surreal_db: 'kards-social'
     });
@@ -219,5 +241,20 @@ rl.on('close', function () {
   } catch (err) {
     console.log('\n!!! Error saving config\n');
   }
-  process.exit(0);
+  exit();
 });
+
+async function exit() {
+  console.log("Caught interrupt signal");
+
+  if (runners) {
+    console.log('\nClosing local database instance');
+    await runners.commands[0].kill();
+    setTimeout(() => process.exit(0), 1000);
+  } else {
+    process.exit(0);
+  }
+}
+
+process.on('uncaughtException', exit);
+process.on('SIGINT', exit);
