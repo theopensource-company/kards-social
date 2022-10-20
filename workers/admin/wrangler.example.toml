@@ -1,4 +1,4 @@
-name = "kards-user-api"
+name = "kards-admin-api"
 main = "src/index.ts"
 compatibility_date = "2002-09-08"
 
