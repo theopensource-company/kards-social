@@ -1,4 +1,4 @@
-import { TCreateKardsUser, TKardsUserID, TRegisteredKardsUser, TUserSigninDetails } from "./Types";
+import { TCreateAdminUser, TAdminUserID, TRegisteredAdminUser, TAdminSigninDetails } from "./Types";
 import { Surreal } from '@theopensource-company/surrealdb-cloudflare';
 import jwt from '@tsndr/cloudflare-worker-jwt'
 import { parse } from 'cookie';
@@ -6,43 +6,22 @@ import { Error, Success } from "./ApiResponse";
 import { CreateSHA1Hash } from "./Hasher";
 import Log from "./Log";
 
-// Seized names are additional names reserved by big contributors, as a reward for their work on our project!
-// Seized names cannot validate the rules of normal usernames, as important logic relies on that.
-// Users with a Seized name alongside their normal username cannot change their username or delete their account manually, as the code for this also needs to be updated. 
-export const SeizedNames = {
-    // Micha de Vries, CEO of The Open Source Company
-    'kearfy': 'micha',
-
-    // Morgan Hofmann, Developer at The Open Source Company
-    'leaf': 'morgan'
-};
-
-export async function Create(db: Surreal, user: TCreateKardsUser): Promise<Response> {
-    const isNameInvalid = await ValidateUserPropertyName(user.name);
+export async function Create(db: Surreal, user: TCreateAdminUser): Promise<Response> {
+    const isNameInvalid = await ValidateAdminUserPropertyName(user.name);
     if (isNameInvalid) return isNameInvalid;
-    const isEmailValid = await ValidateUserPropertyEmail(user.email);
+    const isEmailValid = await ValidateAdminUserPropertyEmail(user.email);
     if (isEmailValid) return isEmailValid;
-    const isUsernameValid = await ValidateUserPropertyUsername(user.username);
-    if (isUsernameValid) return isUsernameValid;
-    const isPasswordValid = await ValidateUserPropertyPassword(user.password);
+    const isPasswordValid = await ValidateAdminUserPropertyPassword(user.password);
     if (isPasswordValid) return isPasswordValid;
-
-    if (MatchSeizedName(user.username)) return Error({
-        status: 422,
-        error: "username_already_taken",
-        message: "The specified username is already associated to an account, please choose a different one."
-    });
 
     const query = `
         let $name = ${JSON.stringify(user.name)};
         let $email = ${JSON.stringify(user.email.toLowerCase())};
-        let $username = ${JSON.stringify(user.username.toLowerCase())};
         let $password = ${JSON.stringify(user.password)};
 
-        CREATE user SET
+        CREATE admin SET
             name = $name,
             email = $email,
-            username = $username,
             password = crypto::argon2::generate($password)
     `;
 
@@ -53,17 +32,11 @@ export async function Create(db: Surreal, user: TCreateKardsUser): Promise<Respo
             error: "email_already_used",
             message: "The specified email address is already associated to an account, please signin instead."
         });
-        
-        if (result.detail.match(/^Database index `username` already contains `user:.*`$/i)) return Error({
-            status: 422,
-            error: "username_already_taken",
-            message: "The specified username is already associated to an account, please choose a different one."
-        });
 
         Log(db, {
             level: "ERROR",
             message: `Failed to create user, got response from database: "${result.detail}".`,
-            service: 'api:user/create',
+            service: 'api:admin/create',
             details: {
                 data: user
             }
@@ -79,16 +52,15 @@ export async function Create(db: Surreal, user: TCreateKardsUser): Promise<Respo
     return Success({});
 }
 
-export async function Info(db: Surreal, match: string): Promise<TRegisteredKardsUser | undefined | false> {
+export async function Info(db: Surreal, match: string): Promise<TRegisteredAdminUser | undefined | false> {
     const type = TypeForIdentifier(match);
-    if (type == "username") match = MatchSeizedName(match, match);
-    const query = `SELECT * FROM user WHERE ${type} = ${JSON.stringify(match)}`;
+    const query = `SELECT * FROM admin WHERE ${type} = ${JSON.stringify(match)}`;
     const result = (await db.query(query)).slice(-1)[0];
     if (result.status == "ERR") {
         Log(db, {
             level: "ERROR",
             message: `Failed to obtain info about user, got response from database: "${result.detail}".`,
-            service: 'api:user/info',
+            service: 'api:admin/info',
             details: {
                 data: {
                     type,
@@ -109,9 +81,9 @@ export async function Info(db: Surreal, match: string): Promise<TRegisteredKards
     }
 }
 
-export async function List(db: Surreal): Promise<Array<TRegisteredKardsUser> | false> {
-    const query = `SELECT * FROM user`;    
-    const result = (await db.query<Array<TRegisteredKardsUser & {
+export async function List(db: Surreal): Promise<Array<TRegisteredAdminUser> | false> {
+    const query = `SELECT * FROM admin`;    
+    const result = (await db.query<Array<TRegisteredAdminUser & {
         password: string;
         created: Date | string;
         updated: Date | string;
@@ -121,7 +93,7 @@ export async function List(db: Surreal): Promise<Array<TRegisteredKardsUser> | f
         Log(db, {
             level: "ERROR",
             message: `Failed to obtain info about user, got response from database: "${result.detail}".`,
-            service: 'api:user/info'
+            service: 'api:admin/info'
         });
 
         return false;
@@ -138,21 +110,20 @@ export async function List(db: Surreal): Promise<Array<TRegisteredKardsUser> | f
 }
 
 export async function IdFromToken(request: Request, env: {
-    USER_JWT_SECRET: string;
-}): Promise<TKardsUserID | false> {
+    ADMIN_JWT_SECRET: string;
+}): Promise<TAdminUserID | false> {
     const cookie = parse(request.headers.get('Cookie') || '');
-    if (!cookie.kusrsess) return false;
-    const token = atob(cookie.kusrsess);
-    if (!await jwt.verify(token, env.USER_JWT_SECRET ?? 'very-secret-local-testing-secret')) return false;
+    if (!cookie.kadmsess) return false;
+    const token = atob(cookie.kadmsess);
+    if (!await jwt.verify(token, env.ADMIN_JWT_SECRET ?? 'very-secret-local-testing-secret')) return false;
     const { payload: { id } } = jwt.decode(token);
     return id;
 }
 
-export async function VerifyCredentials(db: Surreal, user: TUserSigninDetails): Promise<Response | string> {
+export async function VerifyCredentials(db: Surreal, user: TAdminSigninDetails): Promise<Response | string> {
     const type = TypeForIdentifier(user.identifier);
-    if (type == "username") user.identifier = MatchSeizedName(user.identifier, user.identifier);
     const query = `
-        SELECT id FROM user WHERE ${type} = ${JSON.stringify(user.identifier)} AND crypto::argon2::compare(password, ${JSON.stringify(user.password)});
+        SELECT id FROM admin WHERE ${type} = ${JSON.stringify(user.identifier)} AND crypto::argon2::compare(password, ${JSON.stringify(user.password)});
     `;
 
     const result = (await db.query(query)).slice(-1)[0];
@@ -185,23 +156,39 @@ export async function VerifyCredentials(db: Surreal, user: TUserSigninDetails): 
     }
 }
 
-export function TypeForIdentifier(v: string): "id" | "email" | "username" {
-    return v.includes('@') ? 'email' : v.includes(':') ? 'id' : 'username';
+export async function CreateAccessToken(db: Surreal, identifier: TAdminUserID, env: {
+    ADMIN_ACCESS_JWT_SECRET: string;
+}): Promise<string | void> {
+    const user = await Info(db, identifier);
+    if (user) return btoa(await jwt.sign({ id: user.id }, env.ADMIN_ACCESS_JWT_SECRET ?? 'very-secret-local-testing-secret'));
+    Log(db, {
+        level: "WARNING",
+        message: `Tried to create access token for unknown admin.`,
+        service: 'api:admin/token',
+        details: {
+            data: {
+                identifier
+            }
+        }
+    });
 }
 
-export function MatchSeizedName<T extends void | string>(v: string, fallback?: T): T extends void ? string | void : string {
-    if (SeizedNames[v]) return SeizedNames[v];
-
-    // Names along the lines of our brands are protected. 
-    // This is possible because these limitations have been applied before any profiles were created, so no users got overwritten by this rule.
-    // In edge cases it might be possible to apply business protection of this level, contact support for possibilities.
-    if (v.match(/(?:the[.-_]?open[.-_]?source[.-_]?company)|tosc/i)) return 'tosc';
-    if (v.match(/(?:kards[.-_]?social)|kards/i)) return 'kards';
-
-    if (typeof fallback == 'string') return fallback;
+export async function IdFromHeaders(request: Request, env: {
+    ADMIN_ACCESS_JWT_SECRET: string;
+}): Promise<string | false | void> {
+    const token = (request.headers.get('Authorization') || "").split(' ').slice(-1)[0];
+    if (token.length > 0) {
+        if (!await jwt.verify(atob(token), env.ADMIN_ACCESS_JWT_SECRET ?? 'very-secret-local-testing-secret')) return false;
+        const { payload: { id } } = jwt.decode(atob(token));
+        return id;
+    }
 }
 
-export async function ValidateUserPropertyName(v): Promise<Response | undefined> {
+export function TypeForIdentifier(v: string): "id" | "email" {
+    return v.includes('@') ? 'email' : 'id';
+}
+
+export async function ValidateAdminUserPropertyName(v): Promise<Response | undefined> {
     if (!v.match(/^[A-ZÀ-ÖØ-öø-ÿ]+ [A-ZÀ-ÖØ-öø-ÿ][A-ZÀ-ÖØ-öø-ÿ ]*$/i)) return Error({
         status: 422,
         error: "invalid_name",
@@ -209,7 +196,7 @@ export async function ValidateUserPropertyName(v): Promise<Response | undefined>
     });
 }
 
-export async function ValidateUserPropertyEmail(v): Promise<Response | undefined> {
+export async function ValidateAdminUserPropertyEmail(v): Promise<Response | undefined> {
     if (!v.match(/^[A-ZÀ-ÖØ-öø-ÿ0-9._%+-]+@[A-ZÀ-ÖØ-öø-ÿ0-9.-]+\.[A-Z]{2,}$/i)) return Error({
         status: 422,
         error: "invalid_email",
@@ -217,16 +204,8 @@ export async function ValidateUserPropertyEmail(v): Promise<Response | undefined
     });
 }
 
-export async function ValidateUserPropertyUsername(v): Promise<Response | undefined> {
-    if (!v.match(/^[a-z0-9](?:[a-z0-9._-]{1,18}[a-z0-9.])$/i)) return Error({
-        status: 422,
-        error: "invalid_username",
-        message: "The specified email not valid, please provide one in the following format: \"user@email.domain\"."
-    });
-}
-
-export async function ValidateUserPropertyPassword(v): Promise<Response | undefined> {
-    if (!v.match(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,32}$/)) return Error({
+export async function ValidateAdminUserPropertyPassword(v): Promise<Response | undefined> {
+    if (!v.match(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{16,32}$/)) return Error({
         status: 422,
         error: "insecure_password",
         message: "The specified password not secure, please provide one that follows all password policies."

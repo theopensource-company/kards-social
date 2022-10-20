@@ -1,18 +1,22 @@
 import Surreal from '@theopensource-company/surrealdb-cloudflare';
-import CreateSigninRoutes from './routes/signin';
+import CreateAuthRoutes from './routes/auth';
 import CreateInfoRoutes from './routes/info';
 import CreateListRoutes from './routes/list';
+import CreateTokenRoutes from './routes/token';
 import { Router } from 'itty-router';
 
 const db = new Surreal();
-const SigninRoutes = CreateSigninRoutes(db);
+const AuthRoutes = CreateAuthRoutes(db);
 const InfoRoutes = CreateInfoRoutes(db);
 const ListRoutes = CreateListRoutes(db);
+const TokenRoutes = CreateTokenRoutes(db);
 
-const router = Router({ base: '/api/user' });
-router.post('/signin', SigninRoutes.signin);
+const router = Router({ base: '/api/admin' });
+router.post('/signin', AuthRoutes.signin);
+router.get('/signout', AuthRoutes.signout);
 router.get('/list', ListRoutes.list);
 router.get('/me', InfoRoutes.me);
+router.get('/token', TokenRoutes.token);
 
 export type Env = {
 	HOST: string;
@@ -25,7 +29,7 @@ export type Env = {
     KARDS_ORIGIN?: string;
     
     RATELIMIT: KVNamespace;
-    USER_JWT_SECRET: string;
+    ADMIN_JWT_SECRET: string;
     ADMIN_ACCESS_JWT_SECRET: string;
 }
 

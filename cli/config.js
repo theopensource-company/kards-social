@@ -16,6 +16,7 @@ const rl = readline.createInterface({
 });
 
 const dbfiles = [
+  'admin.surql',
   'event.surql',
   'log.surql',
   'user.surql',
@@ -30,11 +31,17 @@ const conffiles = [
   {
     source: 'workers/user/wrangler.example.toml',
     target: 'workers/user/wrangler.toml'
+  },
+  {
+    source: 'workers/admin/wrangler.example.toml',
+    target: 'workers/admin/wrangler.toml'
   }
 ];
 
 const jwtdummysecrets = {
   waitlist_jwt_secret: 0,
+  admin_access_jwt_secret: 0,
+  admin_jwt_secret: 0,
   user_jwt_secret: 0
 };
 
@@ -46,15 +53,17 @@ const prompt = async (p, def, allowEmpty = false) => await new Promise(response 
 
 const createEnvironment = async (current) => {
   return {
-    surreal_host:         await prompt(`Surreal host`, current.surreal_host),
-    surreal_user:         await prompt(`Surreal user`, current.surreal_user),
-    surreal_pass:         await prompt(`Surreal pass`, current.surreal_pass),
-    surreal_ns:           await prompt(`Surreal namespace`, current.surreal_ns),
-    surreal_db:           await prompt(`Surreal database`, current.surreal_db),
-    kv_ratelimit:         await prompt(`Ratelimit KV ID`, current.kv_ratelimit),
-    waitlist_jwt_secret:  await prompt(`Waitlist JWT secret`, current.waitlist_jwt_secret || await createSecureSecret()),
-    user_jwt_secret:      await prompt(`User JWT secret`, current.user_jwt_secret || await createSecureSecret()),
-    sendgrid_key:         await prompt(`Sendgrid API key`, current.sendgrid_key)
+    surreal_host:             await prompt(`Surreal host`, current.surreal_host),
+    surreal_user:             await prompt(`Surreal user`, current.surreal_user),
+    surreal_pass:             await prompt(`Surreal pass`, current.surreal_pass),
+    surreal_ns:               await prompt(`Surreal namespace`, current.surreal_ns),
+    surreal_db:               await prompt(`Surreal database`, current.surreal_db),
+    kv_ratelimit:             await prompt(`Ratelimit KV ID`, current.kv_ratelimit),
+    waitlist_jwt_secret:      await prompt(`Waitlist JWT secret`, current.waitlist_jwt_secret || await createSecureSecret()),
+    user_jwt_secret:          await prompt(`User JWT secret`, current.user_jwt_secret || await createSecureSecret()),
+    admin_jwt_secret:         await prompt(`Admin JWT secret`, current.admin_jwt_secret || await createSecureSecret()),
+    admin_access_jwt_secret:  await prompt(`Admin Access JWT secret`, current.admin_access_jwt_secret || await createSecureSecret()),
+    sendgrid_key:             await prompt(`Sendgrid API key`, current.sendgrid_key)
   };
 }
 
@@ -133,7 +142,7 @@ const createConfigFiles = async (c) => {
   console.log('\nFinished config writes\n');
 }
 
-const envIsValid = c => c && c.surreal_host && c.surreal_user && c.surreal_pass && c.surreal_ns && c.surreal_db && c.kv_ratelimit && c.sendgrid_key && c.waitlist_jwt_secret && c.user_jwt_secret;
+const envIsValid = c => c && c.surreal_host && c.surreal_user && c.surreal_pass && c.surreal_ns && c.surreal_db && c.kv_ratelimit && c.sendgrid_key && c.waitlist_jwt_secret && c.user_jwt_secret && c.admin_jwt_secret && c.admin_access_jwt_secret;
 
 const start = async () => {
   try {

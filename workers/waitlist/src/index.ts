@@ -1,13 +1,16 @@
 import Surreal from '@theopensource-company/surrealdb-cloudflare';
 import CreateJoinRoutes from './routes/join';
+import CreateListRoutes from './routes/list';
 import { Router } from 'itty-router';
 
 const db = new Surreal();
 const JoinRoutes = CreateJoinRoutes(db);
+const ListRoutes = CreateListRoutes(db);
 
 const router = Router({ base: '/api/waitlist' });
 router.get('/join', JoinRoutes.get);
 router.post('/join', JoinRoutes.post);
+router.get('/list', ListRoutes.list);
 
 export type Env = {
 	HOST: string;
@@ -21,6 +24,7 @@ export type Env = {
     
     RATELIMIT: KVNamespace;
     WAITLIST_JWT_SECRET?: string;
+    ADMIN_ACCESS_JWT_SECRET: string;
 }
 
 export default {

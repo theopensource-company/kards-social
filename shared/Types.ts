@@ -35,6 +35,40 @@ export type TRegisteredKardsUser = {
     updated: Date;
 }
 
+/* ADMIN USER */
+
+export type TAdminUserID = `admin:${string}`;
+export type TAdminUser = 
+    TCreateAdminUser |
+    TUpdateAdminUser |
+    TRegisteredAdminUser;
+
+export type TAdminSigninDetails = {
+    identifier: string;
+    password: string;
+};
+
+export type TCreateAdminUser = {
+    name: string;
+    email: string;
+    password: string;
+}
+
+export type TUpdateAdminUser = {
+    id: TKardsUserID;
+    name?: string;
+    email?: string;
+    password?: string;
+}
+
+export type TRegisteredAdminUser = {
+    id: TKardsUserID;
+    name: string;
+    email: string;
+    created: Date;
+    updated: Date;
+}
+
 /* LOGGING */
 
 export type TLogID = `log:${string}`;
