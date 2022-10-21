@@ -1,0 +1,3 @@
+{
+    "extends": "../workers/tsconfig.json"
+}
