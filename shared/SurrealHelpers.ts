@@ -65,5 +65,6 @@ export function FiltersObjectFromURL<T extends TSelectFilterBuilder>(
         }
     });
 
+    if (filters.end && filters.start) filters.end -= filters.start;
     return filters;
 }
