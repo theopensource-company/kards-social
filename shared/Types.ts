@@ -26,6 +26,10 @@ export type TUpdateKardsUser = {
     password?: string;
 }
 
+export type TFilterKardsUser = TSelectFilterBuilder & {
+    field?: 'id' | 'name' | 'email' | 'username' | 'created' | 'updated';
+};
+
 export type TRegisteredKardsUser = {
     id: TKardsUserID;
     name: string;
@@ -115,3 +119,25 @@ export type TSetCookie = {
     HttpOnly?: boolean,
     SameSite?: TCookieSameSite
 }
+
+/* SURREAL HELPERS */
+
+export type TSelectFilterBuilder = {
+    field: string;
+    order?: "DESC" | "ASC";
+    start?: number;
+    end?: number;
+}
+
+/* WAITLIST */
+
+export type TFilterWaitlist = TSelectFilterBuilder & {
+    field?: 'id' | 'name' | 'email' | 'created' | 'updated';
+}
+
+export type TWaitlistID = `waitlist:${string}`;
+export type TWaitlistEntry = {
+    id: TWaitlistID;
+    name: string;
+    email: string;
+};

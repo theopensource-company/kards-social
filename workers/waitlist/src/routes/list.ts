@@ -1,32 +1,60 @@
-import Surreal from "@theopensource-company/surrealdb-cloudflare";
+import Surreal from '@theopensource-company/surrealdb-cloudflare';
 import { Env } from '..';
-import { Success, Error } from "../../../../shared/ApiResponse";
-import { IdFromHeaders } from "../../../../shared/AdminUser";
+import { Success, Error } from '../../../../shared/ApiResponse';
+import { IdFromHeaders } from '../../../../shared/AdminUser';
+import { FiltersObjectFromURL, SelectFilterBuilder } from '../../../../shared/SurrealHelpers';
+import { TFilterWaitlist, TWaitlistEntry } from '../../../../shared/Types';
 
 export default (db: Surreal) => ({
-    list: async function ListRoute(request: Request, env: Env): Promise<Response> {
+    list: async function ListRoute(
+        request: Request,
+        env: Env
+    ): Promise<Response> {
         const id = await IdFromHeaders(request, env);
         if (id) {
-            const query = `SELECT * FROM waitlist`;    
-            const result = (await db.query<Array<{
-                id: string;
-                name: string;
-                email: string;
-            }>>(query)).slice(-1)[0];
+            let filters: TFilterWaitlist;
+            try {
+                filters = FiltersObjectFromURL<TFilterWaitlist>(request.url);
+            } catch(e) {
+                return Error({
+                    status: 400,
+                    error: "invalid_filters",
+                    message: e.message
+                });
+            }
 
-            const final = result.status == "ERR" ? [] : result.result;
-            const response = Success({
-                result: final
+            if (!filters.field) filters.field = 'created';
+            const query = `SELECT *, count((select id from waitlist)) as total FROM waitlist ${SelectFilterBuilder(
+                filters
+            )}`;
+
+            const result = (
+                await db.query<
+                    Array<TWaitlistEntry & {
+                        total: number;
+                    }>
+                >(query)
+            ).slice(-1)[0];
+
+            let total = 0;
+            const final = result.status == 'ERR' ? [] : result.result.map((entry) => {
+                total = entry.total;
+                delete entry.total;
+                return entry;
             });
 
-            response.headers.set('X-Total-Count', final.length.toString());
+            const response = Success({
+                result: final,
+            });
+
+            response.headers.set('X-Total-Count', `${total}`);
             return response;
         }
 
         return Error({
             status: 401,
-            error: "not_authenticated",
-            message: "No valid authentication has been provided."
+            error: 'not_authenticated',
+            message: 'No valid authentication has been provided.',
         });
-    }
+    },
 });
