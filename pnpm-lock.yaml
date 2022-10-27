@@ -66,6 +66,7 @@ importers:
       react-media-hook: ^0.4.9
       react-toastify: ^9.0.8
       sass: 1.54.5
+      surrealdb.js: ^0.5.0
       typescript: 4.8.2
       uuid: ^8.3.2
     dependencies:
@@ -83,6 +84,7 @@ importers:
       react-dom: 18.2.0_react@18.2.0
       react-media-hook: 0.4.9_react@18.2.0
       react-toastify: 9.0.8_biqbaboplfbrettd7655fr4n2y
+      surrealdb.js: 0.5.0
       uuid: 8.3.2
     devDependencies:
       '@types/node': 18.7.13
@@ -103,6 +105,23 @@ importers:
       prettier: 2.7.1
       sass: 1.54.5
       typescript: 4.8.2
+
+  workers/admin:
+    specifiers:
+      '@cloudflare/workers-types': ^3.16.0
+      '@theopensource-company/surrealdb-cloudflare': ^1.0.4
+      '@tsndr/cloudflare-worker-jwt': ^2.1.0
+      itty-router: ^2.6.6
+      typescript: ^4.8.4
+      wrangler: ^2.1.10
+    dependencies:
+      '@theopensource-company/surrealdb-cloudflare': 1.0.4
+      '@tsndr/cloudflare-worker-jwt': 2.1.0
+      itty-router: 2.6.6
+    devDependencies:
+      '@cloudflare/workers-types': 3.16.0
+      typescript: 4.8.4
+      wrangler: 2.1.10
 
   workers/user:
     specifiers:
@@ -2959,6 +2978,14 @@ packages:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
     dev: true
 
+  /isomorphic-ws/5.0.0_ws@8.9.0:
+    resolution: {integrity: sha512-muId7Zzn9ywDsyXgTIafTry2sV3nySZeUDe6YedVd1Hvuuep5AsIlqK+XefWpYTyJG5e503F2xIuT2lcU6rCSw==}
+    peerDependencies:
+      ws: '*'
+    dependencies:
+      ws: 8.9.0
+    dev: false
+
   /itty-router/2.6.6:
     resolution: {integrity: sha512-hIPHtXGymCX7Lzb2I4G6JgZFE4QEEQwst9GORK7sMYUpJvLfy4yZJr95r04e8DzoAnj6HcxM2m4TbK+juu+18g==}
     dev: false
@@ -4341,6 +4368,16 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
+  /surrealdb.js/0.5.0:
+    resolution: {integrity: sha512-CpDfCwVnG3ahr2/kUf3i9RgDtLuEzQeU5Zxuhtud5Ijq9abXzkAhS/gcvtSQ9qyZiqSQcp4u7IK3yjnd1OkqKQ==}
+    dependencies:
+      isomorphic-ws: 5.0.0_ws@8.9.0
+      ws: 8.9.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+    dev: false
+
   /text-table/0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
     dev: true
@@ -4630,7 +4667,6 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
-    dev: true
 
   /xxhash-wasm/1.0.1:
     resolution: {integrity: sha512-Lc9CTvDrH2vRoiaUzz25q7lRaviMhz90pkx6YxR9EPYtF99yOJnv2cB+CQ0hp/TLoqrUsk8z/W2EN31T568Azw==}

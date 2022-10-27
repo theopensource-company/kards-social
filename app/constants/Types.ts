@@ -85,3 +85,13 @@ export type TFormInputFieldType =
 export type TFormInput = TFormItem<string> & {
   type?: TFormInputFieldType;
 };
+
+/* Kards user types */
+
+export type TKardsUserID = `user:${string}`;
+export type TKardsUserDetails = {
+  id: TKardsUserID;
+  name: `${string} ${string}`;              //It's not strict about what comes after it, but this way it must contain at least one space (first & lastname)
+  email: `${string}@${string}.${string}`;
+  username: string;
+};

@@ -1,63 +1,60 @@
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import Button from "../components/Button";
-import ArrowBack from "../components/icon/ArrowBack";
-import { toast } from "react-toastify";
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import Button from '../components/Button';
+import ArrowBack from '../components/icon/ArrowBack';
+import { toast } from 'react-toastify';
 
-import styles from "../styles/JoinWaitlist.module.scss";
-import axios from "axios";
-import { TApiResponse } from "../constants/Types";
-import LayoutContentMiddle from "../components/Layout/ContentMiddle";
+import styles from '../styles/JoinWaitlist.module.scss';
+import LayoutContentMiddle from '../components/Layout/ContentMiddle';
+import { useUserDetails } from '../hooks/KardsUser';
+import Spinner from '../components/icon/Spinner';
+import { SurrealQuery } from '../lib/Surreal';
 
 export default function Account() {
-  const router = useRouter();
+    const router = useRouter();
 
-  const [user, setUser] = useState<{
-    id: string;
-    name: string;
-    email: string;
-    username: string;
-  } | null>(null);
+    const {isReady, result: user} = useUserDetails();
 
-  useEffect(() => {
-    axios
-      .get<TApiResponse>(`${location.origin}/api/user/me`)
-      .then((result) => {
-        if (result.data.success) {
-          setUser(result.data.result);
-        } else {
-          toast.error(`${result.data.message} (${result.data.error})`);
+    useEffect(() => {
+        if (isReady && !user) {
+            toast.info('Please signin first!');
+            router.push('/auth/signin');
         }
-      })
-      .catch((res) => {
-        if (res.response.status == 401) {
-          toast.info("Please signin first!");
-          router.push("/auth/signin");
-        } else {
-          toast.error(
-            "An error occured while retrieving your profile details."
-          );
-        }
-      });
-  }, [router]);
+    }, [isReady, user]);
 
-  return (
-    <LayoutContentMiddle>
-      <div className={styles.back}>
-        <Button
-          text="Back"
-          icon={<ArrowBack />}
-          size="Small"
-          onClick={() => router.push("/")}
-        />
-      </div>
-      {user && (
-        <div>
-          <h1>{user.name}</h1>
-          <p>@{user.username}</p>
-          <p>{user.email}</p>
-        </div>
-      )}
-    </LayoutContentMiddle>
-  );
+    return (
+        <LayoutContentMiddle>
+            {isReady ? (
+                <>
+                    <div className={styles.back}>
+                        <Button
+                            text="Back"
+                            icon={<ArrowBack />}
+                            size="Small"
+                            onClick={() => router.push('/')}
+                        />
+                    </div>
+                    {user && (
+                        <div>
+                            <h1>{user.name}</h1>
+                            <p>@{user.username}</p>
+                            <p>{user.email}</p>
+                            <input defaultValue={user.name} onBlur={(e) => {
+                                const query = 'UPDATE user SET name="' + e.target.value + '"';
+                                console.log(query);
+                                
+                                SurrealQuery(query, {
+                                    name: e.target.value
+                                });
+                            }} />
+                        </div>
+                        
+                    )}
+                    
+                </>
+            ) : (
+                <Spinner color="Light" size={50} />
+            )}
+        </LayoutContentMiddle>
+    );
 }
