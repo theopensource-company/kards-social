@@ -1,0 +1,25 @@
+@use '../../../color';
+
+.navbar {
+    width: 90%;
+    height: 130px;
+    max-width: 1400px;
+    padding: 0px 5%;
+    margin: 0 auto;
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 80px;
+
+    &> div {
+        display: flex;
+        align-items: center;
+        gap: 80px;
+    }
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
+}

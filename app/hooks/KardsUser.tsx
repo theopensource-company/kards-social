@@ -1,20 +1,105 @@
-import React, { useEffect, useState } from "react";
-import { TKardsUserDetails } from "../constants/Types";
+import React, { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState } from "react";
+import { TAuthState, TKardsUserDetails } from "../constants/Types";
 import { UserDetails } from "../lib/KardsUser";
 
-export const useUserDetails = (): {
+export const AuthContext = createContext<[
+    TAuthState,
+    Dispatch<SetStateAction<TAuthState>>
+]>([
+    {
+        authenticated: false,
+        details: null,
+    },
+    () => {}
+]);
+
+export const AuthProvider = ({
+    children
+}: {
+    children: ReactNode
+}) => {
+    const [isReady, setReady] = useState<boolean>(false);
+    const state = useState<TAuthState>({
+        authenticated: false,
+        details: null,
+    });
+
+    useEffect(() => {
+        UserDetails().then(user => {
+            state[1]({
+                authenticated: !!user,
+                details: user
+            });
+        }).finally(() => setReady(true));
+    }, []);
+
+    return (
+        <>
+            {isReady && <AuthContext.Provider value={state} >
+                {children}
+            </AuthContext.Provider>}
+        </>
+    );
+}
+
+export const useRefreshAuthenticatedUser = (): {
     isReady: boolean;
     result: TKardsUserDetails | null;
 } => {
+    const state = useContext(AuthContext);
     const [isReady, setReady] = useState<boolean>(false);
-    const [result, setResult] = useState<TKardsUserDetails | null>(null);
 
     useEffect(() => {
-        UserDetails().then(setResult).finally(() => setReady(true));
+        UserDetails().then(user => {
+            state[1]({
+                authenticated: !!user,
+                details: user
+            });
+        }).finally(() => setReady(true));
     }, []);
 
     return {
         isReady,
-        result
+        result: state[0].details
     };
+}
+
+export const useDelayedRefreshAuthenticatedUser = (): () => {
+    isReady: boolean;
+    result: TKardsUserDetails | null;
+} => {
+    const state = useContext(AuthContext);
+    const [isReady, setReady] = useState<boolean>(false);
+    const [update, setUpdate] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (update) UserDetails().then(user => {
+            console.log('b', user);
+            
+            state[1]({
+                authenticated: !!user,
+                details: user
+            });
+        }).finally(() => setReady(true));
+    }, [update]);
+
+    return () => {
+        setUpdate(true);
+        return {
+            isReady,
+            result: state[0].details
+        };
+    };
+}
+
+export const useAuthState = (): TAuthState => {
+    return useContext(AuthContext)[0];
+}
+
+export const useIsAuthenticated = (): boolean => {
+    return useContext(AuthContext)[0].authenticated;
+}
+
+export const useAuthenticatedUser = (): TKardsUserDetails | null => {
+    return useContext(AuthContext)[0].details;
 }

@@ -50,7 +50,7 @@ export const SurrealSignin = async (auth: {
     });
 
 export const SurrealSignout = async (): Promise<boolean> => new Promise((resolve) => {
-    SurrealInstance.invalidate().then(res => {
+    SurrealInstance.invalidate().then(async res => {
         localStorage.removeItem('kusrsess');
         resolve(false);
     }).catch(error => {

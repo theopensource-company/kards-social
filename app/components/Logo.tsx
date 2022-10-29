@@ -3,7 +3,7 @@ import { SvgBaseProps } from '../constants/Types';
 import { Color } from '../constants/Colors';
 
 const LogoStyle = `.svg-Logo-styles .fillLight { fill: ${Color.Light} !important} .svg-Logo-styles .fillDark { fill: ${Color.Dark} !important}`;
-export function Logo({ size = 200 }: SvgBaseProps) {
+export function Logo({ size = 200, className }: SvgBaseProps) {
     return (
         <svg
             width={size}
@@ -11,7 +11,7 @@ export function Logo({ size = 200 }: SvgBaseProps) {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 200 200"
-            className="svg-Logo-styles"
+            className={`svg-Logo-styles ${className}`}
         >
             <style>{LogoStyle}</style>
             <g clipPath="url(#a)">
@@ -57,7 +57,7 @@ export function Logo({ size = 200 }: SvgBaseProps) {
     );
 }
 
-export function LogoSmall({ size = 200 }: SvgBaseProps) {
+export function LogoSmall({ size = 200, className }: SvgBaseProps) {
     return (
         <svg
             width={size}
@@ -65,8 +65,9 @@ export function LogoSmall({ size = 200 }: SvgBaseProps) {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 200 200"
-            className="svg-Logo-styles"
+            className={`svg-Logo-styles ${className}`}
         >
+            <style>{LogoStyle}</style>
             <g clipPath="url(#a)">
                 <rect
                     x={1.75}
@@ -74,7 +75,7 @@ export function LogoSmall({ size = 200 }: SvgBaseProps) {
                     width={150.633}
                     height={144.721}
                     rx={14.892}
-                    transform="matrix(.986 -.16678 .18078 .98352 -4.197 47.026)"
+                    transform="matrix(.986 -.16678 .18078 .98352 -2.841 47.026)"
                     className="fillDark"
                     stroke="#F7F3E3"
                     strokeWidth={3}
@@ -85,7 +86,7 @@ export function LogoSmall({ size = 200 }: SvgBaseProps) {
                     width={150.728}
                     height={144.623}
                     rx={14.892}
-                    transform="matrix(.99314 -.11695 .12698 .9919 14.613 32.186)"
+                    transform="matrix(.99314 -.11695 .12698 .9919 15.968 32.186)"
                     className="fillLight"
                     stroke="#F98C10"
                     strokeWidth={3}
@@ -96,7 +97,7 @@ export function LogoSmall({ size = 200 }: SvgBaseProps) {
                     width={150.789}
                     height={144.559}
                     rx={14.892}
-                    transform="matrix(.99776 -.06692 .07272 .99735 35.523 18.402)"
+                    transform="matrix(.99776 -.06692 .07272 .99735 36.878 18.402)"
                     className="fillLight"
                     stroke="#0C1618"
                     strokeWidth={3}

@@ -1,60 +1,43 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Button from '../components/Button';
-import ArrowBack from '../components/icon/ArrowBack';
 import { toast } from 'react-toastify';
+import moment from 'moment';
 
-import styles from '../styles/JoinWaitlist.module.scss';
-import LayoutContentMiddle from '../components/Layout/ContentMiddle';
-import { useUserDetails } from '../hooks/KardsUser';
-import Spinner from '../components/icon/Spinner';
+import { useAuthState } from '../hooks/KardsUser';
 import { SurrealQuery } from '../lib/Surreal';
+import AppLayout from '../components/Layout/App';
 
 export default function Account() {
     const router = useRouter();
 
-    const {isReady, result: user} = useUserDetails();
+    const auth = useAuthState();
 
     useEffect(() => {
-        if (isReady && !user) {
+        if (!auth.authenticated) {
             toast.info('Please signin first!');
             router.push('/auth/signin');
         }
-    }, [isReady, user]);
+    }, [auth]);
 
     return (
-        <LayoutContentMiddle>
-            {isReady ? (
-                <>
-                    <div className={styles.back}>
-                        <Button
-                            text="Back"
-                            icon={<ArrowBack />}
-                            size="Small"
-                            onClick={() => router.push('/')}
-                        />
-                    </div>
-                    {user && (
-                        <div>
-                            <h1>{user.name}</h1>
-                            <p>@{user.username}</p>
-                            <p>{user.email}</p>
-                            <input defaultValue={user.name} onBlur={(e) => {
-                                const query = 'UPDATE user SET name="' + e.target.value + '"';
-                                console.log(query);
-                                
-                                SurrealQuery(query, {
-                                    name: e.target.value
-                                });
-                            }} />
-                        </div>
+        <AppLayout>
+            {auth.details && (
+                <div>
+                    <h1>{auth.details.name}</h1>
+                    <p>@{auth.details.username}</p>
+                    <p>{auth.details.email}</p>
+                    <p>Member since {moment(auth.details.created).toNow(true)}</p>
+                    <input defaultValue={auth.details.name} onBlur={(e) => {
+                        const query = 'UPDATE user SET name="' + e.target.value + '"';
+                        console.log(query);
                         
-                    )}
-                    
-                </>
-            ) : (
-                <Spinner color="Light" size={50} />
+                        SurrealQuery(query, {
+                            name: e.target.value
+                        });
+                    }} />
+                </div>
+                
             )}
-        </LayoutContentMiddle>
+        </AppLayout>
     );
 }

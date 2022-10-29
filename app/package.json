@@ -16,6 +16,7 @@
     "@next/env": "^12.3.1",
     "@tsndr/cloudflare-worker-jwt": "^2.1.0",
     "axios": "^0.27.2",
+    "moment": "^2.29.4",
     "next": "12.2.5",
     "next-sitemap": "^3.1.24",
     "query-string": "^7.1.1",

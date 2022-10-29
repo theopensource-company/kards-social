@@ -54,6 +54,7 @@ importers:
       eslint-plugin-react: ^7.31.8
       eslint-plugin-react-hooks: ^4.6.0
       eslint-plugin-unused-imports: ^2.0.0
+      moment: ^2.29.4
       next: 12.2.5
       next-sitemap: ^3.1.24
       prettier: ^2.7.1
@@ -74,6 +75,7 @@ importers:
       '@next/env': 12.3.1
       '@tsndr/cloudflare-worker-jwt': 2.1.0
       axios: 0.27.2
+      moment: 2.29.4
       next: 12.2.5_drkpjgevzdykik2puzxtfkrafi
       next-sitemap: 3.1.24_6agu3tau4wwh47hlcm3f5lu44q
       query-string: 7.1.1
@@ -3218,6 +3220,10 @@ packages:
 
   /minimist/1.2.6:
     resolution: {integrity: sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==}
+
+  /moment/2.29.4:
+    resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
+    dev: false
 
   /ms/2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}

@@ -7,23 +7,26 @@ import Cross from '../components/icon/Cross';
 import Info from '../components/icon/Info';
 import '../hooks/Surreal'; //Initialize surrealdb instance
 import { InitializeSurreal } from '../hooks/Surreal';
+import { AuthProvider } from '../hooks/KardsUser';
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
         <InitializeSurreal>
-            <Component {...pageProps} />
-            <ToastContainer
-                position="top-center"
-                closeButton={false}
-                icon={({ type }) => {
-                    console.log(type);
-                    return type == 'error' ? (
-                        <Cross size={15} color="Light" />
-                    ) : (
-                        <Info color={type == 'default' ? undefined : 'Light'} />
-                    );
-                }}
-            />
+            <AuthProvider>
+                <Component {...pageProps} />
+                <ToastContainer
+                    position="top-center"
+                    closeButton={false}
+                    icon={({ type }) => {
+                        console.log(type);
+                        return type == 'error' ? (
+                            <Cross size={15} color="Light" />
+                        ) : (
+                            <Info color={type == 'default' ? undefined : 'Light'} />
+                        );
+                    }}
+                />
+            </AuthProvider>
         </InitializeSurreal>
     );
 }

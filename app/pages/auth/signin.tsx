@@ -1,27 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Button from '../../components/Button';
-import ArrowBack from '../../components/icon/ArrowBack';
 import { toast } from 'react-toastify';
 
 import styles from '../../styles/JoinWaitlist.module.scss';
-import axios from 'axios';
 import Logo from '../../components/Logo';
 import { Form } from '../../components/Form';
 import { FormInputField } from '../../components/Form/InputField';
-import { TApiResponse, TForm } from '../../constants/Types';
-import LayoutContentMiddle from '../../components/Layout/ContentMiddle';
+import { TForm } from '../../constants/Types';
 import { SurrealSignin } from '../../lib/Surreal';
-import { useUserDetails } from '../../hooks/KardsUser';
+import { useDelayedRefreshAuthenticatedUser, useIsAuthenticated } from '../../hooks/KardsUser';
+import AppLayout from '../../components/Layout/App';
 
 export default function Signin() {
     const router = useRouter();
     const [working, setWorking] = useState(false);
-    const {isReady, result: user} = useUserDetails();
+    const authenticated = useIsAuthenticated();
+    const refreshUserDetails = useDelayedRefreshAuthenticatedUser();
     
     useEffect(() => {
-        if (isReady && user) router.push('/account');
-    }, [isReady, user]);
+        if (authenticated) router.push('/account');
+    }, [authenticated]);
 
     const submitForm: TForm['onSubmit'] = async ({ values, faulty }) => {
         if (faulty.identifier)
@@ -35,10 +34,13 @@ export default function Signin() {
             identifier: values.identifier,
             password: values.password
         }).then(authenticated => {
-            if (authenticated) return router.push('/account');
-            toast.error(
-                `Your username/email or password is incorrect.`
-            );
+            if (authenticated) {
+                refreshUserDetails();
+            } else {
+                toast.error(
+                    `Your username/email or password is incorrect.`
+                );
+            }
         }).finally(() => setWorking(false));
     };
 
@@ -56,15 +58,7 @@ export default function Signin() {
     });
 
     return (
-        <LayoutContentMiddle>
-            <div className={styles.back}>
-                <Button
-                    text="Back"
-                    icon={<ArrowBack />}
-                    size="Small"
-                    onClick={() => router.push('/')}
-                />
-            </div>
+        <AppLayout>
             <Form
                 className={styles.form}
                 inputs={[inputIdentifier, inputPassword]}
@@ -77,6 +71,6 @@ export default function Signin() {
                 </div>
                 <Button text="Signin" loading={working} />
             </Form>
-        </LayoutContentMiddle>
+        </AppLayout>
     );
 }
