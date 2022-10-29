@@ -9,7 +9,10 @@ import { Form } from '../../components/Form';
 import { FormInputField } from '../../components/Form/InputField';
 import { TForm } from '../../constants/Types';
 import { SurrealSignin } from '../../lib/Surreal';
-import { useDelayedRefreshAuthenticatedUser, useIsAuthenticated } from '../../hooks/KardsUser';
+import {
+    useDelayedRefreshAuthenticatedUser,
+    useIsAuthenticated,
+} from '../../hooks/KardsUser';
 import AppLayout from '../../components/Layout/App';
 
 export default function Signin() {
@@ -17,10 +20,10 @@ export default function Signin() {
     const [working, setWorking] = useState(false);
     const authenticated = useIsAuthenticated();
     const refreshUserDetails = useDelayedRefreshAuthenticatedUser();
-    
+
     useEffect(() => {
         if (authenticated) router.push('/account');
-    }, [authenticated]);
+    }, [authenticated, router]);
 
     const submitForm: TForm['onSubmit'] = async ({ values, faulty }) => {
         if (faulty.identifier)
@@ -32,16 +35,18 @@ export default function Signin() {
 
         SurrealSignin({
             identifier: values.identifier,
-            password: values.password
-        }).then(authenticated => {
-            if (authenticated) {
-                refreshUserDetails();
-            } else {
-                toast.error(
-                    `Your username/email or password is incorrect.`
-                );
-            }
-        }).finally(() => setWorking(false));
+            password: values.password,
+        })
+            .then((authenticated) => {
+                if (authenticated) {
+                    refreshUserDetails();
+                } else {
+                    toast.error(
+                        `Your username/email or password is incorrect.`
+                    );
+                }
+            })
+            .finally(() => setWorking(false));
     };
 
     const inputIdentifier = new FormInputField({

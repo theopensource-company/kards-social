@@ -1,10 +1,13 @@
-import React from "react";
-import { LogoSmall } from "../../Logo";
-import styles from "../../../styles/components/layout/App/Navbar.module.scss";
-import { useDelayedRefreshAuthenticatedUser, useIsAuthenticated } from "../../../hooks/KardsUser";
-import Link from "next/link";
-import { SurrealQuery, SurrealSignout } from "../../../lib/Surreal";
-import { ButtonSmall } from "../../Button";
+import React from 'react';
+import { LogoSmall } from '../../Logo';
+import styles from '../../../styles/components/layout/App/Navbar.module.scss';
+import {
+    useDelayedRefreshAuthenticatedUser,
+    useIsAuthenticated,
+} from '../../../hooks/KardsUser';
+import Link from 'next/link';
+import { SurrealSignout } from '../../../lib/Surreal';
+import { ButtonSmall } from '../../Button';
 
 export default function AppLayoutNavbar() {
     const authenticated = useIsAuthenticated();
@@ -16,26 +19,22 @@ export default function AppLayoutNavbar() {
             <div>
                 {authenticated ? (
                     <>
-                        <a href="#" onClick={(e) => {
-                            e.preventDefault();
-                            SurrealSignout().then(() => {
-                                refreshUserDetails();
-
-                                setTimeout(() => {
-                                    SurrealQuery("SELECT * FROM user");
-                                }, 1000)
-                            });
-                        }}>
+                        <a
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                SurrealSignout().then(() =>
+                                    refreshUserDetails()
+                                );
+                            }}
+                        >
                             Signout
                         </a>
                         <Link href="/account">
-                            <a>
-                                Account
-                            </a>
+                            <a>Account</a>
                         </Link>
-                        
                     </>
-                ): (
+                ) : (
                     <>
                         <Link href="/auth/signin">
                             <ButtonSmall text="Signin" />
@@ -44,5 +43,5 @@ export default function AppLayoutNavbar() {
                 )}
             </div>
         </div>
-    )
+    );
 }

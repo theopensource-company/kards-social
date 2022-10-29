@@ -17,7 +17,7 @@ export default function Account() {
             toast.info('Please signin first!');
             router.push('/auth/signin');
         }
-    }, [auth]);
+    }, [auth, router]);
 
     return (
         <AppLayout>
@@ -26,17 +26,22 @@ export default function Account() {
                     <h1>{auth.details.name}</h1>
                     <p>@{auth.details.username}</p>
                     <p>{auth.details.email}</p>
-                    <p>Member since {moment(auth.details.created).toNow(true)}</p>
-                    <input defaultValue={auth.details.name} onBlur={(e) => {
-                        const query = 'UPDATE user SET name="' + e.target.value + '"';
-                        console.log(query);
-                        
-                        SurrealQuery(query, {
-                            name: e.target.value
-                        });
-                    }} />
+                    <p>
+                        Member since {moment(auth.details.created).toNow(true)}
+                    </p>
+                    <input
+                        defaultValue={auth.details.name}
+                        onBlur={(e) => {
+                            const query =
+                                'UPDATE user SET name="' + e.target.value + '"';
+                            console.log(query);
+
+                            SurrealQuery(query, {
+                                name: e.target.value,
+                            });
+                        }}
+                    />
                 </div>
-                
             )}
         </AppLayout>
     );

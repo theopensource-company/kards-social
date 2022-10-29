@@ -22,7 +22,9 @@ function MyApp({ Component, pageProps }: AppProps) {
                         return type == 'error' ? (
                             <Cross size={15} color="Light" />
                         ) : (
-                            <Info color={type == 'default' ? undefined : 'Light'} />
+                            <Info
+                                color={type == 'default' ? undefined : 'Light'}
+                            />
                         );
                     }}
                 />

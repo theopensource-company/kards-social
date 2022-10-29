@@ -15,13 +15,15 @@ export const SurrealInit = async () => {
     if (token) {
         console.log('Authenticating user with existing token');
         try {
-            await SurrealInstance.authenticate(token)
-        } catch(e) {
-            console.error('Failed to authenticate user with existing token, clearing it.');
+            await SurrealInstance.authenticate(token);
+        } catch (e) {
+            console.error(
+                'Failed to authenticate user with existing token, clearing it.'
+            );
             localStorage.removeItem('kusrsess');
         }
     }
-}
+};
 
 export const SurrealQuery = async <T = unknown>(
     query: string,
@@ -49,12 +51,15 @@ export const SurrealSignin = async (auth: {
             });
     });
 
-export const SurrealSignout = async (): Promise<boolean> => new Promise((resolve) => {
-    SurrealInstance.invalidate().then(async res => {
-        localStorage.removeItem('kusrsess');
-        resolve(false);
-    }).catch(error => {
-        console.error(error);
-        resolve(true);
+export const SurrealSignout = async (): Promise<boolean> =>
+    new Promise((resolve) => {
+        SurrealInstance.invalidate()
+            .then(async () => {
+                localStorage.removeItem('kusrsess');
+                resolve(false);
+            })
+            .catch((error) => {
+                console.error(error);
+                resolve(true);
+            });
     });
-});
