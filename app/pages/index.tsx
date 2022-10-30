@@ -16,7 +16,7 @@ export default function Landing() {
                 <h1>Opening up soon</h1>
                 <span>
                     <Link href="/join-waitlist">
-                        <a>Reserve your spot now</a>
+                        Reserve your spot now
                     </Link>
                 </span>
 

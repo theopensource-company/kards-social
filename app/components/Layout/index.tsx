@@ -3,6 +3,7 @@ import Head from 'next/head';
 
 import { Color } from '../../constants/Colors';
 import { TPageLayout } from '../../constants/Types';
+import Link from 'next/link';
 
 export default function Layout({
     title,
@@ -95,9 +96,9 @@ export default function Layout({
             <div id="app-container">{children}</div>
             <footer>
                 &copy; {`${new Date().getFullYear()} `}
-                <a href="https://theopensource.company">
+                <Link href="https://theopensource.company">
                     The Open Source Company
-                </a>
+                </Link>
                 , All Rights Reserved.
             </footer>
         </>

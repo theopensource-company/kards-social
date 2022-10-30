@@ -31,7 +31,7 @@ export default function AppLayoutNavbar() {
                             Signout
                         </a>
                         <Link href="/account">
-                            <a>Account</a>
+                            Account
                         </Link>
                     </>
                 ) : (
