@@ -2,7 +2,6 @@ import React from 'react';
 import { LogoSmall } from '../../Logo';
 import styles from '../../../styles/components/layout/App/Navbar.module.scss';
 import {
-    useDelayedRefreshAuthenticatedUser,
     useIsAuthenticated,
 } from '../../../hooks/KardsUser';
 import Link from 'next/link';
@@ -11,11 +10,12 @@ import { ButtonSmall } from '../../Button';
 
 export default function AppLayoutNavbar() {
     const authenticated = useIsAuthenticated();
-    const refreshUserDetails = useDelayedRefreshAuthenticatedUser();
 
     return (
         <div className={styles.navbar}>
-            <LogoSmall className={styles.logo} />
+            <Link href="/">
+                <LogoSmall className={styles.logo} />
+            </Link>
             <div>
                 {authenticated ? (
                     <>
@@ -23,9 +23,12 @@ export default function AppLayoutNavbar() {
                             href="#"
                             onClick={(e) => {
                                 e.preventDefault();
-                                SurrealSignout().then(() =>
-                                    refreshUserDetails()
-                                );
+                                SurrealSignout().then(() => {
+                                    // TODO: invalidate is currently broken, change when fixed: https://github.com/surrealdb/surrealdb/issues/1314
+                                    // should refresh details and navigate with next router.
+                                    // refreshUserDetails()
+                                    location.href = '/';
+                                });
                             }}
                         >
                             Signout

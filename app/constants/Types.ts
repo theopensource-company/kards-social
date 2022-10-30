@@ -2,6 +2,16 @@ import { FormEvent, ReactNode } from "react";
 import { FormItem } from "../components/Form/FormItem";
 import { BasicColorType, ColorType } from "./Colors";
 
+/* ENVIRONMENT */
+
+export type TEnvironment = 'prod' | 'dev';
+export const FeatureFlagOptions = ['preLaunchPage'] as const;
+export type TFeatureFlagOptions = typeof FeatureFlagOptions[number];
+
+export type TFeatureFlags = {
+  [key in TFeatureFlagOptions]: boolean;
+}
+
 export type SvgBaseProps = {
   size?: number;
   className?: string;

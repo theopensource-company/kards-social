@@ -4,9 +4,12 @@ import Link from 'next/link';
 import styles from '../styles/Landing.module.scss';
 import Logo from '../components/Logo';
 import LayoutContentMiddle from '../components/Layout/ContentMiddle';
+import { useFeatureFlag } from '../hooks/Environment';
+import AppLayout from '../components/Layout/App';
 
 export default function Landing() {
-    return (
+    const preLaunchPage = useFeatureFlag('preLaunchPage');
+    return preLaunchPage ? (
         <LayoutContentMiddle>
             <div className={styles.content}>
                 <div className="image-frame">
@@ -26,5 +29,9 @@ export default function Landing() {
                 </p>
             </div>
         </LayoutContentMiddle>
+    ) : (
+        <AppLayout>
+            Hello
+        </AppLayout>
     );
 }

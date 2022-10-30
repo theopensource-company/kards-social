@@ -5,7 +5,7 @@
   "author": "The Open Source Company",
   "license": "AGPL-3.0-only",
   "scripts": {
-    "dev": "NEXT_PUBLIC_SURREAL_ENDPOINT=\"https://dev-db.kards.social\" NEXT_PUBLIC_SURREAL_NAMESPACE=\"micha-test\" next dev -p 12010",
+    "dev": "NEXT_PUBLIC_ENV=\"dev\" NEXT_PUBLIC_SURREAL_ENDPOINT=\"https://dev-db.kards.social\" NEXT_PUBLIC_SURREAL_NAMESPACE=\"micha-test\" next dev -p 12010",
     "build": "next build",
     "start": "next start",
     "lint": "next lint --max-warnings 0",
