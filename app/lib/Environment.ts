@@ -1,7 +1,7 @@
 import { FeatureFlagOptions, TEnvironment, TFeatureFlagOptions, TFeatureFlags } from "../constants/Types";
 
-const environment = (process.env.NEXT_PUBLIC_ENV ?? 'prod') as TEnvironment;
-const defaults: {
+export const Environment = (process.env.NEXT_PUBLIC_ENV ?? 'prod') as TEnvironment;
+const featureFlagDefaults: {
     [key in TEnvironment | 'any']: {
         [key in TFeatureFlagOptions]?: boolean;
     }
@@ -22,8 +22,8 @@ const featureFlagFromEnv = (flag: TFeatureFlagOptions): boolean | void => {
 }
 
 const featureFlagDefault = (flag: TFeatureFlagOptions): boolean => {
-    const envFlag = defaults[environment][flag];
-    const anyFlag = defaults['any'][flag];
+    const envFlag = featureFlagDefaults[Environment][flag];
+    const anyFlag = featureFlagDefaults['any'][flag];
     if (envFlag) return envFlag;
     if (anyFlag) return anyFlag;
     return false;
