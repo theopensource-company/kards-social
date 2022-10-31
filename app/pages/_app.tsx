@@ -13,7 +13,7 @@ import { useRouter } from 'next/router';
 
 function MyApp({ Component, pageProps }: AppProps) {
     const router = useRouter()
-    const [showDevTools, setShowDevTools] = useState<boolean>(true); 
+    const [showDevTools, setShowDevTools] = useState<boolean>(process.env.NEXT_PUBLIC_ENV == 'dev'); 
     
     return (
         <InitializeSurreal>
