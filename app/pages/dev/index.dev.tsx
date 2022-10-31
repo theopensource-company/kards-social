@@ -46,14 +46,14 @@ export default function Page({
             {
                 Object.keys(routes).map(letter => {
                     return (
-                        <>
+                        <div key={letter}>
                             <h2>
                                 {letter.toUpperCase()}
                             </h2>
                             <ul>
                                 {
                                     routes[letter].map(r => (
-                                        <li>
+                                        <li key={r}>
                                             <Link href={`/dev/${r}`} style={{
                                                 fontSize: '18px'
                                             }}>
@@ -65,7 +65,7 @@ export default function Page({
                             </ul>
 
                             <br />
-                        </>
+                        </div>
                     )
                 })
             }
