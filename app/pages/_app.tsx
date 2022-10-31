@@ -44,7 +44,6 @@ function MyApp({ Component, pageProps }: AppProps) {
                     position="top-center"
                     closeButton={false}
                     icon={({ type }) => {
-                        console.log(type);
                         return type == 'error' ? (
                             <Cross size={15} color="Light" />
                         ) : (
