@@ -70,12 +70,10 @@ export const useDelayedRefreshAuthenticatedUser = (): () => {
 } => {
     const state = useContext(AuthContext);
     const [isReady, setReady] = useState<boolean>(false);
-    const [update, setUpdate] = useState<boolean>(false);
+    const [update, setUpdate] = useState<number>(0);
 
     useEffect(() => {
-        if (update) UserDetails().then(user => {
-            console.log('b', user);
-            
+        if (update > 0) UserDetails().then(user => {            
             state[1]({
                 authenticated: !!user,
                 details: user
@@ -84,7 +82,7 @@ export const useDelayedRefreshAuthenticatedUser = (): () => {
     }, [update]);
 
     return () => {
-        setUpdate(true);
+        setUpdate(update + 1);
         return {
             isReady,
             result: state[0].details

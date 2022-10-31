@@ -3,14 +3,14 @@ import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 
-import { useAuthState } from '../hooks/KardsUser';
-import { SurrealQuery } from '../lib/Surreal';
+import { useAuthState, useDelayedRefreshAuthenticatedUser } from '../hooks/KardsUser';
 import AppLayout from '../components/Layout/App';
+import { UpdateAuthenticatedUser } from '../lib/KardsUser';
 
 export default function Account() {
     const router = useRouter();
-
     const auth = useAuthState();
+    const refreshAccount = useDelayedRefreshAuthenticatedUser();
 
     useEffect(() => {
         if (!auth.authenticated) {
@@ -31,14 +31,14 @@ export default function Account() {
                     </p>
                     <input
                         defaultValue={auth.details.name}
-                        onBlur={(e) => {
-                            const query =
-                                'UPDATE user SET name="' + e.target.value + '"';
-                            console.log(query);
-
-                            SurrealQuery(query, {
-                                name: e.target.value,
-                            });
+                        onBlur={async (e) => {
+                            if (await UpdateAuthenticatedUser({
+                                name: e.target.value as `${string} ${string}`
+                            })) {
+                                refreshAccount();
+                            } else {
+                                toast.error("Failed to update user");
+                            }
                         }}
                     />
                 </div>
