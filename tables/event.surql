@@ -1,4 +1,7 @@
-DEFINE TABLE event SCHEMALESS;
+DEFINE TABLE event SCHEMALESS
+    PERMISSIONS
+        FOR select WHERE ($scope = 'user' && field = $auth.id) OR $scope = 'admin'
+        FOR update, delete, create NONE;
 
 DEFINE FIELD created ON event TYPE datetime VALUE $before OR time::now();
 DEFINE FIELD from ON TABLE event;

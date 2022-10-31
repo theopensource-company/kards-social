@@ -1,10 +1,6 @@
 DEFINE TABLE admin SCHEMAFULL
   PERMISSIONS
-    FOR select, update, delete
-      WHERE id = $auth.id
-      OR array::len((select id from admin where id = $auth.id)) > 0
-    FOR create
-      WHERE array::len((select id from admin where id = $auth.id)) > 0;
+    FOR select, update, delete, create WHERE $scope = 'admin';
 
 DEFINE FIELD name ON TABLE admin TYPE string ASSERT $value != NONE AND array::len(string::words($value)) > 1;
 DEFINE FIELD email ON TABLE admin TYPE string ASSERT is::email($value);
