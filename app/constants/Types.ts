@@ -99,11 +99,12 @@ export type TFormInput = TFormItem<string> & {
 
 /* Kards user types */
 
+export type TEmail = `${string}@${string}.${string}`;
 export type TKardsUserID = `user:${string}`;
 export type TKardsUserDetails = {
   id: TKardsUserID;
   name: `${string} ${string}`;              //It's not strict about what comes after it, but this way it must contain at least one space (first & lastname)
-  email: `${string}@${string}.${string}`;
+  email: TEmail;
   username: string;
   created: Date;
   updated: Date;
@@ -111,7 +112,7 @@ export type TKardsUserDetails = {
 
 export type TUpdateKardsUser = {
   name?: `${string} ${string}`;             //It's not strict about what comes after it, but this way it must contain at least one space (first & lastname)
-  email?: `${string}@${string}.${string}`;
+  email?: TEmail;
   username?: string;
   password?: string;
 };
@@ -121,7 +122,18 @@ export type TAuthenticateKardsUser = {
   password: string;
 };
 
-export type TAuthState = {
+export type TAuthState<T = TKardsUserDetails> = {
   authenticated: boolean;
-  details: TKardsUserDetails | null;
+  details: T | null;
+};
+
+/* Admin user types */
+
+export type TAdminUserID = `user:${string}`;
+export type TAdminUserDetails = {
+  id: TAdminUserID;
+  name: `${string} ${string}`;              //It's not strict about what comes after it, but this way it must contain at least one space (first & lastname)
+  email: TEmail;
+  created: Date;
+  updated: Date;
 };

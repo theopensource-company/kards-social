@@ -3,5 +3,5 @@ DEFINE SCOPE user
 ;
 
 DEFINE SCOPE admin SESSION 1h
-    SIGNIN ( SELECT * FROM user WHERE email = $identifier AND crypto::argon2::compare(password, $password) )
+    SIGNIN ( SELECT * FROM admin WHERE email = $identifier AND crypto::argon2::compare(password, $password) )
 ;

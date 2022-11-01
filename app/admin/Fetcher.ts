@@ -2,6 +2,7 @@
 
 import { stringify } from "query-string";
 import { fetchUtils, DataProvider, Options } from "ra-core";
+import { SurrealQueryAdmin } from "./Surreal";
 
 const httpClient = async (url: string, options: Options = {}) => {
   let token = localStorage.getItem("kadmxs");
@@ -25,32 +26,40 @@ const httpClient = async (url: string, options: Options = {}) => {
   return response;
 };
 
+export function SelectFilterBuilder(
+  filters: any
+) {
+  let result = `ORDER BY ${filters._sort} ${filters._order ?? 'DESC'}`;
+  if (filters.end) result += ` LIMIT BY ${filters.end}`;
+  if (filters.start) result += ` START AT ${filters.start}`;
+  return result;
+}
+
 export const Fetcher = (): DataProvider => ({
   getList: (resource, params) => {
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
-    const query = {
-      ...fetchUtils.flattenObject(params.filter),
-      _sort: field,
-      _order: order,
-      _start: (page - 1) * perPage,
-      _end: page * perPage,
-    };
-    const url = `${location.origin}/api/${resource}/list?${stringify(query)}`;
+    const start = (page - 1) * perPage;
+    const limit = (page * perPage) - start;
+    const query = 
+      `SELECT *, count((select id from ${resource})) as total FROM ${resource} ORDER BY ${field} ${order} LIMIT BY ${limit} START AT ${start}`;
 
-    return httpClient(url).then(({ headers, json }) => {
-      if (!headers.has("x-total-count")) {
-        throw new Error(
-          "The X-Total-Count header is missing in the HTTP Response. The jsonServer Data Provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare X-Total-Count in the Access-Control-Expose-Headers header?"
-        );
+    return SurrealQueryAdmin(query).then(result => {
+      if (result && result[0].result && result[0].result) {
+        let total = 0;
+        const data = result && result[0].result && result[0].result.map((user: any) => {
+          total = user.total;
+          delete user.total;
+          return user;
+        });       
+
+        return {
+          data,
+          total
+        };
+      } else {
+        throw new Error("An issue occured while fetching data");
       }
-      return {
-        data: json,
-        total: parseInt(
-          (headers.get("x-total-count") || "").split("/").pop() || "1",
-          10
-        ),
-      };
     });
   },
 
