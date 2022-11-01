@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '..';
 import { TPageLayout } from '../../../constants/Types';
-import AppLayoutNavbar from './navbar';
+import AppLayoutNavbar from './Navbar';
 
 export default function AppLayout({ children, ...props }: TPageLayout) {
     return (

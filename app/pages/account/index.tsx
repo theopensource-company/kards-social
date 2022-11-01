@@ -3,9 +3,12 @@ import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 
-import { useAuthState, useDelayedRefreshAuthenticatedUser } from '../hooks/KardsUser';
-import AppLayout from '../components/Layout/App';
-import { UpdateAuthenticatedUser } from '../lib/KardsUser';
+import {
+    useAuthState,
+    useDelayedRefreshAuthenticatedUser,
+} from '../../hooks/KardsUser';
+import AccountLayout from '../../components/Layout/Account';
+import { UpdateAuthenticatedUser } from '../../lib/KardsUser';
 
 export default function Account() {
     const router = useRouter();
@@ -20,7 +23,7 @@ export default function Account() {
     }, [auth, router]);
 
     return (
-        <AppLayout>
+        <AccountLayout>
             {auth.details && (
                 <div>
                     <h1>{auth.details.name}</h1>
@@ -32,17 +35,20 @@ export default function Account() {
                     <input
                         defaultValue={auth.details.name}
                         onBlur={async (e) => {
-                            if (await UpdateAuthenticatedUser({
-                                name: e.target.value as `${string} ${string}`
-                            })) {
+                            if (
+                                await UpdateAuthenticatedUser({
+                                    name: e.target
+                                        .value as `${string} ${string}`,
+                                })
+                            ) {
                                 refreshAccount();
                             } else {
-                                toast.error("Failed to update user");
+                                toast.error('Failed to update user');
                             }
                         }}
                     />
                 </div>
             )}
-        </AppLayout>
+        </AccountLayout>
     );
 }

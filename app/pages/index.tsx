@@ -18,9 +18,7 @@ export default function Landing() {
 
                 <h1>Opening up soon</h1>
                 <span>
-                    <Link href="/join-waitlist">
-                        Reserve your spot now
-                    </Link>
+                    <Link href="/join-waitlist">Reserve your spot now</Link>
                 </span>
 
                 <p>
@@ -30,8 +28,6 @@ export default function Landing() {
             </div>
         </LayoutContentMiddle>
     ) : (
-        <AppLayout>
-            Hello
-        </AppLayout>
+        <AppLayout>Hello</AppLayout>
     );
 }

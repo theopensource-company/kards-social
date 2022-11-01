@@ -13,21 +13,23 @@ export const UserDetails = async (): Promise<TKardsUserDetails | null> => {
     return preParse;
 };
 
-export const UpdateAuthenticatedUser = async (user: TUpdateKardsUser): Promise<TKardsUserDetails | false> => {
+export const UpdateAuthenticatedUser = async (
+    user: TUpdateKardsUser
+): Promise<TKardsUserDetails | false> => {
     if (user.email) {
-        alert("Cannot yet update email field");
+        alert('Cannot yet update email field');
         return false;
     }
 
     const result = await SurrealQuery<TKardsUserDetails>(`UPDATE user SET 
         ${Object.keys(user).map((prop) => {
-            const val = JSON.stringify({...user}[prop]);
-            switch(prop) {
+            const val = JSON.stringify({ ...user }[prop]);
+            switch (prop) {
                 case 'password':
                     return `password=crypto::argon2::generate(${val})`;
                 default:
                     return `${prop}=${val}`;
-            };
+            }
         })}
         WHERE id = $auth.id`);
 
@@ -39,4 +41,4 @@ export const UpdateAuthenticatedUser = async (user: TUpdateKardsUser): Promise<T
     }
 
     return preParse;
-}
+};

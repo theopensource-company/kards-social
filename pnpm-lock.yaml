@@ -66,6 +66,7 @@ importers:
       react: 18.2.0
       react-admin: ^4.4.1
       react-dom: 18.2.0
+      react-feather: ^2.0.10
       react-hook-form: ^7.34.2
       react-media-hook: ^0.4.9
       react-router: ^6.1.0
@@ -91,6 +92,7 @@ importers:
       react: 18.2.0
       react-admin: 4.4.1_svv57fnwa3zhduaxzqdp5fjkaq
       react-dom: 18.2.0_react@18.2.0
+      react-feather: 2.0.10_react@18.2.0
       react-hook-form: 7.37.0_react@18.2.0
       react-media-hook: 0.4.9_react@18.2.0
       react-router: 6.4.2_react@18.2.0
@@ -4078,6 +4080,15 @@ packages:
       react: '>=16.13.1'
     dependencies:
       '@babel/runtime': 7.19.0
+      react: 18.2.0
+    dev: false
+
+  /react-feather/2.0.10_react@18.2.0:
+    resolution: {integrity: sha512-BLhukwJ+Z92Nmdcs+EMw6dy1Z/VLiJTzEQACDUEnWMClhYnFykJCGWQx+NmwP/qQHGX/5CzQ+TGi8ofg2+HzVQ==}
+    peerDependencies:
+      react: '>=16.8.6'
+    dependencies:
+      prop-types: 15.8.1
       react: 18.2.0
     dev: false
 

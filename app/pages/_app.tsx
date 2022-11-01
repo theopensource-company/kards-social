@@ -12,29 +12,37 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 function MyApp({ Component, pageProps }: AppProps) {
-    const router = useRouter()
-    const [showDevTools, setShowDevTools] = useState<boolean>(process.env.NEXT_PUBLIC_ENV == 'dev'); 
-    
+    const router = useRouter();
+    const [showDevTools, setShowDevTools] = useState<boolean>(
+        process.env.NEXT_PUBLIC_ENV == 'dev'
+    );
+
     return (
         <InitializeSurreal>
             <AuthProvider>
                 {showDevTools && !router.pathname.startsWith('/dev') && (
-                    <div style={{
-                        position: 'absolute',
-                        margin: '15px',
-                        padding: '5px 10px',
-                        backgroundColor: 'red',
-                        color: 'white',
-                        borderRadius: '3px',
-                        right: 0,
-                        display: 'flex',
-                        gap: '10px'
-                    }}>
-                        <Link href="/dev">
-                            Devtools
-                        </Link>
+                    <div
+                        style={{
+                            position: 'absolute',
+                            margin: '15px',
+                            padding: '5px 10px',
+                            backgroundColor: 'red',
+                            color: 'white',
+                            borderRadius: '3px',
+                            right: 0,
+                            display: 'flex',
+                            gap: '10px',
+                        }}
+                    >
+                        <Link href="/dev">Devtools</Link>
                         <span>-</span>
-                        <a href="#" onClick={e => {e.preventDefault(); setShowDevTools(false)}}>
+                        <a
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setShowDevTools(false);
+                            }}
+                        >
                             Hide
                         </a>
                     </div>
