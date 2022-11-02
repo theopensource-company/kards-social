@@ -1,7 +1,7 @@
 // ORIGINAL: https://github.com/marmelab/react-admin/blob/master/packages/ra-data-json-server/src/index.ts
 
 import { stringify } from "query-string";
-import { fetchUtils, DataProvider, Options } from "ra-core";
+import { fetchUtils, DataProvider, Options, UpdateResult, RaRecord, UpdateManyResult } from "ra-core";
 import { SurrealQueryAdmin } from "./Surreal";
 
 const httpClient = async (url: string, options: Options = {}) => {
@@ -35,6 +35,22 @@ export function SelectFilterBuilder(
   return result;
 }
 
+export function ParseUpdatedData<TData extends RaRecord = any>(data: TData) {
+  return Object.keys(data).map(key => {
+    const val = data[key];
+    switch(key) {
+      case 'id':
+      case 'created':
+      case 'updated':
+        return null;
+      case 'password':
+        return val ? `password=crypto::argon2::generate("${val}")` : null;
+      default:
+        return `${key}=${JSON.stringify(val)}`;
+    }
+  }).filter(a => !!a);
+}
+
 export const Fetcher = (): DataProvider => ({
   getList: (resource, params) => {
     const { page, perPage } = params.pagination;
@@ -45,7 +61,7 @@ export const Fetcher = (): DataProvider => ({
       `SELECT *, count((select id from ${resource})) as total FROM ${resource} ORDER BY ${field} ${order} LIMIT BY ${limit} START AT ${start}`;
 
     return SurrealQueryAdmin(query).then(result => {
-      if (result && result[0].result && result[0].result) {
+      if (result[0]?.result) {
         let total = 0;
         const data = result && result[0].result && result[0].result.map((user: any) => {
           total = user.total;
@@ -63,12 +79,19 @@ export const Fetcher = (): DataProvider => ({
     });
   },
 
-  getOne: (resource, params) =>
-    httpClient(`${location.origin}/api/${resource}/info/${params.id}`).then(
-      ({ json }) => ({
-        data: json,
-      })
-    ),
+  getOne: (resource, params) => {
+    const query = 
+      `SELECT * FROM ${resource} WHERE id="${params.id}"`;
+    return SurrealQueryAdmin(query).then(result => {
+      if (result[0]?.result) {
+        return {
+          data: result[0]?.result[0] as any ?? {}
+        };
+      } else {
+        throw new Error("An issue occured while fetching data");
+      }
+    });
+  },
 
   getMany: (resource, params) => {
     const url = `${location.origin}/api/${resource}/info/${params.ids.join(
@@ -106,22 +129,40 @@ export const Fetcher = (): DataProvider => ({
     });
   },
 
-  update: (resource, params) =>
-    httpClient(`${location.origin}/api/${resource}/${params.id}`, {
-      method: "PUT",
-      body: JSON.stringify(params.data),
-    }).then(({ json }) => ({ data: json })),
+  update: (_resource, params) => {
+    const query =
+      `UPDATE ${params.data.id} SET ${ParseUpdatedData(params.data as RaRecord).join(', ')}`;
+
+    return SurrealQueryAdmin(query).then(result => {
+      if (result[0]?.result) {
+        return Promise.resolve({
+          data: result[0]?.result[0]
+        } as UpdateResult);
+      } else {
+        console.error(result);
+        throw new Error("An issue occured while updating data");
+      }
+    });
+  },
 
   // json-server doesn't handle filters on UPDATE route, so we fallback to calling UPDATE n times instead
-  updateMany: (resource, params) =>
-    Promise.all(
-      params.ids.map((id) =>
-        httpClient(`${location.origin}/api/${resource}/${id}`, {
-          method: "PUT",
-          body: JSON.stringify(params.data),
-        })
-      )
-    ).then((responses) => ({ data: responses.map(({ json }) => json.id) })),
+  updateMany: (resource, params) => {
+    const query =
+      `UPDATE ${resource} SET ${ParseUpdatedData(params.data as RaRecord).join(', ')} WHERE ${JSON.stringify(params.ids)} CONTAINS id`;
+
+    return SurrealQueryAdmin<{
+      id?: string;
+    }>(query).then(result => {
+      if (result[0]?.result) {
+        return Promise.resolve({
+          data: result[0]?.result.map(rec => rec.id).filter(a => !!a)
+        } as UpdateManyResult);
+      } else {
+        console.error(result);
+        throw new Error("An issue occured while updating data");
+      }
+    });
+  },
 
   create: (resource, params) =>
     httpClient(`${location.origin}/api/${resource}`, {
