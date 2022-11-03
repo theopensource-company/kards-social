@@ -1,30 +1,5 @@
-// ORIGINAL: https://github.com/marmelab/react-admin/blob/master/packages/ra-data-json-server/src/index.ts
-
-import { stringify } from "query-string";
-import { fetchUtils, DataProvider, Options, UpdateResult, RaRecord, UpdateManyResult, CreateResult, DeleteResult, DeleteManyParams, DeleteManyResult } from "ra-core";
+import { DataProvider, UpdateResult, RaRecord, UpdateManyResult, CreateResult, DeleteResult, DeleteManyResult } from "ra-core";
 import { SurrealQueryAdmin } from "./Surreal";
-
-const httpClient = async (url: string, options: Options = {}) => {
-  let token = localStorage.getItem("kadmxs");
-  if (!token || token.length < 1) {
-    //Token might be empty just after signin in, so needs a little timeout to be sure that the token is populated.
-    await new Promise<void>((r) =>
-      setTimeout(() => {
-        token = localStorage.getItem("kadmxs");
-        r();
-      }, 500)
-    );
-  }
-
-  options.headers = new Headers({
-    ...options.headers,
-    Authorization: `Bearer ${localStorage.getItem("kadmxs") || ""}`,
-  });
-
-  const response = await fetchUtils.fetchJson(url, options);
-  if (response.json.success) response.json = response.json.result;
-  return response;
-};
 
 export function SelectFilterBuilder(
   filters: any
@@ -150,7 +125,6 @@ export const Fetcher = (): DataProvider => ({
     });
   },
 
-  // json-server doesn't handle filters on UPDATE route, so we fallback to calling UPDATE n times instead
   updateMany: (resource, params) => {
     const query =
       `UPDATE ${resource} SET ${ParseUpdatedData(params.data as RaRecord).join(', ')} WHERE ${JSON.stringify(params.ids)} CONTAINS id`;
@@ -201,7 +175,6 @@ export const Fetcher = (): DataProvider => ({
     });
   },
 
-  // json-server doesn't handle filters on DELETE route, so we fallback to calling DELETE n times instead
   deleteMany: (resource, params) => {
     const query =
       `DELETE ${resource} WHERE ${JSON.stringify(params.ids)} CONTAINS id`;

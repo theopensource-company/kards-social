@@ -1,5 +1,5 @@
 import { UserIdentity } from "ra-core";
-import { TAdminUserDetails, TApiResponse } from "../constants/Types";
+import { TAdminUserDetails } from "../constants/Types";
 import { SurrealDatabase, SurrealNamespace } from "../lib/Surreal";
 import { SurrealInstanceAdmin, SurrealQueryAdmin } from "./Surreal";
 
