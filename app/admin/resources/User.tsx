@@ -19,6 +19,7 @@ import {
     useShowContext,
     useListContext,
     ListContext,
+    Create,
 } from 'react-admin';
 
 export const UserList = () => (
@@ -62,4 +63,15 @@ export const EditUser = () => (
     </Edit>
 );
 
-export const UserResource = <Resource name="user" list={UserList} edit={EditUser} show={ShowUser} />;
+export const CreateUser = () => (
+    <Create>
+        <SimpleForm>
+            <TextInput source="name" />
+            <TextInput source="username" />
+            <TextInput source="email" type="email" />
+            <TextInput source="password" type="password" label="Password" />
+        </SimpleForm>
+    </Create>
+);
+
+export const UserResource = <Resource name="user" list={UserList} edit={EditUser} show={ShowUser} create={CreateUser} />;
