@@ -113,7 +113,7 @@ export const Fetcher = (): DataProvider => ({
     const start = (page - 1) * perPage;
     const limit = (page * perPage) - start;
     const query = 
-      `SELECT *, count((select id from ${resource})) as total FROM ${resource} WHERE ${params.target} = ${JSON.stringify(params.id)} ORDER BY ${field} ${order} LIMIT BY ${limit} START AT ${start}`;
+      `SELECT *, count((select id from ${resource} WHERE ${params.target} = ${JSON.stringify(params.id)})) as total FROM ${resource} WHERE ${params.target} = ${JSON.stringify(params.id)} ORDER BY ${field} ${order} LIMIT BY ${limit} START AT ${start}`;
 
     return SurrealQueryAdmin(query).then(result => {
       if (result[0]?.result) {
