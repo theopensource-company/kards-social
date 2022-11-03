@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { ReactElement, ReactNode, useState } from 'react';
 import {
     List,
     Datagrid,
@@ -9,18 +9,18 @@ import {
     Edit,
     SimpleForm,
     TextInput,
-    EditButton,
     Show,
     TabbedShowLayout,
     Tab,
     ShowButton,
     useRecordContext,
-    useGetList,
-    useShowContext,
-    useListContext,
-    ListContext,
     Create,
+    ListContextProvider,
+    useGetManyReference,
+    useList,
+    Pagination,
 } from 'react-admin';
+import { TableHead, TableRow, TableCell } from '@mui/material';
 
 export const UserList = () => (
     <List sort={{ field: 'created', order: 'DESC' }}>
@@ -36,23 +36,74 @@ export const UserList = () => (
     </List>
 );
 
-export const ShowUser = () => (
-    <Show>
-        <TabbedShowLayout>
-            <Tab label="details">
+const UserTitle = () => {
+    const ctx = useRecordContext();
+    return (
+        <>
+            {ctx ? `User: ${ctx.name}` : "Loading"}
+        </>
+    );
+}
+
+export const ShowUser = () => {
+    return (
+        <Show title={<UserTitle />}>
+            <TabbedShowLayout>
+                <Tab label="details">
+                    <TextField source="id" />
+                    <TextField source="name" />
+                    <TextField source="username" />
+                    <EmailField source="email" />
+                    <DateField source="created" />
+                    <DateField source="updated" />
+                </Tab>
+                <Tab label="events">
+                    <ShowUserEvents />
+                </Tab>
+            </TabbedShowLayout>
+        </Show>
+    );
+}
+
+export const ShowUserEvents = () => {
+    const ctx = useRecordContext();
+    const [perPage, setPerPage] = useState<number>(10);
+    const [page, setPage] = useState<number>(1);
+    const events = useGetManyReference('event', {
+        target: 'field',
+        id: ctx.id,
+        pagination: { page, perPage },
+        sort: { field: 'created', order: 'DESC' }
+    });
+
+    const Header = () => (
+        <TableHead>
+            <TableRow>
+                <TableCell />
+                <TableCell>Id</TableCell>
+                <TableCell>Event</TableCell>
+                <TableCell>From</TableCell>
+                <TableCell>To</TableCell>
+            </TableRow>
+        </TableHead>
+    );
+
+    return (
+        <ListContextProvider value={useList(events)}>
+            <Datagrid isRowSelectable={() => false} header={<Header />}>
                 <TextField source="id" />
-                <TextField source="name" />
-                <TextField source="username" />
-                <EmailField source="email" />
-                <DateField source="created" />
-                <DateField source="updated" />
-            </Tab>
-        </TabbedShowLayout>
-    </Show>
-);
+                <TextField source="event" />
+                <TextField source="from" />
+                <TextField source="to" />
+            </Datagrid>
+            <Pagination rowsPerPageOptions={[10, 25, 50, 100]} perPage={perPage} setPerPage={setPerPage} page={page} setPage={setPage} total={events.total}  />
+        </ListContextProvider>
+    );
+};
+
 
 export const EditUser = () => (
-    <Edit>
+    <Edit title={<UserTitle />}>
         <SimpleForm>
             <TextInput disabled source="id" />
             <TextInput source="name" />
