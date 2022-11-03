@@ -1,10 +1,8 @@
-import { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { Result } from 'surrealdb.js';
-import { TAuthenticateKardsUser } from '../constants/Types';
-import { SurrealInit, SurrealQuery, SurrealSignin, SurrealSignout } from '../lib/Surreal';
-import { useDelayedRefreshAuthenticatedUser, useRefreshAuthenticatedUser } from './KardsUser';
+import { SurrealInit, SurrealQuery } from '../lib/Surreal';
 
-export function InitializeSurreal({children}: {children: ReactNode}) {
+export function InitializeSurreal({ children }: { children: ReactNode }) {
     const [ready, setReady] = useState<boolean>(false);
     useEffect(() => {
         (async () => {
@@ -13,14 +11,13 @@ export function InitializeSurreal({children}: {children: ReactNode}) {
         })();
     }, []);
 
-    return (
-        <>
-            {ready && children}
-        </>
-    );
-};
+    return <>{ready && children}</>;
+}
 
-export function useSurrealQuery<T = unknown>(query: string, vars?: Record<string, unknown>): {
+export function useSurrealQuery<T = unknown>(
+    query: string,
+    vars?: Record<string, unknown>
+): {
     isReady: boolean;
     result: Result<T[]>[] | null;
 } {
@@ -28,13 +25,16 @@ export function useSurrealQuery<T = unknown>(query: string, vars?: Record<string
     const [result, setResult] = useState<Result<T[]>[] | null>(null);
 
     useEffect(() => {
-        SurrealQuery<T>(query, vars).then(setResult).catch(console.error).finally(() => {
-            setReady(true);
-        });
-    }, []);
+        SurrealQuery<T>(query, vars)
+            .then(setResult)
+            .catch(console.error)
+            .finally(() => {
+                setReady(true);
+            });
+    }, [query, vars]);
 
     return {
         isReady,
-        result
+        result,
     };
-};
+}

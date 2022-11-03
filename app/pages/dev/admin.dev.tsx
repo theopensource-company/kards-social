@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import { useEffect } from 'react';
 
 export default function Page() {
     useEffect(() => {
-        location.href = '/admin'
+        location.href = '/admin';
     }, []);
     return;
 }

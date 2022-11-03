@@ -1,6 +1,10 @@
-import { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import Surreal, { Result } from 'surrealdb.js';
-import { SurrealEndpoint, SurrealNamespace, SurrealDatabase } from "../lib/Surreal";
+import {
+    SurrealEndpoint,
+    SurrealNamespace,
+    SurrealDatabase,
+} from '../lib/Surreal';
 
 export const SurrealInstanceAdmin = new Surreal(SurrealEndpoint);
 
@@ -20,12 +24,13 @@ export const SurrealInitAdmin = async () => {
     }
 };
 
-export const SurrealQueryAdmin = async <T = unknown>(
+export const SurrealQueryAdmin = async <T = unknown,>(
     query: string,
     vars?: Record<string, unknown>
-): Promise<Result<T[]>[]> => SurrealInstanceAdmin.query<Result<T[]>[]>(query, vars);
+): Promise<Result<T[]>[]> =>
+    SurrealInstanceAdmin.query<Result<T[]>[]>(query, vars);
 
-export function InitializeSurrealAdmin({children}: {children: ReactNode}) {
+export function InitializeSurrealAdmin({ children }: { children: ReactNode }) {
     const [ready, setReady] = useState<boolean>(false);
     useEffect(() => {
         (async () => {
@@ -34,9 +39,5 @@ export function InitializeSurrealAdmin({children}: {children: ReactNode}) {
         })();
     }, []);
 
-    return (
-        <>
-            {ready && children}
-        </>
-    );
-};
+    return <>{ready && children}</>;
+}

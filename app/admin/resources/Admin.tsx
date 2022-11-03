@@ -37,12 +37,8 @@ export const AdminList = () => (
 
 const AdminTitle = () => {
     const ctx = useRecordContext();
-    return (
-        <>
-            {ctx ? `Admin: ${ctx.name}` : "Loading"}
-        </>
-    );
-}
+    return <>{ctx ? `Admin: ${ctx.name}` : 'Loading'}</>;
+};
 
 export const ShowAdmin = () => {
     return (
@@ -61,7 +57,7 @@ export const ShowAdmin = () => {
             </TabbedShowLayout>
         </Show>
     );
-}
+};
 
 export const ShowAdminEvents = () => {
     const ctx = useRecordContext();
@@ -71,7 +67,7 @@ export const ShowAdminEvents = () => {
         target: 'field',
         id: ctx.id,
         pagination: { page, perPage },
-        sort: { field: 'created', order: 'DESC' }
+        sort: { field: 'created', order: 'DESC' },
     });
 
     const Header = () => (
@@ -94,11 +90,17 @@ export const ShowAdminEvents = () => {
                 <TextField source="from" />
                 <TextField source="to" />
             </Datagrid>
-            <Pagination rowsPerPageOptions={[10, 25, 50, 100]} perPage={perPage} setPerPage={setPerPage} page={page} setPage={setPage} total={events.total}  />
+            <Pagination
+                rowsPerPageOptions={[10, 25, 50, 100]}
+                perPage={perPage}
+                setPerPage={setPerPage}
+                page={page}
+                setPage={setPage}
+                total={events.total}
+            />
         </ListContextProvider>
     );
 };
-
 
 export const EditAdmin = () => (
     <Edit title={<AdminTitle />}>
@@ -121,4 +123,12 @@ export const CreateAdmin = () => (
     </Create>
 );
 
-export const AdminResource = <Resource name="admin" list={AdminList} edit={EditAdmin} show={ShowAdmin} create={CreateAdmin} />;
+export const AdminResource = (
+    <Resource
+        name="admin"
+        list={AdminList}
+        edit={EditAdmin}
+        show={ShowAdmin}
+        create={CreateAdmin}
+    />
+);

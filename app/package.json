@@ -8,7 +8,7 @@
     "dev": "NEXT_PUBLIC_ENV=\"dev\" NEXT_PUBLIC_SURREAL_ENDPOINT=\"https://dev-db.kards.social\" NEXT_PUBLIC_SURREAL_NAMESPACE=\"micha-test\" next dev -p 12010",
     "build": "next build && next export && next-sitemap",
     "start": "next start",
-    "lint": "next lint --max-warnings 0",
+    "lint": "eslint . --ext ts --ext tsx --max-warnings 0",
     "postbuild": "next-sitemap"
   },
   "dependencies": {

@@ -38,12 +38,8 @@ export const UserList = () => (
 
 const UserTitle = () => {
     const ctx = useRecordContext();
-    return (
-        <>
-            {ctx ? `User: ${ctx.name}` : "Loading"}
-        </>
-    );
-}
+    return <>{ctx ? `User: ${ctx.name}` : 'Loading'}</>;
+};
 
 export const ShowUser = () => {
     return (
@@ -63,7 +59,7 @@ export const ShowUser = () => {
             </TabbedShowLayout>
         </Show>
     );
-}
+};
 
 export const ShowUserEvents = () => {
     const ctx = useRecordContext();
@@ -73,7 +69,7 @@ export const ShowUserEvents = () => {
         target: 'field',
         id: ctx.id,
         pagination: { page, perPage },
-        sort: { field: 'created', order: 'DESC' }
+        sort: { field: 'created', order: 'DESC' },
     });
 
     const Header = () => (
@@ -96,11 +92,17 @@ export const ShowUserEvents = () => {
                 <TextField source="from" />
                 <TextField source="to" />
             </Datagrid>
-            <Pagination rowsPerPageOptions={[10, 25, 50, 100]} perPage={perPage} setPerPage={setPerPage} page={page} setPage={setPage} total={events.total}  />
+            <Pagination
+                rowsPerPageOptions={[10, 25, 50, 100]}
+                perPage={perPage}
+                setPerPage={setPerPage}
+                page={page}
+                setPage={setPage}
+                total={events.total}
+            />
         </ListContextProvider>
     );
 };
-
 
 export const EditUser = () => (
     <Edit title={<UserTitle />}>
@@ -125,4 +127,12 @@ export const CreateUser = () => (
     </Create>
 );
 
-export const UserResource = <Resource name="user" list={UserList} edit={EditUser} show={ShowUser} create={CreateUser} />;
+export const UserResource = (
+    <Resource
+        name="user"
+        list={UserList}
+        edit={EditUser}
+        show={ShowUser}
+        create={CreateUser}
+    />
+);
