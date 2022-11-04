@@ -1,0 +1,10 @@
+{
+  "packages": [
+    "nodejs-16_x",
+    "nodePackages.pnpm",
+    "wrangler"
+  ],
+  "shell": {
+    "init_hook": null
+  }
+}

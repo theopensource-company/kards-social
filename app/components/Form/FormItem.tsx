@@ -1,18 +1,18 @@
 import React, {
-  createRef,
-  ReactNode,
-  RefObject,
-  useEffect,
-  useState,
-} from "react";
-import { TFormItem } from "../../constants/Types";
-import { v4 as uuidv4 } from "uuid";
+    createRef,
+    ReactNode,
+    RefObject,
+    useEffect,
+    useState,
+} from 'react';
+import { TFormItem } from '../../constants/Types';
+import { v4 as uuidv4 } from 'uuid';
 
 type DummyFormItem = {
-  config: {
-    id?: string;
-  };
-  renderer(): ReactNode;
+    config: {
+        id?: string;
+    };
+    renderer(): ReactNode;
 };
 
 /*
@@ -21,51 +21,53 @@ type DummyFormItem = {
  */
 
 export abstract class FormItem<
-  TConfig extends TFormItem<TValueType>,
-  TFormItemType = HTMLInputElement,
-  TValueType = string
+    TConfig extends TFormItem<TValueType>,
+    TFormItemType = HTMLInputElement,
+    TValueType = string
 > extends React.Component {
-  protected readonly config: TConfig;
-  protected readonly ref: RefObject<TFormItemType>;
-  public readonly name: string;
+    protected readonly config: TConfig;
+    protected readonly ref: RefObject<TFormItemType>;
+    public readonly name: string;
 
-  constructor(config: TConfig) {
-    if (!config.invalidClass) config.invalidClass = `invalid`;
-    if (!config.size) config.size = `Large`;
-    super(config);
-    this.name = config.name;
-    this.config = config;
-    this.ref = createRef<TFormItemType>();
-    this.render = this.render.bind(this);
-    this.value = this.value.bind(this);
-    this.isValid = this.isValid.bind(this);
-  }
+    constructor(config: TConfig) {
+        if (!config.invalidClass) config.invalidClass = `invalid`;
+        if (!config.size) config.size = `Large`;
+        super(config);
+        this.name = config.name;
+        this.config = config;
+        this.ref = createRef<TFormItemType>();
+        this.render = this.render.bind(this);
+        this.value = this.value.bind(this);
+        this.isValid = this.isValid.bind(this);
+    }
 
-  value(raw = false): TValueType {
-    return raw || !this.config.process
-      ? this.getValue()
-      : this.config.process(this.getValue());
-  }
+    value(raw = false): TValueType {
+        return raw || !this.config.process
+            ? this.getValue()
+            : this.config.process(this.getValue());
+    }
 
-  /*
-   *  If defined for the field, uses it's validation function to see if the field has a valid value.
-   *  Adds an a component defined invalid class, or simply the "invalid" class to the field.
-   */
+    /*
+     *  If defined for the field, uses it's validation function to see if the field has a valid value.
+     *  Adds an a component defined invalid class, or simply the "invalid" class to the field.
+     */
 
-  isValid(): boolean {
-    const res = this.config.isValid ? this.config.isValid(this.value()) : true;
-    (this.ref.current as HTMLElement).classList[res ? "remove" : "add"](
-      this.config.invalidClass || `invalid`
-    );
-    return res;
-  }
+    isValid(): boolean {
+        const res = this.config.isValid
+            ? this.config.isValid(this.value())
+            : true;
+        (this.ref.current as HTMLElement).classList[res ? 'remove' : 'add'](
+            this.config.invalidClass || `invalid`
+        );
+        return res;
+    }
 
-  protected abstract getValue(): TValueType;
-  protected abstract renderer(): ReactNode;
+    protected abstract getValue(): TValueType;
+    protected abstract renderer(): ReactNode;
 
-  render(): JSX.Element {
-    return RenderFormItem(this as unknown as DummyFormItem) as JSX.Element;
-  }
+    render(): JSX.Element {
+        return RenderFormItem(this as unknown as DummyFormItem) as JSX.Element;
+    }
 }
 
 /*
@@ -74,8 +76,8 @@ export abstract class FormItem<
  */
 
 const RenderFormItem = (t: DummyFormItem): ReactNode => {
-  const [randId, setRandId] = useState("");
-  useEffect(() => setRandId(`kards:formitem:${uuidv4()}`), []);
-  if (!t.config.id) t.config.id = randId;
-  return t.renderer();
+    const [randId, setRandId] = useState('');
+    useEffect(() => setRandId(`kards:formitem:${uuidv4()}`), []);
+    if (!t.config.id) t.config.id = randId;
+    return t.renderer();
 };

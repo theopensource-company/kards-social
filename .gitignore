@@ -1,3 +1,6 @@
 node_modules/
 dev.db/
 config.json
+.devbox
+.direnv
+.vscode

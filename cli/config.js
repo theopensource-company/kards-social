@@ -17,6 +17,7 @@ const rl = readline.createInterface({
 
 const dbfiles = [
   'admin.surql',
+  'auth.surql',
   'event.surql',
   'log.surql',
   'user.surql',

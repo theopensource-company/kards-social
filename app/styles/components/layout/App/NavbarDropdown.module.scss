@@ -1,0 +1,61 @@
+.dropdown {
+    position: relative;
+    height: 140px;
+    display: flex;
+    align-items: center;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.menu {
+    position: absolute;
+    top: 85%;
+    background-color: #152529;
+    padding: 15px;
+    width: 250px;
+    right: 0;
+    border-radius: 15px;
+    animation: growDown 200ms ease-in-out forwards;
+    transform-origin: top center;
+    will-change: transform, opacity, display;
+}
+
+.menuItem {
+    height: 50px;
+    border-radius: 10px;
+
+    &:hover {
+        background-color: #1C3136;
+    }
+
+    &> * {
+        width: 100%;
+        height: 25px;
+        padding: 25px 15px;
+        line-height: 0px;
+        display: block;
+        text-decoration: none;
+    }
+}
+
+.hideMenu {
+    display: none;
+}
+
+@keyframes growDown {
+    0% {
+        transform: scaleY(0) scaleX(0.5);
+        opacity: 0; 
+    }
+    60% {
+        opacity: 1; 
+    }
+    70% {
+        transform: scaleY(0.90) scaleX(1);
+    }
+    100% {
+        transform: scaleY(1);
+    }
+}

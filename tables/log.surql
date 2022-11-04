@@ -1,4 +1,6 @@
-DEFINE TABLE log SCHEMALESS;
+DEFINE TABLE log SCHEMALESS
+  PERMISSIONS
+    FOR select, update, delete, create WHERE $scope = 'admin';
 
 DEFINE FIELD created ON log TYPE datetime VALUE $before OR time::now();
 DEFINE FIELD details ON TABLE log TYPE object VALUE $value OR $before OR {};

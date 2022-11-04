@@ -1,4 +1,6 @@
-DEFINE TABLE waitlist SCHEMAFULL;
+DEFINE TABLE waitlist SCHEMAFULL
+  PERMISSIONS
+    FOR select, update, delete, create WHERE $scope = 'admin';
 
 DEFINE FIELD created ON waitlist TYPE datetime VALUE $before OR time::now();
 DEFINE FIELD email ON waitlist TYPE string ASSERT is::email($value);

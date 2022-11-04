@@ -1,93 +1,70 @@
-import { UserIdentity } from "ra-core";
-import { TApiResponse } from "../constants/Types";
+import { UserIdentity } from 'ra-core';
+import { TAdminUserDetails } from '../constants/Types';
+import { SurrealDatabase, SurrealNamespace } from '../lib/Surreal';
+import { SurrealInstanceAdmin, SurrealQueryAdmin } from './Surreal';
+
+export const AdminUserDetails = async (): Promise<TAdminUserDetails | null> => {
+    const result = await SurrealQueryAdmin<TAdminUserDetails>(
+        'SELECT * FROM admin WHERE id = $auth.id'
+    );
+    const preParse =
+        result && result[0].result ? result[0].result[0] : null ?? null;
+    if (preParse) {
+        preParse.created = new Date(preParse.created);
+        preParse.updated = new Date(preParse.updated);
+    }
+
+    return preParse;
+};
 
 const authProvider = {
-  login: ({ username, password }: { username: string; password: string }) => {
-    const request = new Request(`${location.origin}/api/admin/signin`, {
-      method: "POST",
-      body: JSON.stringify({ identifier: username, password }),
-      headers: new Headers({ "Content-Type": "application/json" }),
-    });
-    return fetch(request)
-      .then((res) => res.json())
-      .then((res: TApiResponse) => {
-        if (!res.success) throw new Error(`${res.message} (${res.error})`);
+    login: ({ username, password }: { username: string; password: string }) => {
+        return SurrealInstanceAdmin.signin({
+            NS: SurrealNamespace,
+            DB: SurrealDatabase,
+            SC: 'admin',
+            identifier: username,
+            password,
+        })
+            .then((res) => {
+                localStorage.setItem('kadmsess', res);
+                return Promise.resolve();
+            })
+            .catch((error) => {
+                throw new Error(error);
+            });
+    },
+    checkError: () => {
+        // Required for the authentication to work
         return Promise.resolve();
-      })
-      .catch(() => {
-        throw new Error("Network error");
-      });
-  },
-  checkError: () => {
-    // Required for the authentication to work
-    return Promise.resolve();
-  },
-  checkAuth: () => {
-    const request = new Request(`${location.origin}/api/admin/token`, {
-      method: "GET",
-    });
-    return fetch(request)
-      .then((res) => res.json())
-      .then(
-        (
-          res: TApiResponse<{
-            token: string;
-          }>
-        ) => {
-          if (!res.success) return Promise.reject();
-          localStorage.setItem("kadmxs", res.result?.token || "");
-          return Promise.resolve();
-        }
-      )
-      .catch(() => {
-        throw new Error("Network error");
-      });
-  },
-  getPermissions: () => {
-    // Required for the authentication to work
-    return Promise.resolve();
-  },
-  logout: () => {
-    const request = new Request(`${location.origin}/api/admin/signout`, {
-      method: "GET",
-    });
-    return fetch(request)
-      .then((res) => res.json())
-      .then((res: TApiResponse) => {
-        if (!res.success) throw new Error(`${res.message} (${res.error})`);
-        localStorage.removeItem("kadmxs");
+    },
+    checkAuth: () => {
+        return AdminUserDetails().then((res) =>
+            res ? Promise.resolve() : Promise.reject()
+        );
+    },
+    getPermissions: () => {
+        // Required for the authentication to work
         return Promise.resolve();
-      })
-      .catch(() => {
-        throw new Error("Network error");
-      });
-  },
-  getIdentity: () => {
-    const request = new Request(`${location.origin}/api/admin/me`, {
-      method: "GET",
-    });
-    return fetch(request)
-      .then((res) => res.json())
-      .then(
-        (
-          res: TApiResponse<{
-            id: string;
-            name: string;
-          }>
-        ) => {
-          if (!res.success)
-            return Promise.reject(`${res.message} (${res.error})`);
-          if (!res.result) return Promise.reject();
-          return Promise.resolve({
-            id: res.result.id,
-            fullName: res.result.name,
-          } as UserIdentity);
-        }
-      )
-      .catch(() => {
-        throw new Error("Network error");
-      });
-  },
+    },
+    logout: async () => {
+        console.log('logout');
+
+        localStorage.removeItem('kadmsess');
+        AdminUserDetails().then((res) => {
+            //TODO: Temporary fix for session not being invalidated
+            if (res) location.reload();
+        });
+    },
+    getIdentity: () => {
+        return AdminUserDetails().then((res) => {
+            if (!res) return Promise.reject('Not authenticated');
+            return Promise.resolve({
+                id: res.id,
+                fullname: res.name,
+            } as UserIdentity);
+        });
+    },
 };
 
 export default authProvider;
