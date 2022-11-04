@@ -5,7 +5,7 @@ import { SurrealInstanceAdmin, SurrealQueryAdmin } from './Surreal';
 
 export const AdminUserDetails = async (): Promise<TAdminUserDetails | null> => {
     const result = await SurrealQueryAdmin<TAdminUserDetails>(
-        'SELECT * FROM admin'
+        'SELECT * FROM admin WHERE id = $auth.id'
     );
     const preParse =
         result && result[0].result ? result[0].result[0] : null ?? null;
