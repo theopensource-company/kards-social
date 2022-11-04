@@ -2,10 +2,8 @@
 const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
-  experimental: {
-    images: {
-      unoptimized: true,
-    }
+  images: {
+    unoptimized: true,
   },
   pageExtensions: ["ts", "tsx", "js", "jsx"]
     .map((extension) => {
