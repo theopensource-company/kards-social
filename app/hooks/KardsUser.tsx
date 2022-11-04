@@ -28,16 +28,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         details: null,
     });
 
+    const [, setAuthState] = state;
+
     useEffect(() => {
         UserDetails()
             .then((user) => {
-                state[1]({
+                setAuthState({
                     authenticated: !!user,
                     details: user,
                 });
             })
             .finally(() => setReady(true));
-    }, [state]);
+    }, [setAuthState]);
 
     return (
         <>
@@ -56,17 +58,18 @@ export const useRefreshAuthenticatedUser = (): {
 } => {
     const state = useContext(AuthContext);
     const [isReady, setReady] = useState<boolean>(false);
+    const [, setAuthState] = state;
 
     useEffect(() => {
         UserDetails()
             .then((user) => {
-                state[1]({
+                setAuthState({
                     authenticated: !!user,
                     details: user,
                 });
             })
             .finally(() => setReady(true));
-    }, [state]);
+    }, [setAuthState]);
 
     return {
         isReady,
@@ -81,18 +84,19 @@ export const useDelayedRefreshAuthenticatedUser = (): (() => {
     const state = useContext(AuthContext);
     const [isReady, setReady] = useState<boolean>(false);
     const [update, setUpdate] = useState<number>(0);
+    const [, setAuthState] = state;
 
     useEffect(() => {
         if (update > 0)
             UserDetails()
                 .then((user) => {
-                    state[1]({
+                    setAuthState({
                         authenticated: !!user,
                         details: user,
                     });
                 })
                 .finally(() => setReady(true));
-    }, [update, state]);
+    }, [update, setAuthState]);
 
     return () => {
         setUpdate(update + 1);
