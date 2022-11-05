@@ -21,6 +21,7 @@ const dbfiles = [
   'event.surql',
   'log.surql',
   'user.surql',
+  'verify_email.surql',
   'waitlist.surql',
 ];
 
