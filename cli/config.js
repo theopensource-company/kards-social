@@ -15,16 +15,7 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-const dbfiles = [
-  'admin.surql',
-  'auth.surql',
-  'event.surql',
-  'log.surql',
-  'user.surql',
-  'verify_email.surql',
-  'waitlist.surql',
-];
-
+const dbfiles = fs.readdirSync('tables');
 const conffiles = [
   {
     source: 'workers/waitlist/wrangler.example.toml',
