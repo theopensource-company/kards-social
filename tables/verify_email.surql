@@ -1,6 +1,5 @@
 DEFINE TABLE verify_email SCHEMAFULL
-    PERMISSIONS 
-        FOR update, select, update NONE;
+    PERMISSIONS NONE;
 
 DEFINE FIELD created ON verify_email TYPE datetime VALUE $before OR time::now();
 DEFINE FIELD email ON verify_email TYPE string ASSERT is::email($value);
