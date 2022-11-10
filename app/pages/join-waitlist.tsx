@@ -15,7 +15,7 @@ import { SurrealEndpoint, SurrealNamespace, SurrealDatabase, SurrealQuery } from
 
 export default function JoinWaitlist() {
     const router = useRouter();
-    const { email, secret } = router.query;
+    const { email, secret, success } = router.query;
     const [working, setWorking] = useState(!!(email && secret));
 
     console.log(router.query);
@@ -89,6 +89,7 @@ export default function JoinWaitlist() {
             }
         }).then(() => {
             setWorking(false);
+            router.push(`${location.pathname}?success`);
         }).catch(e => {
             if (parseInt(e.response.status) !== 403) 
                 return toast.error(
@@ -96,10 +97,11 @@ export default function JoinWaitlist() {
                 );
             
             setWorking(false);
+            router.push(`${location.pathname}?success`);
         })
     }, [email, secret, SurrealEndpoint, SurrealNamespace, SurrealDatabase, setWorking, axios]);
 
-    if (email && secret) {
+    if ((email && secret) || success !== undefined) {
         return (
             <LayoutContentMiddle robots="noindex, follow">
                 <div className={styles.form}>
