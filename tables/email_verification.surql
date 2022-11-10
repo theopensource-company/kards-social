@@ -3,12 +3,14 @@ DEFINE TABLE email_verification SCHEMAFULL DROP;
 DEFINE FIELD email ON email_verification TYPE string ASSERT is::email($value);
 DEFINE FIELD recipient ON email_verification TYPE string ASSERT $value != "NONE";
 DEFINE FIELD template ON email_verification TYPE string ASSERT $value = 'waitlist';
+DEFINE FIELD origin ON email_verification TYPE string ASSERT $value != NONE;
 
 DEFINE EVENT email ON TABLE email_verification WHEN 1=1 THEN (
     CREATE send_email_verification CONTENT {
         email: $after.email,
         recipient: $after.recipient,
-        template: $after.template
+        template: $after.template,
+        origin: $after.origin
     }
 );
 
@@ -26,6 +28,7 @@ DEFINE FIELD email ON send_email_verification TYPE string ASSERT is::email($valu
 DEFINE FIELD recipient ON send_email_verification TYPE string ASSERT $value != "NONE";
 DEFINE FIELD secret ON send_email_verification TYPE string VALUE $before OR rand::string(32);
 DEFINE FIELD template ON send_email_verification TYPE string ASSERT $value = 'waitlist';
+DEFINE FIELD origin ON send_email_verification TYPE string ASSERT $value != NONE;
 
 DEFINE EVENT email ON TABLE send_email_verification WHEN $after.template = 'waitlist' THEN (
     CREATE send_email CONTENT {
@@ -36,7 +39,11 @@ DEFINE EVENT email ON TABLE send_email_verification WHEN $after.template = 'wait
             {
                 type: "text/plain",
                 value: "Confirm your email on the waitlist with the following link: " + string::replace(
-                    string::replace("https://kards.social/join-waitlist?email={{email}}&secret={{secret}}", "{{secret}}", $after.secret),
+                    string::replace(
+                        string::replace("{{origin}}/join-waitlist?email={{email}}&secret={{secret}}", "{{secret}}", $after.secret),
+                        "{{origin}}",
+                        string::slice((select value from environment:origin), 2, (string::length((select value from environment:origin)) - 4)) || $after.origin
+                    ),
                     "{{email}}",
                     $after.email
                 )
@@ -47,7 +54,11 @@ DEFINE EVENT email ON TABLE send_email_verification WHEN $after.template = 'wait
                     string::slice((select content from email_templates:waitlist), 2, (string::length((select content from email_templates:waitlist)) - 4)),
                     "{{verificationlink}}",
                     string::replace(
-                        string::replace("https://kards.social/join-waitlist?email={{email}}&secret={{secret}}", "{{secret}}", $after.secret),
+                        string::replace(
+                            string::replace("{{origin}}/join-waitlist?email={{email}}&secret={{secret}}", "{{secret}}", $after.secret),
+                            "{{origin}}",
+                            string::slice((select value from environment:origin), 2, (string::length((select value from environment:origin)) - 4)) || $after.origin
+                        ),
                         "{{email}}",
                         $after.email
                     )

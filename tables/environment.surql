@@ -5,3 +5,4 @@ DEFINE TABLE environment SCHEMAFULL PERMISSIONS
 DEFINE FIELD value ON TABLE environment TYPE string ASSERT $value != NONE;
 
 CREATE environment:sendgrid_key SET value = "BLANK";
+CREATE environment:origin SET value = "";
