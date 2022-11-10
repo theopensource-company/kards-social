@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Button from '../components/Button';
 import ArrowBack from '../components/icon/ArrowBack';
@@ -9,12 +9,21 @@ import axios from 'axios';
 import Logo from '../components/Logo';
 import { Form } from '../components/Form';
 import { FormInputField } from '../components/Form/InputField';
-import { TApiResponse, TForm } from '../constants/Types';
+import { TForm } from '../constants/Types';
 import LayoutContentMiddle from '../components/Layout/ContentMiddle';
+import {
+    SurrealEndpoint,
+    SurrealNamespace,
+    SurrealDatabase,
+    SurrealQuery,
+} from '../lib/Surreal';
 
 export default function JoinWaitlist() {
     const router = useRouter();
-    const [working, setWorking] = useState(false);
+    const { email, secret, success } = router.query;
+    const [working, setWorking] = useState(!!(email && secret));
+
+    console.log(router.query);
 
     const submitForm: TForm['onSubmit'] = async ({ values, faulty }) => {
         if (faulty.name) toast.error('Please enter your full name');
@@ -23,28 +32,34 @@ export default function JoinWaitlist() {
 
         setWorking(true);
         try {
-            const result = await axios.post<TApiResponse>(
-                `${location.origin}/api/waitlist/join`,
-                {
-                    name: values.name,
+            const result = await SurrealQuery<{
+                id: `email_verification:${string}`;
+                email: `${string}@${string}.${string}`;
+                recipient: string;
+                template: 'waitlist';
+            }>(
+                `CREATE email_verification CONTENT ${JSON.stringify({
                     email: values.email,
+                    recipient: values.name,
+                    template: 'waitlist',
                     origin: location.origin,
-                }
+                })}`
             );
 
-            if (!result.data)
+            if (!result[0].result || !result[0].result[0])
                 return toast.error(
-                    'Something went wrong, please try again later or contact hi@kards.social'
+                    'Something went wrong, please try again later or contact hi@kards.social (Code: ERRNORS)' // Error NO ReSponse
                 );
-            if (result.data.success) {
-                toast.success(
-                    'Check you inbox and spam for a verification email!'
+            if (result[0].result[0].email !== values.email)
+                return toast.error(
+                    'Something went wrong, please try again later or contact hi@kards.social (Code: ERRIVRS)' // Error InValid ReSponse
                 );
-            } else {
-                toast.error(`${result.data.message} (${result.data.error})`);
-            }
+
+            toast.success('Check you inbox and spam for a verification email!');
         } catch (e) {
-            toast.error('An error occured while performing the request.');
+            toast.error(
+                'Something went wrong, please try again later or contact hi@kards.social (Code: ERRNNWR)' // Error No NetWork Response
+            );
         }
 
         setWorking(false);
@@ -66,28 +81,81 @@ export default function JoinWaitlist() {
             ),
     });
 
-    return (
-        <LayoutContentMiddle>
-            <div className={styles.back}>
-                <Button
-                    text="Back"
-                    icon={<ArrowBack />}
-                    size="Small"
-                    onClick={() => router.push('/')}
-                />
-            </div>
-            <Form
-                className={styles.form}
-                inputs={[inputName, inputEmail]}
-                onSubmit={submitForm}
-            >
-                <Logo />
-                <div className={styles.inputs}>
-                    <inputName.render />
-                    <inputEmail.render />
+    useEffect(() => {
+        if (email && secret)
+            axios
+                .post(
+                    `${SurrealEndpoint.slice(0, -4)}/signup`,
+                    {
+                        NS: SurrealNamespace,
+                        DB: SurrealDatabase,
+                        SC: 'waitlist',
+                        email,
+                        secret,
+                    },
+                    {
+                        headers: {
+                            Accept: 'application/json',
+                        },
+                    }
+                )
+                .then(() => {
+                    setWorking(false);
+                    router.push(`${location.pathname}?success`);
+                })
+                .catch((e) => {
+                    if (parseInt(e.response.status) !== 403)
+                        return toast.error(
+                            'Something went wrong, please try again later or contact hi@kards.social (Code: ERRNNWR)' // Error No NetWork Response
+                        );
+
+                    setWorking(false);
+                    router.push(`${location.pathname}?success`);
+                });
+    }, [email, secret, setWorking, router]);
+
+    if ((email && secret) || success !== undefined) {
+        return (
+            <LayoutContentMiddle robots="noindex, follow">
+                <div className={styles.form}>
+                    <Logo />
+                    <p className={styles.success}>
+                        {working
+                            ? 'Adding you to the waitlist'
+                            : 'You have been added to the waitlist!'}
+                    </p>
+                    <Button
+                        onClick={() => router.push('/')}
+                        text={working ? 'Loading' : 'Go back'}
+                        loading={working}
+                    />
                 </div>
-                <Button text="Join waitlist" loading={working} />
-            </Form>
-        </LayoutContentMiddle>
-    );
+            </LayoutContentMiddle>
+        );
+    } else {
+        return (
+            <LayoutContentMiddle>
+                <div className={styles.back}>
+                    <Button
+                        text="Back"
+                        icon={<ArrowBack />}
+                        size="Small"
+                        onClick={() => router.push('/')}
+                    />
+                </div>
+                <Form
+                    className={styles.form}
+                    inputs={[inputName, inputEmail]}
+                    onSubmit={submitForm}
+                >
+                    <Logo />
+                    <div className={styles.inputs}>
+                        <inputName.render />
+                        <inputEmail.render />
+                    </div>
+                    <Button text="Join waitlist" loading={working} />
+                </Form>
+            </LayoutContentMiddle>
+        );
+    }
 }

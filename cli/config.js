@@ -15,15 +15,8 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-const dbfiles = [
-  'admin.surql',
-  'auth.surql',
-  'event.surql',
-  'log.surql',
-  'user.surql',
-  'waitlist.surql',
-];
-
+const dbfiles = fs.readdirSync('tables');
+const emailtemplates = fs.readdirSync('email_templates');
 const conffiles = [
   {
     source: 'workers/waitlist/wrangler.example.toml',
@@ -106,6 +99,24 @@ const migrateDatabase = async (c) => {
       const q = fs.readFileSync('tables/' + f).toString();
       console.log(' + Executing');
       await db.query(q);
+    } catch(e) {
+      console.log(' ! An error occured while processing file: ' + f);
+      console.log(e);
+    }
+  }
+
+  console.log('\nMigrating email templates');
+
+  for(var i = 0; i < emailtemplates.length; i++) {
+    const f = emailtemplates[i];
+    const template = f.split('.')[0];
+
+    try {
+      console.log(' - Importing template ' + f);
+      const content = fs.readFileSync('email_templates/' + f).toString();
+      const query = `UPDATE email_templates:${template} SET content=${JSON.stringify(content)}`;
+      console.log(' + Executing');
+      await db.query(query);
     } catch(e) {
       console.log(' ! An error occured while processing file: ' + f);
       console.log(e);
@@ -254,7 +265,8 @@ rl.on('close', function () {
   exit();
 });
 
-async function exit() {
+async function exit(e) {
+  console.log(e);
   console.log("Caught interrupt signal");
 
   if (runners) {
