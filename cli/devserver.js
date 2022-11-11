@@ -3,10 +3,7 @@ import httpProxy from 'http-proxy';
 import express from 'express';
 
 const target = {
-    app:            'http://127.0.0.1:12010',
-    waitlistApi:    'http://127.0.0.1:12011',
-    userApi:        'http://127.0.0.1:12012',
-    adminApi:       'http://127.0.0.1:12013'
+    app: 'http://127.0.0.1:12010',
 };
 
 const appProxy = express();
@@ -21,9 +18,6 @@ const safeProxy = (req, res, opt) => {
     }
 }
 
-appProxy.all("/api/waitlist/*", (req, res) => safeProxy(req, res, {target: target.waitlistApi}));
-appProxy.all("/api/user/*", (req, res) => safeProxy(req, res, {target: target.userApi}));
-appProxy.all("/api/admin/*", (req, res) => safeProxy(req, res, {target: target.adminApi}));
 appProxy.all("/*", (req, res) => safeProxy(req, res, {target: target.app}));
 
 // All workers but the first one have to wait 1 second to make sure that the first worker started. Otherwise the workers will start to complain about previously used ports.
@@ -39,18 +33,6 @@ const runners = concurrently(
         //     name: "surrealdb",
         //     command: "surreal start --user root --pass root --bind 0.0.0.0:12001 file:dev.db"
         // },
-        {
-            name: "kards-worker-waitlist",
-            command: "cd workers/waitlist && wrangler dev --env=dev --experimental-local"
-        },
-        {
-            name: "kards-worker-user",
-            command: "sleep 1; cd workers/user && wrangler dev --env=dev --experimental-local"
-        },
-        {
-            name: "kards-worker-admin",
-            command: "sleep 1; cd workers/admin && wrangler dev --env=dev --experimental-local"
-        },
     ],
 );
 

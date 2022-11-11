@@ -17,20 +17,7 @@ const rl = readline.createInterface({
 
 const dbfiles = fs.readdirSync('tables');
 const emailtemplates = fs.readdirSync('email_templates');
-const conffiles = [
-  {
-    source: 'workers/waitlist/wrangler.example.toml',
-    target: 'workers/waitlist/wrangler.toml'
-  },
-  {
-    source: 'workers/user/wrangler.example.toml',
-    target: 'workers/user/wrangler.toml'
-  },
-  {
-    source: 'workers/admin/wrangler.example.toml',
-    target: 'workers/admin/wrangler.toml'
-  }
-];
+const conffiles = [];
 
 const jwtdummysecrets = {
   waitlist_jwt_secret: 0,

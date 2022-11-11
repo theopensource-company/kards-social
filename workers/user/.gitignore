@@ -1,4 +1,0 @@
-node_modules
-
-# Got some stuff stored in wrangler.toml file, so cannot be published...
-wrangler.toml
