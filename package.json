@@ -6,7 +6,8 @@
     "dev": "node cli/devserver.js",
     "conf": "node cli/config.js",
     "dbshell": "node cli/dbshell.js",
-    "ts": "tsc --watch -p app/tsconfig.json"
+    "ts": "tsc --watch -p app/tsconfig.json",
+    "lint": "cd app && pnpm lint"
   },
   "author": "The Open Source Company",
   "license": "AGPL-3.0-only",

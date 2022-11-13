@@ -2,9 +2,7 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 
-import {
-    useAuthState,
-} from '../../hooks/KardsUser';
+import { useAuthState } from '../../hooks/KardsUser';
 import AccountLayout from '../../components/Layout/Account';
 
 export default function Account() {
@@ -19,12 +17,8 @@ export default function Account() {
     }, [auth, router]);
 
     return (
-        <AccountLayout activeKey='security'>
-            {auth.details && (
-                <div>
-                    Security
-                </div>
-            )}
+        <AccountLayout activeKey="security">
+            {auth.details && <div>Security</div>}
         </AccountLayout>
     );
 }

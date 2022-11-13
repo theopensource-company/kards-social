@@ -23,7 +23,7 @@ export default function Account() {
     }, [auth, router]);
 
     return (
-        <AccountLayout activeKey='profile'>
+        <AccountLayout activeKey="profile">
             {auth.details && (
                 <div>
                     <h1>{auth.details.name}</h1>
