@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "node cli/devserver.js",
     "conf": "node cli/config.js",
-    "dbshell": "node cli/dbshell.js"
+    "dbshell": "node cli/dbshell.js",
+    "ts": "tsc --watch -p app/tsconfig.json"
   },
   "author": "The Open Source Company",
   "license": "AGPL-3.0-only",
