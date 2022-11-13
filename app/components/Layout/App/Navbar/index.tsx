@@ -6,9 +6,11 @@ import Link from 'next/link';
 import { SurrealSignout } from '../../../../lib/Surreal';
 import { ButtonSmall } from '../../../Button';
 import NavbarIconDropdown from './IconDropdown';
+import { useTranslation } from 'react-i18next';
 
 export default function AppLayoutNavbar() {
     const authenticated = useIsAuthenticated();
+    const { t } = useTranslation('components');
 
     function Signout(e: React.MouseEvent<HTMLAnchorElement>) {
         e.preventDefault();
@@ -28,15 +30,17 @@ export default function AppLayoutNavbar() {
             <div>
                 {authenticated ? (
                     <NavbarIconDropdown icon="User">
-                        <Link href="/account">Account</Link>
+                        <Link href="/account">
+                            {t('layout.app.navbar.account')}
+                        </Link>
                         <a href="#" onClick={Signout}>
-                            Signout
+                            {t('layout.app.navbar.signout')}
                         </a>
                     </NavbarIconDropdown>
                 ) : (
                     <>
                         <Link href="/auth/signin">
-                            <ButtonSmall text="Signin" />
+                            <ButtonSmall text={t('layout.app.navbar.signin') as string} />
                         </Link>
                     </>
                 )}

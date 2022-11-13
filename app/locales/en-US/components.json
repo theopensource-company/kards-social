@@ -1,5 +1,12 @@
 {
   "layout": {
+    "app": {
+      "navbar": {
+        "signin": "Signin",
+        "signout": "Signout",
+        "account": "Account"
+      }
+    },
     "account": {
       "sidebar": {
         "profile": {

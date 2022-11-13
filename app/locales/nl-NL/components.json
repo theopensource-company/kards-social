@@ -18,6 +18,13 @@
           "title": "Beveiliging"
         }
       }
+    },
+    "app": {
+      "navbar": {
+        "account": "Account",
+        "signin": "Inloggen",
+        "signout": "Uitloggen"
+      }
     }
   }
 }
