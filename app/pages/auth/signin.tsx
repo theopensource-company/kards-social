@@ -30,7 +30,8 @@ export default function Signin() {
     const submitForm: TForm['onSubmit'] = async ({ values, faulty }) => {
         if (faulty.identifier)
             toast.error(t('auth.signin.submitted.faulty-identifier'));
-        if (faulty.password) toast.error(t('auth.signin.submitted.faulty-password'));
+        if (faulty.password)
+            toast.error(t('auth.signin.submitted.faulty-password'));
         if (Object.keys(faulty).length > 0) return;
 
         setWorking(true);
@@ -43,9 +44,7 @@ export default function Signin() {
                 if (authenticated) {
                     refreshUserDetails();
                 } else {
-                    toast.error(
-                        t('auth.signin.submitted.invalid-credentials')
-                    );
+                    toast.error(t('auth.signin.submitted.invalid-credentials'));
                 }
             })
             .finally(() => setWorking(false));
@@ -76,7 +75,10 @@ export default function Signin() {
                     <inputIdentifier.render />
                     <inputPassword.render />
                 </div>
-                <Button text={t('auth.signin.button') as string} loading={working} />
+                <Button
+                    text={t('auth.signin.button') as string}
+                    loading={working}
+                />
             </Form>
         </AppLayout>
     );

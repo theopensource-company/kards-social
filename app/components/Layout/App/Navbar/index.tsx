@@ -40,7 +40,9 @@ export default function AppLayoutNavbar() {
                 ) : (
                     <>
                         <Link href="/auth/signin">
-                            <ButtonSmall text={t('layout.app.navbar.signin') as string} />
+                            <ButtonSmall
+                                text={t('layout.app.navbar.signin') as string}
+                            />
                         </Link>
                     </>
                 )}

@@ -20,8 +20,12 @@ export default function AccountLayout({
                     {AccountSidebarItems.map((item) => (
                         <SidebarItem
                             active={item.key == activeKey}
-                            title={t(`layout.account.sidebar.${item.key}.title`)}
-                            description={t(`layout.account.sidebar.${item.key}.description`)}
+                            title={t(
+                                `layout.account.sidebar.${item.key}.title`
+                            )}
+                            description={t(
+                                `layout.account.sidebar.${item.key}.description`
+                            )}
                             {...item}
                             key={item.key}
                         />

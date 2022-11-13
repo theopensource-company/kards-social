@@ -1,4 +1,3 @@
-
 // Titles & descriptions can be found in i18n translation files
 
 export const AccountSidebarItems = [
