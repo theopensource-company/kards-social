@@ -12,7 +12,7 @@ export default function Landing() {
     const preLaunchPage = useFeatureFlag('preLaunchPage');
     const { t } = useTranslation('pages');
 
-    return true ?? preLaunchPage ? (
+    return preLaunchPage ? (
         <LayoutContentMiddle>
             <div className={styles.content}>
                 <div className="image-frame">
