@@ -6,24 +6,26 @@ import Logo from '../components/Logo';
 import LayoutContentMiddle from '../components/Layout/ContentMiddle';
 import { useFeatureFlag } from '../hooks/Environment';
 import AppLayout from '../components/Layout/App';
+import { useTranslation } from 'react-i18next';
 
 export default function Landing() {
     const preLaunchPage = useFeatureFlag('preLaunchPage');
-    return preLaunchPage ? (
+    const { t } = useTranslation('pages');
+    
+    return true ?? preLaunchPage ? (
         <LayoutContentMiddle>
             <div className={styles.content}>
                 <div className="image-frame">
                     <Logo />
                 </div>
 
-                <h1>Opening up soon</h1>
+                <h1>{t('home.preLaunch.landing.title')}</h1>
                 <span>
-                    <Link href="/join-waitlist">Reserve your spot now</Link>
+                    <Link href="/join-waitlist">{t('home.preLaunch.landing.reserve-spot')}</Link>
                 </span>
 
                 <p>
-                    Kards is an open social media platform, free from abusive
-                    data harvesting and damaging algorithms.
+                {t('home.preLaunch.landing.description')}
                 </p>
             </div>
         </LayoutContentMiddle>
