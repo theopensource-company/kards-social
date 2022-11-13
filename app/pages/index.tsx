@@ -19,14 +19,14 @@ export default function Landing() {
                     <Logo />
                 </div>
 
-                <h1>{t('home.preLaunch.landing.title')}</h1>
+                <h1>{t('home.preLaunch.title')}</h1>
                 <span>
                     <Link href="/join-waitlist">
-                        {t('home.preLaunch.landing.reserve-spot')}
+                        {t('home.preLaunch.reserve-spot')}
                     </Link>
                 </span>
 
-                <p>{t('home.preLaunch.landing.description')}</p>
+                <p>{t('home.preLaunch.description')}</p>
             </div>
         </LayoutContentMiddle>
     ) : (

@@ -1,10 +1,31 @@
 {
   "home": {
     "preLaunch": {
-      "landing": {
-        "title": "Binnenkort open",
-        "reserve-spot": "Reserveer jouw plek nu",
-        "description": "Kards is een open sociaal media platform, vrij van misbruikende data verzameling en schadelijke algoritmes"
+      "title": "Binnenkort open",
+      "reserve-spot": "Reserveer jouw plek nu",
+      "description": "Kards is een open sociaal media platform, vrij van misbruikende data verzameling en schadelijke algoritmes"
+    }
+  },
+  "waitlist": {
+    "join": {
+      "button": "Schrijf je in",
+      "input-email": "E-mailadres",
+      "input-fullname": "Voor-en achternaam",
+      "submitted": {
+        "error": "Er is iets misgegaan, probeer het later opnieuw of neem contact op met hi@kards.social (Code: {{code, string}})",
+        "invalid-email": "Voer een valide e-mailadres in",
+        "invalid-name": "Voer je volledige naam in",
+        "success": "Check je inbox en spam voor een verificatie email!"
+      }
+    },
+    "joined": {
+      "done": {
+        "button": "Ga terug",
+        "description": "Je bent toegevoegd aan de wachtlijst!"
+      },
+      "working": {
+        "button": "Laden",
+        "description": "We voegen je toe aan de wachtlijst"
       }
     }
   }

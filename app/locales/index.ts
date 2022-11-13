@@ -23,6 +23,7 @@ i18next
             caches: ['localStorage'],
         },
         fallbackLng: (code) => {
+            if (!code) return 'en-US';
             const language = code.split('-')[0];
             const strict = {
                 en: 'en-US',
