@@ -3,8 +3,8 @@ import '../styles/globals.scss';
 import type { AppProps } from 'next/app';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
-import Cross from '../components/icon/Cross';
-import Info from '../components/icon/Info';
+import Cross from '../components/Icon/Cross';
+import Info from '../components/Icon/Info';
 import '../hooks/Surreal'; //Initialize surrealdb instance
 import { InitializeSurreal } from '../hooks/Surreal';
 import { AuthProvider } from '../hooks/KardsUser';

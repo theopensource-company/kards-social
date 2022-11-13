@@ -4,7 +4,7 @@ import Image from 'next/image';
 import styles from '../styles/components/Button.module.scss';
 import { ColorType } from '../constants/Colors';
 import { StaticImageData } from 'next/image';
-import Spinner from './icon/Spinner';
+import Spinner from './Icon/Spinner';
 
 export type ButtonSize = 'Small' | 'Large';
 

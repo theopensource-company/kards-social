@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Button from '../components/Button';
-import ArrowBack from '../components/icon/ArrowBack';
+import ArrowBack from '../components/Icon/ArrowBack';
 import { toast } from 'react-toastify';
 
 import styles from '../styles/pages/JoinWaitlist.module.scss';
