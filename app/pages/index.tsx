@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 export default function Landing() {
     const preLaunchPage = useFeatureFlag('preLaunchPage');
     const { t } = useTranslation('pages');
-    
+
     return true ?? preLaunchPage ? (
         <LayoutContentMiddle>
             <div className={styles.content}>
@@ -21,12 +21,12 @@ export default function Landing() {
 
                 <h1>{t('home.preLaunch.landing.title')}</h1>
                 <span>
-                    <Link href="/join-waitlist">{t('home.preLaunch.landing.reserve-spot')}</Link>
+                    <Link href="/join-waitlist">
+                        {t('home.preLaunch.landing.reserve-spot')}
+                    </Link>
                 </span>
 
-                <p>
-                {t('home.preLaunch.landing.description')}
-                </p>
+                <p>{t('home.preLaunch.landing.description')}</p>
             </div>
         </LayoutContentMiddle>
     ) : (

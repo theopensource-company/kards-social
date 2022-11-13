@@ -59,7 +59,9 @@ function MyApp({ Component, pageProps }: AppProps) {
                                 <Cross size={15} color="Light" />
                             ) : (
                                 <Info
-                                    color={type == 'default' ? undefined : 'Light'}
+                                    color={
+                                        type == 'default' ? undefined : 'Light'
+                                    }
                                 />
                             );
                         }}
