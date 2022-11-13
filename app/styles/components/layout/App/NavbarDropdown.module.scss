@@ -1,3 +1,5 @@
+@use '../../../color';
+
 .dropdown {
     position: relative;
     height: 140px;
@@ -12,7 +14,7 @@
 .menu {
     position: absolute;
     top: 85%;
-    background-color: #152529;
+    background-color: color.$darkTintLight;
     padding: 15px;
     width: 250px;
     right: 0;
@@ -27,7 +29,7 @@
     border-radius: 10px;
 
     &:hover {
-        background-color: #1C3136;
+        background-color: color.$darkTintLightHover;
     }
 
     &> * {
