@@ -1,0 +1,65 @@
+@use '../../color';
+
+.container {
+    width: 90%;
+    max-width: 1400px;
+    min-height: calc(100vh - 220px);
+    padding: 0px 5%;
+    margin: 10px auto 0;
+    display: flex;
+    gap: 50px;
+}
+
+.sidebar {
+    width: 300px;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.sidebarItem {
+    background-color: color.$darkTintLight;
+    height: 100px;
+    border-radius: 20px;
+    padding: 10px;
+
+    display: grid;
+    grid-template-columns: 90px auto;
+    grid-template-rows: 40px 40px;
+    grid-template-areas: 
+        "icon title"
+        "icon description";
+
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.sidebarItemActive {
+    background-color: color.$light;
+    color: color.$dark;
+}
+
+.sidebarItemIcon {
+    grid-area: icon;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 10px;
+}
+
+.sidebarItemTitle {
+    grid-area: title;
+    height: 5px;
+    margin: 10px 0px;
+}
+
+.sidebarItemDescription {
+    grid-area: description;
+    font-size: 0.7rem;
+    margin: 0px 0px 0px;
+}
+
+.content {
+    width: 100%;
+}

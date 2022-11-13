@@ -1,7 +1,23 @@
 import React from 'react';
 import AppLayout from '../App';
-import { TPageLayout } from '../../../constants/Types';
+import { TPageLayoutAccount } from '../../../constants/Types';
+import styles from '../../../styles/components/layout/Account.module.scss';
+import SidebarItem from './SidebarItem';
+import { AccountSidebarItems } from '../../../constants/AccountSidebar';
 
-export default function AccountLayout({ children, ...props }: TPageLayout) {
-    return <AppLayout {...props}>{children}</AppLayout>;
+export default function AccountLayout({ children, activeKey, ...props }: TPageLayoutAccount) {
+    return (
+        <AppLayout {...props}>
+            <div className={styles.container}>
+                <div className={styles.sidebar}>
+                    {AccountSidebarItems.map(item => (
+                        <SidebarItem active={item.key == activeKey} {...item} />
+                    ))}
+                </div>
+                <div className={styles.content}>
+                    {children}
+                </div>
+            </div>
+        </AppLayout>
+    );
 }

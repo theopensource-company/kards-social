@@ -1,6 +1,8 @@
 import { FormEvent, ReactNode } from 'react';
 import { FormItem } from '../components/Form/FormItem';
 import { BasicColorType, ColorType } from './Colors';
+import * as Feather from 'react-feather';
+import { AccountSidebarItem } from './AccountSidebar';
 
 /* ENVIRONMENT */
 
@@ -32,6 +34,10 @@ export type TPageLayout = {
 
 export type TPageLayoutContentMiddle = TPageLayout & {
     containerClassName?: string;
+};
+
+export type TPageLayoutAccount = TPageLayout & {
+    activeKey: AccountSidebarItem;
 };
 
 /* KARDS API */
@@ -141,4 +147,15 @@ export type TAdminUserDetails = {
     email: TEmail;
     created: Date;
     updated: Date;
+};
+
+/* Account sidebar */
+
+export type TAccountSidebarItem = {
+    icon: keyof typeof Feather;
+    title: string;
+    description: string;
+    key: string;
+    link: `/account${string}`;
+    active?: boolean;
 };
