@@ -21,7 +21,8 @@
           "title": "Privacy",
           "description": "Publicity of your profile and how we manage your data"
         }
-      }
+      },
+      "error-unauthenticated": "Please signin first!"
     },
     "footer": {
       "all-rights-reserved": "All Rights Reserved"

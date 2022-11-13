@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import React from 'react';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 
@@ -11,16 +10,8 @@ import AccountLayout from '../../components/Layout/Account';
 import { UpdateAuthenticatedUser } from '../../lib/KardsUser';
 
 export default function Account() {
-    const router = useRouter();
     const auth = useAuthState();
     const refreshAccount = useDelayedRefreshAuthenticatedUser();
-
-    useEffect(() => {
-        if (!auth.authenticated) {
-            toast.info('Please signin first!');
-            router.push('/auth/signin');
-        }
-    }, [auth, router]);
 
     return (
         <AccountLayout activeKey="profile">

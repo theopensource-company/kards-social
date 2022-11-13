@@ -17,7 +17,8 @@
           "description": "Wachtwoord en Multifactor authenticatie",
           "title": "Beveiliging"
         }
-      }
+      },
+      "error-unauthenticated": "Je moet eerst inloggen!"
     },
     "app": {
       "navbar": {
