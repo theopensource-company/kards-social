@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { Color } from '../../constants/Colors';
 import { TPageLayout } from '../../constants/Types';
 import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
 
 export default function Layout({
     title,
@@ -11,6 +12,7 @@ export default function Layout({
     robots,
     children,
 }: TPageLayout) {
+    const { t } = useTranslation('components');
     return (
         <>
             <Head>
@@ -99,7 +101,7 @@ export default function Layout({
                 <Link href="https://theopensource.company">
                     The Open Source Company
                 </Link>
-                , All Rights Reserved.
+                , {t('layout.footer.all-rights-reserved')}.
             </footer>
         </>
     );
