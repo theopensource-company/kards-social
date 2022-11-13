@@ -33,11 +33,19 @@
 
     cursor: pointer;
     text-decoration: none;
+
+    &:hover {
+        background-color: color.$darkTintLightHover;
+    }
 }
 
 .sidebarItemActive {
     background-color: color.$light;
     color: color.$dark;
+
+    &:hover {
+        background-color: color.$light;
+    }
 }
 
 .sidebarItemIcon {
