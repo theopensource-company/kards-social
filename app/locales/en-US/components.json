@@ -1,5 +1,21 @@
 {
   "layout": {
+    "account": {
+      "sidebar": {
+        "profile": {
+          "title": "Profile",
+          "description": "Manage your account and profile details"
+        },
+        "security": {
+          "title": "Security",
+          "description": "Password and Multi-factor authentication"
+        },
+        "privacy": {
+          "title": "Privacy",
+          "description": "Publicity of your profile and how we manage your data"
+        }
+      }
+    },
     "footer": {
       "all-rights-reserved": "All Rights Reserved"
     }

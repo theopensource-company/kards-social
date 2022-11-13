@@ -2,6 +2,22 @@
   "layout": {
     "footer": {
       "all-rights-reserved": "Alle rechten voorbehouden"
+    },
+    "account": {
+      "sidebar": {
+        "privacy": {
+          "description": "Publiciteit van je profiel en hoe we je data beheren",
+          "title": "Privacy"
+        },
+        "profile": {
+          "description": "Beheer je account en profielgegevens",
+          "title": "Profiel"
+        },
+        "security": {
+          "description": "Wachtwoord en Multifactor authenticatie",
+          "title": "Beveiliging"
+        }
+      }
     }
   }
 }

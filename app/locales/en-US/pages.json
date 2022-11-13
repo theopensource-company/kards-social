@@ -28,5 +28,17 @@
         "button": "Go back"
       }
     }
+  },
+  "auth": {
+    "signin": {
+      "input-identifier": "Username or email",
+      "input-password": "Password",
+      "button": "Signin",
+      "submitted": {
+        "faulty-identifier": "Please enter your username or email",
+        "faulty-password": "Please enter your password",
+        "invalid-credentials": "Your username/email or password is incorrect."
+      }
+    }
   }
 }

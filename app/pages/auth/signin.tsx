@@ -14,12 +14,14 @@ import {
     useIsAuthenticated,
 } from '../../hooks/KardsUser';
 import AppLayout from '../../components/Layout/App';
+import { useTranslation } from 'react-i18next';
 
 export default function Signin() {
     const router = useRouter();
     const [working, setWorking] = useState(false);
     const authenticated = useIsAuthenticated();
     const refreshUserDetails = useDelayedRefreshAuthenticatedUser();
+    const { t } = useTranslation('pages');
 
     useEffect(() => {
         if (authenticated) router.push('/account');
@@ -27,8 +29,8 @@ export default function Signin() {
 
     const submitForm: TForm['onSubmit'] = async ({ values, faulty }) => {
         if (faulty.identifier)
-            toast.error('Please enter your username or email');
-        if (faulty.password) toast.error('Please enter your password');
+            toast.error(t('auth.signin.submitted.faulty-identifier'));
+        if (faulty.password) toast.error(t('auth.signin.submitted.faulty-password'));
         if (Object.keys(faulty).length > 0) return;
 
         setWorking(true);
@@ -42,7 +44,7 @@ export default function Signin() {
                     refreshUserDetails();
                 } else {
                     toast.error(
-                        `Your username/email or password is incorrect.`
+                        t('auth.signin.submitted.invalid-credentials')
                     );
                 }
             })
@@ -51,13 +53,13 @@ export default function Signin() {
 
     const inputIdentifier = new FormInputField({
         name: 'identifier',
-        placeholder: 'Username or email',
+        placeholder: t('auth.signin.input-identifier') as string,
         isValid: (value) => value != '',
     });
 
     const inputPassword = new FormInputField({
         name: 'password',
-        placeholder: 'Password',
+        placeholder: t('auth.signin.input-password') as string,
         type: 'Password',
         isValid: (value) => value != '',
     });
@@ -74,7 +76,7 @@ export default function Signin() {
                     <inputIdentifier.render />
                     <inputPassword.render />
                 </div>
-                <Button text="Signin" loading={working} />
+                <Button text={t('auth.signin.button') as string} loading={working} />
             </Form>
         </AppLayout>
     );

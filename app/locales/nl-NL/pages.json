@@ -28,5 +28,17 @@
         "description": "We voegen je toe aan de wachtlijst"
       }
     }
+  },
+  "auth": {
+    "signin": {
+      "button": "Inloggen",
+      "input-identifier": "Gebruikersnaam of e-mailadres",
+      "input-password": "Wachtwoord",
+      "submitted": {
+        "faulty-identifier": "Vul je gebruikersnaam of e-mailadres in",
+        "faulty-password": "Vul je wachtwoord in",
+        "invalid-credentials": "Je gebruikersnaam/e-mailadres of wachtwoord in incorrect."
+      }
+    }
   }
 }
