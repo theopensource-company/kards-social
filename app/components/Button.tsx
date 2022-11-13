@@ -1,7 +1,7 @@
 import React, { MouseEventHandler } from 'react';
 import Image from 'next/image';
 
-import styles from '../styles/Button.module.scss';
+import styles from '../styles/components/Button.module.scss';
 import { ColorType } from '../constants/Colors';
 import { StaticImageData } from 'next/image';
 import Spinner from './icon/Spinner';

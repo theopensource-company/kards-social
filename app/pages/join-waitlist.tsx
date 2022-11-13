@@ -4,7 +4,7 @@ import Button from '../components/Button';
 import ArrowBack from '../components/icon/ArrowBack';
 import { toast } from 'react-toastify';
 
-import styles from '../styles/JoinWaitlist.module.scss';
+import styles from '../styles/pages/JoinWaitlist.module.scss';
 import axios from 'axios';
 import Logo from '../components/Logo';
 import { Form } from '../components/Form';

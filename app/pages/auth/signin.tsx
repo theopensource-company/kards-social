@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Button from '../../components/Button';
 import { toast } from 'react-toastify';
 
-import styles from '../../styles/JoinWaitlist.module.scss';
+import styles from '../../styles/pages/JoinWaitlist.module.scss';
 import Logo from '../../components/Logo';
 import { Form } from '../../components/Form';
 import { FormInputField } from '../../components/Form/InputField';

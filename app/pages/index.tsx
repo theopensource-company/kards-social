@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-import styles from '../styles/Landing.module.scss';
+import styles from '../styles/pages/Landing.module.scss';
 import Logo from '../components/Logo';
 import LayoutContentMiddle from '../components/Layout/ContentMiddle';
 import { useFeatureFlag } from '../hooks/Environment';
