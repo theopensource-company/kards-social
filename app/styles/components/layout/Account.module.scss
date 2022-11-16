@@ -19,7 +19,7 @@
 }
 
 .sidebarItem {
-    background-color: color.$darkTintLight;
+    background-color: color.$light;
     height: 100px;
     border-radius: 20px;
     padding: 10px;
@@ -35,16 +35,33 @@
     text-decoration: none;
 
     &:hover {
-        background-color: color.$darkTintLightHover;
+        background-color: color.$lightTintDark;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        background-color: color.$darkTintLight;
+
+        &:hover {
+            background-color: color.$darkTintLightHover;
+        }
     }
 }
 
 .sidebarItemActive {
-    background-color: color.$light;
-    color: color.$dark;
+    background-color: color.$dark;
+    color: color.$light;
 
     &:hover {
+        background-color: color.$dark;
+    }
+
+    @media (prefers-color-scheme: dark) {
         background-color: color.$light;
+        color: color.$dark;
+
+        &:hover {
+            background-color: color.$light;
+        }
     }
 }
 
