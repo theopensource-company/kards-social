@@ -22,14 +22,62 @@
     transition: color .2s ease, background .2s ease;
 }
 
+.tintLight {
+    background-color: color.$lightTintLight;
+    color: color.$dark;
+    border: 3px solid color.$dark;
+
+    @media (prefers-color-scheme: dark) {
+        background-color: color.$darkTintLight;
+        color: color.$light;
+        border: 3px solid color.$light;
+    }
+}
+
+.tintDark {
+    background-color: color.$lightTintDark;
+    color: color.$dark;
+    border: 3px solid color.$dark;
+
+    @media (prefers-color-scheme: dark) {
+        background-color: color.$darkTintDark;
+        color: color.$light;
+        border: 3px solid color.$light;
+    }
+}
+
 .colorLight {
     background-color: color.$light !important;
     color: color.$dark !important;
     border: 3px solid color.$dark !important;
 }
 
+.colorLightTintLight {
+    background-color: color.$lightTintLight !important;
+    color: color.$dark !important;
+    border: 3px solid color.$dark !important;
+}
+
+.colorLightTintDark {
+    background-color: color.$lightTintDark !important;
+    color: color.$dark !important;
+    border: 3px solid color.$dark !important;
+}
+
 .colorDark {
     background-color: color.$dark !important;
+    color: color.$light !important;
+    border: 3px solid color.$light !important;
+}
+
+.colorDarkTintLight {
+    background-color: color.$darkTintLight !important;
+    color: color.$light !important;
+    border: 3px solid color.$light !important;
+}
+
+.colorDarkTintDark {
+    background-color: color.$darkTintDark !important;
     color: color.$light !important;
     border: 3px solid color.$light !important;
 }
@@ -50,4 +98,8 @@
 
 .invalid {
     border: 3px solid color.$red !important;
+}
+
+.noBorder {
+    border: none !important;
 }

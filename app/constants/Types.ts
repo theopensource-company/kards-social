@@ -1,6 +1,6 @@
 import { FormEvent, ReactNode } from 'react';
 import { FormItem } from '../components/Form/FormItem';
-import { BasicColorType, ColorType } from './Colors';
+import { BasicColorTintType, BasicColorType, ColorType } from './Colors';
 import * as Feather from 'react-feather';
 import { AccountSidebarItem } from './AccountSidebar';
 
@@ -92,8 +92,11 @@ export type TFormItem<TValueType = any> = {
     size?: TFormItemSize;
     placeholder?: string;
     color?: BasicColorType;
+    tint?: BasicColorTintType;
     default?: TValueType;
     invalidClass?: string;
+    noBorder?: boolean;
+    noHover?: boolean;
     isValid?: (value: TValueType) => boolean;
     process?: (value: TValueType) => TValueType;
 };
@@ -104,7 +107,7 @@ export type TFormInputFieldType =
     | 'Password'
     | 'Tel'
     | 'Text';
-export type TFormInput = TFormItem<string> & {
+export type TFormInput = Omit<TFormItem<string>, 'noHover'> & {
     type?: TFormInputFieldType;
 };
 

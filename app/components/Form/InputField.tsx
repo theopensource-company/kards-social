@@ -17,7 +17,8 @@ export class FormInputField extends FormItem<TFormInput> {
     renderer() {
         const classes = [
             styles.default,
-            this.config.color ? styles[`color${this.config.color}`] : 0,
+            this.config.color ? styles[`color${this.config.color}${this.config.tint ? `Tint${this.config.tint}` : ""}`] : (this.config.tint ? styles[`tint${this.config.tint}`] : ""),
+            this.config.noBorder ? styles.noBorder : 0,
             styles[`size${this.config.size}`],
             this.config.className,
         ]
