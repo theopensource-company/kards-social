@@ -14,7 +14,8 @@
 .menu {
     position: absolute;
     top: 85%;
-    background-color: color.$darkTintLight;
+    background-color: color.$dark;
+    color: color.$light;
     padding: 15px;
     width: 250px;
     right: 0;
@@ -22,6 +23,10 @@
     animation: growDown 200ms ease-in-out forwards;
     transform-origin: top center;
     will-change: transform, opacity, display;
+
+    @media (prefers-color-scheme: dark) {
+        background-color: color.$darkTintLight;
+    }
 }
 
 .menuItem {
@@ -29,7 +34,10 @@
     border-radius: 10px;
 
     &:hover {
-        background-color: color.$darkTintLightHover;
+        background-color: color.$darkTintLight;
+        @media (prefers-color-scheme: dark) {
+            background-color: color.$darkTintLightHover;
+        }
     }
 
     &> * {
