@@ -103,3 +103,14 @@
 .noBorder {
     border: none !important;
 }
+
+.label {
+    display: block;
+    padding: 15px 15px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.labelSizeSmall {
+    padding: 10px 12px;
+}

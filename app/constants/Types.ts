@@ -89,8 +89,10 @@ export type TFormItem<TValueType = any> = {
     id?: string;
     name: string;
     className?: string;
+    labelClassName?: string;
     size?: TFormItemSize;
     placeholder?: string;
+    label?: string;
     color?: BasicColorType;
     tint?: BasicColorTintType;
     default?: TValueType;

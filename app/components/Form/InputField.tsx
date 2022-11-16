@@ -25,16 +25,27 @@ export class FormInputField extends FormItem<TFormInput> {
             .filter((a) => !!a)
             .join(' ');
 
+        const labelClasses = [
+            styles.label,
+            styles[`labelSize${this.config.size}`],
+            this.config.labelClassName,
+        ]
+            .filter((a) => !!a)
+            .join(' ');
+
         return (
-            <input
-                defaultValue={this.config.default}
-                ref={this.ref}
-                placeholder={this.config.placeholder}
-                name={this.config.name}
-                className={classes}
-                type={this.config.type || ''.toLowerCase()}
-                id={this.config.id}
-            />
+            <>
+                {this.config.label && <label htmlFor={this.config.id} className={labelClasses}>{this.config.label}</label>}
+                <input
+                    defaultValue={this.config.default}
+                    ref={this.ref}
+                    placeholder={this.config.placeholder}
+                    name={this.config.name}
+                    className={classes}
+                    type={this.config.type || ''.toLowerCase()}
+                    id={this.config.id}
+                />
+            </>
         );
     }
 }
