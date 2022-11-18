@@ -40,5 +40,66 @@
         "invalid-credentials": "Your username/email or password is incorrect."
       }
     }
+  },
+  "account": {
+    "profile": {
+      "member-since-days": "Member since {{days}} days",
+      "fields": {
+        "name": {
+          "label": "Name",
+          "placeholder": "Enter your full name",
+          "faulty": "Please enter both your first and lastname."
+        },
+        "username": {
+          "label": "Username",
+          "placeholder": "Enter a username",
+          "faulty": "A username can consist of letters, number and the following characters: \" . - _ \". A username must start with a letter and cannot end with \"-\" or \"_\"."
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "Enter your email",
+          "faulty": "Please enter a valid email."
+        }
+      },
+      "submitted": {
+        "error-email": "It is not yet possible to update your email.",
+        "error-failed": "Failed to save your profile, please contact hi@kards.social if the issue persists.",
+        "success": "Updated your profile!",
+        "button": "Save profile"
+      }
+    },
+    "security": {
+      "title": "Security",
+      "fields": {
+        "oldpassword": {
+          "label": "Old password",
+          "placeholder": "Enter your current password",
+          "faulty": "Please enter your current password."
+        },
+        "newpassword": {
+          "label": "New password",
+          "placeholder": "Enter a new password"
+        },
+        "verifypassword": {
+          "label": "Verify password",
+          "placeholder": "Enter new password again"
+        }
+      },
+      "password-validation": {
+        "invalid": "Your password must contain at least {{criteria}}.",
+        "test-lowercase": "one lowercase letter",
+        "test-uppercase": "one uppercase letter",
+        "test-special": "one special character",
+        "test-number": "one number",
+        "test-length": "eight characters",
+        "no-match": "The password don't match."
+      },
+      "submitted": {
+        "error-invalid-password": "Your old password is incorrect.",
+        "error-criteria-not-met": "Your new password does not meet the set criteria.",
+        "success": "Your password has been updated!",
+        "button": "Update password"
+      }
+    }
   }
 }

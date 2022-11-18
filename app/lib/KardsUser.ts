@@ -25,8 +25,6 @@ export const UpdateAuthenticatedUser = async (
         ${Object.keys(user).map((prop) => {
             const val = JSON.stringify({ ...user }[prop]);
             switch (prop) {
-                case 'password':
-                    return `password=crypto::argon2::generate(${val})`;
                 default:
                     return `${prop}=${val}`;
             }
@@ -41,4 +39,26 @@ export const UpdateAuthenticatedUser = async (
     }
 
     return preParse;
+};
+
+export const UpdateAuthenticatedUserPassword = async (arg: {
+    oldpassword: string;
+    newpassword: string;
+}): Promise<{
+    password_correct: boolean;
+    replacement_valid: boolean;
+}> => {
+    const result = await SurrealQuery(
+        `
+        SELECT * FROM user WHERE id = $auth.id AND crypto::argon2::compare(password, $oldpassword);
+        UPDATE user SET password = crypto::argon2::generate($newpassword) WHERE id = $auth.id;
+        SELECT * FROM user WHERE id = $auth.id AND crypto::argon2::compare(password, $newpassword);
+    `,
+        arg
+    );
+
+    return {
+        password_correct: !!result[0].result && result[0].result.length > 0,
+        replacement_valid: !!result[2].result && result[2].result.length > 0,
+    };
 };

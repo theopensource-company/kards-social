@@ -40,5 +40,66 @@
         "invalid-credentials": "Je gebruikersnaam/e-mailadres of wachtwoord in incorrect."
       }
     }
+  },
+  "account": {
+    "profile": {
+      "fields": {
+        "email": {
+          "faulty": "Voor een valide e-mailadres in.",
+          "label": "E-mailadres",
+          "placeholder": "Voer een e-mailadres in"
+        },
+        "name": {
+          "faulty": "Voor je voor- en achternaam in.",
+          "label": "Naam",
+          "placeholder": "Voer je volledige naam in."
+        },
+        "username": {
+          "faulty": "Een gebruikersnaam kan bestaan uit letters, nummers en de volgende karakters: \" . - _ \". Een gebruikersnaam moet starten met een letter en kan niet eindigen met \"-\" of \"_\".",
+          "label": "Gebruikersnaam",
+          "placeholder": "Voer een gebruikersnaam in"
+        }
+      },
+      "member-since-days": "Lid sinds {{days}} dagen",
+      "submitted": {
+        "button": "Profiel opslaan",
+        "error-email": "Het is nog niet mogelijk om je e-mailadres aan te passen.",
+        "error-failed": "Het opslaan van je profiel is mislukt. Neem contact op met hi@kards.social als het probleem zich blijft voordoen.",
+        "success": "Je profiel is bijgewerkt!"
+      }
+    },
+    "security": {
+      "fields": {
+        "newpassword": {
+          "label": "Nieuw wachtwoord",
+          "placeholder": "Voer een nieuw wachtwoord in"
+        },
+        "oldpassword": {
+          "faulty": "Voer je huidige wachtwoord in.",
+          "label": "Oud wachtwoord",
+          "placeholder": "Voer je huidige wachtwoord in."
+        },
+        "verifypassword": {
+          "label": "Herhaal wachtwoord",
+          "placeholder": "Voer je nieuwe wachtwoord nogmaals in"
+        }
+      },
+      "password-validation": {
+        "invalid": "Je wachtwoord moet tenminste {{criteria}} bevatten.",
+        "no-match": "De wachtwoorden komen niet overeen.",
+        "test-length": "acht karakters",
+        "test-lowercase": "één kleine letter",
+        "test-number": "één nummer",
+        "test-special": "één speciaal karakter",
+        "test-uppercase": "één grote letter"
+      },
+      "submitted": {
+        "button": "Wachtwoord bijwerken",
+        "error-criteria-not-met": "Je nieuwe wachtwoord voldoet niet aan de gestelde criteria.",
+        "error-invalid-password": "Je oude wachtwoord is incorrect.",
+        "success": "Je wachtwoord is bijgewerkt!"
+      },
+      "title": "Beveiliging"
+    }
   }
 }

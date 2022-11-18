@@ -17,7 +17,15 @@ export class FormInputField extends FormItem<TFormInput> {
     renderer() {
         const classes = [
             styles.default,
-            this.config.color ? styles[`color${this.config.color}${this.config.tint ? `Tint${this.config.tint}` : ""}`] : (this.config.tint ? styles[`tint${this.config.tint}`] : ""),
+            this.config.color
+                ? styles[
+                      `color${this.config.color}${
+                          this.config.tint ? `Tint${this.config.tint}` : ''
+                      }`
+                  ]
+                : this.config.tint
+                ? styles[`tint${this.config.tint}`]
+                : '',
             this.config.noBorder ? styles.noBorder : 0,
             styles[`size${this.config.size}`],
             this.config.className,
@@ -35,7 +43,11 @@ export class FormInputField extends FormItem<TFormInput> {
 
         return (
             <>
-                {this.config.label && <label htmlFor={this.config.id} className={labelClasses}>{this.config.label}</label>}
+                {this.config.label && (
+                    <label htmlFor={this.config.id} className={labelClasses}>
+                        {this.config.label}
+                    </label>
+                )}
                 <input
                     defaultValue={this.config.default}
                     ref={this.ref}

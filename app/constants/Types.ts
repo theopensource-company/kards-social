@@ -103,6 +103,18 @@ export type TFormItem<TValueType = any> = {
     process?: (value: TValueType) => TValueType;
 };
 
+export type TFormItemTheming = Pick<
+    TFormItem,
+    | 'className'
+    | 'labelClassName'
+    | 'size'
+    | 'color'
+    | 'tint'
+    | 'invalidClass'
+    | 'noBorder'
+    | 'noHover'
+>;
+
 export type TFormInputFieldType =
     | 'Email'
     | 'Number'
@@ -130,7 +142,6 @@ export type TUpdateKardsUser = {
     name?: `${string} ${string}`; //It's not strict about what comes after it, but this way it must contain at least one space (first & lastname)
     email?: TEmail;
     username?: string;
-    password?: string;
 };
 
 export type TAuthenticateKardsUser = {
