@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 
@@ -13,10 +13,12 @@ import { FormInputField } from '../../components/Form/InputField';
 import { TForm, TFormItemTheming } from '../../constants/Types';
 import { ButtonLarge } from '../../components/Button';
 import { useTranslation } from 'react-i18next';
+import { Check, Icon, Save } from 'react-feather';
 
 export default function Account() {
     const auth = useAuthState();
     const refreshAccount = useDelayedRefreshAuthenticatedUser();
+    const [ActiveIcon, setIcon] = useState<Icon | false>(Save);
     const { t } = useTranslation('pages');
 
     const InputTheme: TFormItemTheming = {
@@ -62,24 +64,37 @@ export default function Account() {
     };
 
     const saveProfile: TForm['onSubmit'] = async ({ values, faulty }) => {
-        if (faulty.name)
-            toast.error(t('account.profile.fields.name.faulty') as string);
-        if (faulty.username)
-            toast.error(t('account.profile.fields.username.faulty') as string);
-        if (faulty.email)
-            toast.error(t('account.profile.fields.email.faulty') as string);
-        if (Object.keys(faulty).length > 0) return;
+        (async () => {
+            setIcon(false);
+            if (faulty.name)
+                toast.error(t('account.profile.fields.name.faulty') as string);
+            if (faulty.username)
+                toast.error(
+                    t('account.profile.fields.username.faulty') as string
+                );
+            if (faulty.email)
+                toast.error(t('account.profile.fields.email.faulty') as string);
+            if (Object.keys(faulty).length > 0) return;
 
-        if (values.email !== auth.details?.email)
-            toast.warn(t('account.profile.submitted.error-email'));
-        delete values.email;
+            if (values.email !== auth.details?.email)
+                toast.warn(t('account.profile.submitted.error-email'));
+            delete values.email;
 
-        if (await UpdateAuthenticatedUser(values)) {
-            refreshAccount();
-            toast.success(t('account.profile.submitted.success'));
-        } else {
-            toast.error(t('account.profile.submitted.error-failed'));
-        }
+            if (await UpdateAuthenticatedUser(values)) {
+                refreshAccount();
+                toast.success(t('account.profile.submitted.success'));
+                return true;
+            } else {
+                toast.error(t('account.profile.submitted.error-failed'));
+            }
+        })().then((success) => {
+            if (success) {
+                setIcon(Check);
+                setTimeout(() => setIcon(Save), 1000);
+            } else {
+                setIcon(Save);
+            }
+        });
     };
 
     return (
@@ -113,6 +128,8 @@ export default function Account() {
                             text={
                                 t('account.profile.submitted.button') as string
                             }
+                            icon={ActiveIcon && <ActiveIcon size={22} />}
+                            loading={!ActiveIcon}
                         />
                     </Form>
                 </div>

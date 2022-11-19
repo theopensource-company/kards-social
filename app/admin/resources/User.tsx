@@ -19,6 +19,10 @@ import {
     useGetManyReference,
     useList,
     Pagination,
+    NumberInput,
+    NumberField,
+    TabbedForm,
+    FormTab,
 } from 'react-admin';
 import { TableHead, TableRow, TableCell } from '@mui/material';
 
@@ -55,6 +59,12 @@ export const ShowUser = () => {
                 </Tab>
                 <Tab label="events">
                     <ShowUserEvents />
+                </Tab>
+                <Tab label="limits">
+                    <NumberField
+                        source="limits.additional_username_count"
+                        label="No. additional usernames"
+                    />
                 </Tab>
             </TabbedShowLayout>
         </Show>
@@ -106,13 +116,27 @@ export const ShowUserEvents = () => {
 
 export const EditUser = () => (
     <Edit title={<UserTitle />}>
-        <SimpleForm>
-            <TextInput disabled source="id" />
-            <TextInput source="name" />
-            <TextInput source="username" />
-            <TextInput source="email" type="email" />
-            <TextInput source="password" type="password" label="New password" />
-        </SimpleForm>
+        <TabbedForm>
+            <FormTab label="details">
+                <TextInput disabled source="id" />
+                <TextInput source="name" />
+                <TextInput source="username" />
+                <TextInput source="email" type="email" />
+                <TextInput
+                    source="password"
+                    type="password"
+                    label="New password"
+                />
+            </FormTab>
+            <FormTab label="limits">
+                <NumberInput
+                    source="limits.additional_username_count"
+                    min={0}
+                    label="No. additional usernames"
+                    placeholder="Enter a value"
+                />
+            </FormTab>
+        </TabbedForm>
     </Edit>
 );
 
