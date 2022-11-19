@@ -134,7 +134,7 @@ export default function Account() {
 
     return (
         <AccountLayout activeKey="security">
-            <h1>Security</h1>
+            <h1>{t('account.security.title')}</h1>
             <Form
                 {...{
                     onSubmit: updatePassword,
