@@ -17,6 +17,7 @@ import {
 } from '../lib/Surreal';
 import { useTranslation } from 'react-i18next';
 import { FieldErrors, useForm } from 'react-hook-form';
+import { Check, Icon, Send } from 'react-feather';
 
 type TWaitlistFields = {
     name: `${string} ${string}`;
@@ -26,50 +27,60 @@ type TWaitlistFields = {
 export default function JoinWaitlist() {
     const router = useRouter();
     const { email, secret, success } = router.query;
-    const [working, setWorking] = useState(!!(email && secret));
+    const [ActiveIcon, setIcon] = useState<Icon | boolean>(
+        email && secret ? false : Send
+    );
     const { register, handleSubmit } = useForm<TWaitlistFields>();
     const { t } = useTranslation('pages');
 
     const onSuccess = async (values: TWaitlistFields) => {
-        setWorking(true);
-        try {
-            const result = await SurrealQuery<{
-                id: `email_verification:${string}`;
-                email: `${string}@${string}.${string}`;
-                recipient: string;
-                template: 'waitlist';
-            }>(
-                `CREATE email_verification CONTENT ${JSON.stringify({
-                    email: values.email,
-                    recipient: values.name,
-                    template: 'waitlist',
-                    origin: location.origin,
-                })}`
-            );
-
-            if (!result[0].result || !result[0].result[0])
-                return toast.error(
-                    t('waitlist.join.submitted.error', {
-                        code: 'ERRNORS', // Error NO ReSponse
-                    })
-                );
-            if (result[0].result[0].email !== values.email)
-                return toast.error(
-                    t('waitlist.join.submitted.error', {
-                        code: 'ERRIVRS', // Error InValid ReSponse
-                    })
+        (async () => {
+            setIcon(false);
+            try {
+                const result = await SurrealQuery<{
+                    id: `email_verification:${string}`;
+                    email: `${string}@${string}.${string}`;
+                    recipient: string;
+                    template: 'waitlist';
+                }>(
+                    `CREATE email_verification CONTENT ${JSON.stringify({
+                        email: values.email,
+                        recipient: values.name,
+                        template: 'waitlist',
+                        origin: location.origin,
+                    })}`
                 );
 
-            toast.success(t('waitlist.join.submitted.success'));
-        } catch (e) {
-            toast.error(
-                t('waitlist.join.submitted.error', {
-                    code: 'ERRNNWR', // Error No NetWork Response
-                })
-            );
-        }
+                if (!result[0].result || !result[0].result[0])
+                    return toast.error(
+                        t('waitlist.join.submitted.error', {
+                            code: 'ERRNORS', // Error NO ReSponse
+                        })
+                    );
+                if (result[0].result[0].email !== values.email)
+                    return toast.error(
+                        t('waitlist.join.submitted.error', {
+                            code: 'ERRIVRS', // Error InValid ReSponse
+                        })
+                    );
 
-        setWorking(false);
+                toast.success(t('waitlist.join.submitted.success'));
+                return true;
+            } catch (e) {
+                toast.error(
+                    t('waitlist.join.submitted.error', {
+                        code: 'ERRNNWR', // Error No NetWork Response
+                    })
+                );
+            }
+        })().then((success) => {
+            if (success === true) {
+                setIcon(Check);
+                setTimeout(() => setIcon(Send), 1000);
+            } else {
+                setIcon(Send);
+            }
+        });
     };
 
     const onFailure = (faulty: FieldErrors<TWaitlistFields>) => {
@@ -97,7 +108,7 @@ export default function JoinWaitlist() {
                     }
                 )
                 .then(() => {
-                    setWorking(false);
+                    setIcon(true);
                     router.push(`${location.pathname}?success`);
                 })
                 .catch((e) => {
@@ -108,10 +119,10 @@ export default function JoinWaitlist() {
                             })
                         );
 
-                    setWorking(false);
+                    setIcon(true);
                     router.push(`${location.pathname}?success`);
                 });
-    }, [email, secret, setWorking, router, t]);
+    }, [email, secret, setIcon, router, t]);
 
     if ((email && secret) || success !== undefined) {
         return (
@@ -122,7 +133,7 @@ export default function JoinWaitlist() {
                         {
                             t(
                                 `waitlist.joined.${
-                                    working ? 'working' : 'done'
+                                    !ActiveIcon ? 'working' : 'done'
                                 }.description`
                             ) as string
                         }
@@ -132,11 +143,11 @@ export default function JoinWaitlist() {
                         text={
                             t(
                                 `waitlist.joined.${
-                                    working ? 'working' : 'done'
+                                    !ActiveIcon ? 'working' : 'done'
                                 }.button`
                             ) as string
                         }
-                        loading={working}
+                        loading={!ActiveIcon}
                     />
                 </div>
             </LayoutContentMiddle>
@@ -186,7 +197,12 @@ export default function JoinWaitlist() {
                     </div>
                     <Button
                         text={t('waitlist.join.button') as string}
-                        loading={working}
+                        icon={
+                            typeof ActiveIcon != 'boolean' && (
+                                <ActiveIcon size={22} />
+                            )
+                        }
+                        loading={!ActiveIcon}
                     />
                 </form>
             </LayoutContentMiddle>
