@@ -121,9 +121,11 @@ export default function Account() {
                             defaultValue={auth.details.username}
                             {...InputTheme}
                             {...register('username', {
-                                pattern:
-                                    /^[a-z0-9](?:[a-z0-9._-]{1,18}[a-z0-9.])$/,
-                                validate: (v) => v && v.length > 0,
+                                validate: (v) =>
+                                    v &&
+                                    /^[a-z0-9](?:[a-z0-9._-]{1,18}[a-z0-9.])$/.test(
+                                        v
+                                    ),
                             })}
                             onKeyDown={keypressValidation(
                                 getValues,
@@ -146,8 +148,11 @@ export default function Account() {
                             defaultValue={auth.details.email}
                             {...InputTheme}
                             {...register('email', {
-                                pattern:
-                                    /^[A-ZÀ-ÖØ-öø-ÿ0-9._%+-]+@[A-ZÀ-ÖØ-öø-ÿ0-9.-]+\.[A-Z]{2,}$/i,
+                                validate: (v) =>
+                                    v &&
+                                    /^[A-ZÀ-ÖØ-öø-ÿ0-9._%+-]+@[A-ZÀ-ÖØ-öø-ÿ0-9.-]+\.[A-Z]{2,}$/i.test(
+                                        v
+                                    ),
                             })}
                         />
                         <br />
