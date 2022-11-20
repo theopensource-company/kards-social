@@ -9,7 +9,9 @@
     "build": "next build && next export && next-sitemap",
     "start": "next start",
     "lint": "eslint . --ext ts --ext tsx --max-warnings 0",
-    "postbuild": "next-sitemap"
+    "postbuild": "next-sitemap",
+    "storybook": "start-storybook -p 6006 -s ./public",
+    "build-storybook": "build-storybook -s public"
   },
   "dependencies": {
     "@babel/core": "^7.19.6",
@@ -40,12 +42,22 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^6.5.13",
+    "@storybook/addon-essentials": "^6.5.13",
+    "@storybook/addon-interactions": "^6.5.13",
+    "@storybook/addon-links": "^6.5.13",
+    "@storybook/builder-webpack5": "^6.5.13",
+    "@storybook/manager-webpack5": "^6.5.13",
+    "@storybook/preset-scss": "^1.0.3",
+    "@storybook/react": "^6.5.13",
+    "@storybook/testing-library": "^0.0.13",
     "@types/node": "18.7.13",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.42.0",
     "@typescript-eslint/parser": "^5.42.0",
+    "babel-loader": "^8.3.0",
     "eslint": "8.23.0",
     "eslint-config-next": "13.0.0",
     "eslint-config-prettier": "^8.5.0",
@@ -54,9 +66,11 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.10",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-storybook": "^0.6.7",
     "eslint-plugin-unused-imports": "^2.0.0",
     "prettier": "^2.7.1",
     "sass": "1.54.5",
+    "sass-loader": "^13.2.0",
     "typescript": "4.8.2"
   }
 }

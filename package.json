@@ -7,7 +7,8 @@
     "conf": "node cli/config.js",
     "dbshell": "node cli/dbshell.js",
     "ts": "tsc --watch -p app/tsconfig.json",
-    "lint": "cd app && pnpm lint"
+    "lint": "cd app && pnpm lint",
+    "storybook": "cd app && pnpm storybook"
   },
   "author": "The Open Source Company",
   "license": "AGPL-3.0-only",
