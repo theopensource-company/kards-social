@@ -7,9 +7,7 @@ import { toast } from 'react-toastify';
 import styles from '../styles/pages/JoinWaitlist.module.scss';
 import axios from 'axios';
 import Logo from '../components/Logo';
-import { Form } from '../components/Form';
 import { FormInputField } from '../components/Form/InputField';
-import { TForm } from '../constants/Types';
 import LayoutContentMiddle from '../components/Layout/ContentMiddle';
 import {
     SurrealEndpoint,
@@ -18,19 +16,21 @@ import {
     SurrealQuery,
 } from '../lib/Surreal';
 import { useTranslation } from 'react-i18next';
+import { FieldErrors, useForm } from 'react-hook-form';
+
+type TWaitlistFields = {
+    name: `${string} ${string}`;
+    email: string;
+};
 
 export default function JoinWaitlist() {
     const router = useRouter();
     const { email, secret, success } = router.query;
     const [working, setWorking] = useState(!!(email && secret));
+    const { register, handleSubmit } = useForm<TWaitlistFields>();
     const { t } = useTranslation('pages');
 
-    const submitForm: TForm['onSubmit'] = async ({ values, faulty }) => {
-        if (faulty.name) toast.error(t('waitlist.join.submitted.invalid-name'));
-        if (faulty.email)
-            toast.error(t('waitlist.join.submitted.invalid-email'));
-        if (Object.keys(faulty).length > 0) return;
-
+    const onSuccess = async (values: TWaitlistFields) => {
         setWorking(true);
         try {
             const result = await SurrealQuery<{
@@ -72,21 +72,11 @@ export default function JoinWaitlist() {
         setWorking(false);
     };
 
-    const inputName = new FormInputField({
-        name: 'name',
-        placeholder: t('waitlist.join.input-fullname') as string,
-        isValid: (value) =>
-            /^[A-ZÀ-ÖØ-öø-ÿ]+ [A-ZÀ-ÖØ-öø-ÿ][A-ZÀ-ÖØ-öø-ÿ ]*$/i.test(value),
-    });
-
-    const inputEmail = new FormInputField({
-        name: 'email',
-        placeholder: t('waitlist.join.input-email') as string,
-        isValid: (value) =>
-            /^[A-ZÀ-ÖØ-öø-ÿ0-9._%+-]+@[A-ZÀ-ÖØ-öø-ÿ0-9.-]+\.[A-Z]{2,}$/i.test(
-                value
-            ),
-    });
+    const onFailure = (faulty: FieldErrors<TWaitlistFields>) => {
+        if (faulty.name) toast.error(t('waitlist.join.submitted.invalid-name'));
+        if (faulty.email)
+            toast.error(t('waitlist.join.submitted.invalid-email'));
+    };
 
     useEffect(() => {
         if (email && secret)
@@ -162,21 +152,43 @@ export default function JoinWaitlist() {
                         onClick={() => router.push('/')}
                     />
                 </div>
-                <Form
+                <form
                     className={styles.form}
-                    inputs={[inputName, inputEmail]}
-                    onSubmit={submitForm}
+                    onSubmit={handleSubmit(onSuccess, onFailure)}
                 >
                     <Logo />
                     <div className={styles.inputs}>
-                        <inputName.render />
-                        <inputEmail.render />
+                        <FormInputField
+                            placeholder={
+                                t('waitlist.join.input-fullname') as string
+                            }
+                            {...register('name', {
+                                validate: (v) =>
+                                    v &&
+                                    /^[A-ZÀ-ÖØ-öø-ÿ]+ [A-ZÀ-ÖØ-öø-ÿ][A-ZÀ-ÖØ-öø-ÿ ]*$/i.test(
+                                        v
+                                    ),
+                            })}
+                        />
+                        <FormInputField
+                            type="email"
+                            placeholder={
+                                t('waitlist.join.input-email') as string
+                            }
+                            {...register('email', {
+                                validate: (v) =>
+                                    v &&
+                                    /^[A-ZÀ-ÖØ-öø-ÿ0-9._%+-]+@[A-ZÀ-ÖØ-öø-ÿ0-9.-]+\.[A-Z]{2,}$/i.test(
+                                        v
+                                    ),
+                            })}
+                        />
                     </div>
                     <Button
                         text={t('waitlist.join.button') as string}
                         loading={working}
                     />
-                </Form>
+                </form>
             </LayoutContentMiddle>
         );
     }
