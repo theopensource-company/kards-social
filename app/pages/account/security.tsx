@@ -166,6 +166,7 @@ export default function Account() {
                     text={t('account.security.submitted.button') as string}
                     icon={ActiveIcon && <ActiveIcon size={22} />}
                     loading={!ActiveIcon}
+                    disabled={!ActiveIcon}
                 />
             </form>
         </AccountLayout>

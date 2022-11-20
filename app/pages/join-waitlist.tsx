@@ -148,6 +148,7 @@ export default function JoinWaitlist() {
                             ) as string
                         }
                         loading={!ActiveIcon}
+                        disabled={!ActiveIcon}
                     />
                 </div>
             </LayoutContentMiddle>
@@ -203,6 +204,7 @@ export default function JoinWaitlist() {
                             )
                         }
                         loading={!ActiveIcon}
+                        disabled={!ActiveIcon}
                     />
                 </form>
             </LayoutContentMiddle>

@@ -91,6 +91,7 @@ export default function Signin() {
                         text={t('auth.signin.button') as string}
                         icon={ActiveIcon && <ActiveIcon size={22} />}
                         loading={!ActiveIcon}
+                        disabled={!ActiveIcon}
                     />
                 </form>
             </div>

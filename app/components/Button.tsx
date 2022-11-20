@@ -17,6 +17,7 @@ type Props = {
     iconAlt?: string;
     iconRound?: boolean;
     loading?: boolean;
+    disabled?: boolean;
 };
 
 class InvalidButtonError extends Error {}
@@ -29,7 +30,8 @@ export default function Button({
     text,
     icon,
     iconAlt,
-    loading = false,
+    loading,
+    disabled,
 }: Props) {
     if (!text && !icon)
         throw new InvalidButtonError(
@@ -51,14 +53,9 @@ export default function Button({
     return (
         <button
             className={classes}
+            disabled={disabled}
             type={onClick ? 'button' : 'submit'}
-            onClick={
-                onClick
-                    ? (event) => {
-                          onClick(event);
-                      }
-                    : undefined
-            }
+            onClick={onClick}
         >
             {(icon || loading) && (
                 <div

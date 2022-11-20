@@ -164,6 +164,7 @@ export default function Account() {
                             }
                             icon={ActiveIcon && <ActiveIcon size={22} />}
                             loading={!ActiveIcon}
+                            disabled={!ActiveIcon}
                         />
                     </form>
                 </div>

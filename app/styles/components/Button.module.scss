@@ -23,6 +23,10 @@
     }
 
     transition: color .2s ease, background .2s ease;
+
+    &[disabled] {
+        cursor: not-allowed;
+    }
 }
 
 // COLORS
