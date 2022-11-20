@@ -8,17 +8,27 @@ import {
 } from '../../hooks/KardsUser';
 import AccountLayout from '../../components/Layout/Account';
 import { UpdateAuthenticatedUser } from '../../lib/KardsUser';
-import { Form } from '../../components/Form';
 import { FormInputField } from '../../components/Form/InputField';
-import { TForm, TFormItemTheming } from '../../constants/Types';
+import { TFormItemTheming } from '../../constants/Types';
 import { ButtonLarge } from '../../components/Button';
 import { useTranslation } from 'react-i18next';
 import { Check, Icon, Save } from 'react-feather';
+import { FieldErrors, useForm } from 'react-hook-form';
+import { keypressValidation } from '../../lib/KeypressValidation';
+import { usernameValidationSections } from '../../constants/KeypressValidators/username';
+
+type TProfileFields = {
+    name: `${string} ${string}`;
+    username: string;
+    email: string;
+};
 
 export default function Account() {
     const auth = useAuthState();
     const refreshAccount = useDelayedRefreshAuthenticatedUser();
     const [ActiveIcon, setIcon] = useState<Icon | false>(Save);
+    const { register, handleSubmit, getValues, setValue } =
+        useForm<TProfileFields>();
     const { t } = useTranslation('pages');
 
     const InputTheme: TFormItemTheming = {
@@ -27,60 +37,19 @@ export default function Account() {
         size: 'Small',
     };
 
-    const Input = {
-        Name: new FormInputField({
-            ...InputTheme,
-            placeholder: t('account.profile.fields.name.placeholder') as string,
-            label: t('account.profile.fields.name.label') as string,
-            name: 'name',
-            default: auth.details?.name,
-            isValid: (value) => value.trim().split(' ').length > 1,
-        }),
-        Username: new FormInputField({
-            ...InputTheme,
-            placeholder: t(
-                'account.profile.fields.username.placeholder'
-            ) as string,
-            label: t('account.profile.fields.username.label') as string,
-            name: 'username',
-            default: auth.details?.username,
-            process: (value) => value.trim().toLowerCase(),
-            isValid: (value) =>
-                /^[a-z0-9](?:[a-z0-9._-]{1,18}[a-z0-9.])$/.test(value),
-        }),
-        Email: new FormInputField({
-            ...InputTheme,
-            placeholder: t(
-                'account.profile.fields.email.placeholder'
-            ) as string,
-            label: t('account.profile.fields.email.label') as string,
-            name: 'email',
-            default: auth.details?.email,
-            isValid: (value) =>
-                /^[A-ZÀ-ÖØ-öø-ÿ0-9._%+-]+@[A-ZÀ-ÖØ-öø-ÿ0-9.-]+\.[A-Z]{2,}$/i.test(
-                    value
-                ),
-        }),
-    };
-
-    const saveProfile: TForm['onSubmit'] = async ({ values, faulty }) => {
+    const onSuccess = async (values: TProfileFields) => {
         (async () => {
             setIcon(false);
-            if (faulty.name)
-                toast.error(t('account.profile.fields.name.faulty') as string);
-            if (faulty.username)
-                toast.error(
-                    t('account.profile.fields.username.faulty') as string
-                );
-            if (faulty.email)
-                toast.error(t('account.profile.fields.email.faulty') as string);
-            if (Object.keys(faulty).length > 0) return;
 
             if (values.email !== auth.details?.email)
                 toast.warn(t('account.profile.submitted.error-email'));
-            delete values.email;
 
-            if (await UpdateAuthenticatedUser(values)) {
+            if (
+                await UpdateAuthenticatedUser({
+                    name: values.name,
+                    username: values.username,
+                })
+            ) {
                 refreshAccount();
                 toast.success(t('account.profile.submitted.success'));
                 return true;
@@ -95,6 +64,15 @@ export default function Account() {
                 setIcon(Save);
             }
         });
+    };
+
+    const onFailure = async (faulty: FieldErrors<TProfileFields>) => {
+        if (faulty.name)
+            toast.error(t('account.profile.fields.name.faulty') as string);
+        if (faulty.username)
+            toast.error(t('account.profile.fields.username.faulty') as string);
+        if (faulty.email)
+            toast.error(t('account.profile.fields.email.faulty') as string);
     };
 
     return (
@@ -112,15 +90,66 @@ export default function Account() {
                         })}
                     </p>
 
-                    <Form
-                        {...{
-                            onSubmit: saveProfile,
-                            inputs: Object.values(Input),
-                        }}
-                    >
-                        <Input.Name.render />
-                        <Input.Username.render />
-                        <Input.Email.render />
+                    <form onSubmit={handleSubmit(onSuccess, onFailure)}>
+                        <FormInputField
+                            placeholder={
+                                t(
+                                    'account.profile.fields.name.placeholder'
+                                ) as string
+                            }
+                            label={
+                                t('account.profile.fields.name.label') as string
+                            }
+                            defaultValue={auth.details.name}
+                            {...InputTheme}
+                            {...register('name', {
+                                validate: (v) =>
+                                    v && v.trim().split(' ').length > 1,
+                            })}
+                        />
+                        <FormInputField
+                            placeholder={
+                                t(
+                                    'account.profile.fields.username.placeholder'
+                                ) as string
+                            }
+                            label={
+                                t(
+                                    'account.profile.fields.username.label'
+                                ) as string
+                            }
+                            defaultValue={auth.details.username}
+                            {...InputTheme}
+                            {...register('username', {
+                                pattern:
+                                    /^[a-z0-9](?:[a-z0-9._-]{1,18}[a-z0-9.])$/,
+                                validate: (v) => v && v.length > 0,
+                            })}
+                            onKeyDown={keypressValidation(
+                                getValues,
+                                setValue,
+                                'username',
+                                usernameValidationSections(t)
+                            )}
+                        />
+                        <FormInputField
+                            placeholder={
+                                t(
+                                    'account.profile.fields.email.placeholder'
+                                ) as string
+                            }
+                            label={
+                                t(
+                                    'account.profile.fields.email.label'
+                                ) as string
+                            }
+                            defaultValue={auth.details.email}
+                            {...InputTheme}
+                            {...register('email', {
+                                pattern:
+                                    /^[A-ZÀ-ÖØ-öø-ÿ0-9._%+-]+@[A-ZÀ-ÖØ-öø-ÿ0-9.-]+\.[A-Z]{2,}$/i,
+                            })}
+                        />
                         <br />
                         <br />
                         <br />
@@ -131,7 +160,7 @@ export default function Account() {
                             icon={ActiveIcon && <ActiveIcon size={22} />}
                             loading={!ActiveIcon}
                         />
-                    </Form>
+                    </form>
                 </div>
             )}
         </AccountLayout>

@@ -1,0 +1,8 @@
+{
+    "keypressValidators": {
+        "username": {
+            "start-with-letter": "Je gebruikersnaam moet beginnen met een letter (a-z).",
+            "illegal-character": "Je gebruikersnaam mag het volgende karakter niet bevatten: \"{{char}}\""
+        }
+    }
+}

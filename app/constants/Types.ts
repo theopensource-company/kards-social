@@ -1,5 +1,4 @@
-import { FormEvent, ReactNode } from 'react';
-import { FormItem } from '../components/Form/FormItem';
+import { HTMLProps, ReactNode } from 'react';
 import { BasicColorTintType, BasicColorType, ColorType } from './Colors';
 import * as Feather from 'react-feather';
 import { AccountSidebarItem } from './AccountSidebar';
@@ -62,68 +61,33 @@ export type TApiResponse<TResultType = any> =
 
 /* FORM TYPES */
 
-export type TForm = {
-    inputs: FormItem<TFormItem>[];
-    children?: ReactNode;
-    id?: string;
-    className?: string;
-
-    onSubmit: (args: {
-        values: {
-            // Ideally I'd want to automatically create a type out of the inputs argument but my headache is too big for this rn :D
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            [key: string]: any;
-        };
-        faulty: {
-            // Ideally I'd want to automatically create a type out of the inputs argument but my headache is too big for this rn :D
-            [key: string]: FormItem<TFormItem>;
-        };
-        event: FormEvent<HTMLFormElement>;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    }) => any;
-};
-
 export type TFormItemSize = 'Small' | 'Large';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type TFormItem<TValueType = any> = {
-    id?: string;
-    name: string;
-    className?: string;
+export type TFormItem<THTMLElement extends HTMLElement = HTMLElement> = Omit<
+    HTMLProps<THTMLElement>,
+    'size'
+> & {
     labelClassName?: string;
     size?: TFormItemSize;
-    placeholder?: string;
     label?: string;
     color?: BasicColorType;
     tint?: BasicColorTintType;
-    default?: TValueType;
-    invalidClass?: string;
     noBorder?: boolean;
     noHover?: boolean;
-    isValid?: (value: TValueType) => boolean;
-    process?: (value: TValueType) => TValueType;
 };
 
-export type TFormItemTheming = Pick<
-    TFormItem,
+export type TFormItemTheming<TBase extends TFormItem = TFormItem> = Pick<
+    TBase,
     | 'className'
     | 'labelClassName'
     | 'size'
     | 'color'
     | 'tint'
-    | 'invalidClass'
     | 'noBorder'
     | 'noHover'
 >;
 
-export type TFormInputFieldType =
-    | 'Email'
-    | 'Number'
-    | 'Password'
-    | 'Tel'
-    | 'Text';
-export type TFormInput = Omit<TFormItem<string>, 'noHover'> & {
-    type?: TFormInputFieldType;
-};
+export type TFormInput = Omit<TFormItem<HTMLInputElement>, 'noHover'>;
 
 /* Kards user types */
 

@@ -1,63 +1,63 @@
-import React from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import { TFormInput } from '../../constants/Types';
 import styles from '../../styles/components/form/InputField.module.scss';
-import { FormItem } from './FormItem';
+import { v4 as uuidv4 } from 'uuid';
 
-export class FormInputField extends FormItem<TFormInput> {
-    constructor(config: TFormInput) {
-        if (!config.invalidClass) config.invalidClass = styles.invalid;
-        if (!config.type) config.type = 'Text';
-        super(config);
-    }
+export const FormInputField = forwardRef<HTMLInputElement, TFormInput>(
+    (
+        {
+            color,
+            tint,
+            noBorder,
+            className,
+            size,
+            labelClassName,
+            label,
+            id: defaultId,
+            ...rest
+        },
+        ref
+    ) => {
+        if (!size) size = 'Large';
+        const [id, setId] = useState(defaultId ?? '');
+        useEffect(
+            () => setId(defaultId ?? `kards:formitem:${uuidv4()}`),
+            [setId, defaultId]
+        );
 
-    getValue() {
-        return this.ref.current?.value ?? this.ref.current?.innerText ?? '';
-    }
-
-    renderer() {
-        const classes = [
+        const inputClasses = [
             styles.default,
-            this.config.color
-                ? styles[
-                      `color${this.config.color}${
-                          this.config.tint ? `Tint${this.config.tint}` : ''
-                      }`
-                  ]
-                : this.config.tint
-                ? styles[`tint${this.config.tint}`]
+            color
+                ? styles[`color${color}${tint ? `Tint${tint}` : ''}`]
+                : tint
+                ? styles[`tint${tint}`]
                 : '',
-            this.config.noBorder ? styles.noBorder : 0,
-            styles[`size${this.config.size}`],
-            this.config.className,
+            noBorder ? styles.noBorder : 0,
+            styles[`size${size}`],
+            className,
         ]
             .filter((a) => !!a)
             .join(' ');
 
         const labelClasses = [
             styles.label,
-            styles[`labelSize${this.config.size}`],
-            this.config.labelClassName,
+            styles[`labelSize${size}`],
+            labelClassName,
         ]
             .filter((a) => !!a)
             .join(' ');
 
         return (
             <>
-                {this.config.label && (
-                    <label htmlFor={this.config.id} className={labelClasses}>
-                        {this.config.label}
+                {label && (
+                    <label htmlFor={id} className={labelClasses}>
+                        {label}
                     </label>
                 )}
-                <input
-                    defaultValue={this.config.default}
-                    ref={this.ref}
-                    placeholder={this.config.placeholder}
-                    name={this.config.name}
-                    className={classes}
-                    type={this.config.type || ''.toLowerCase()}
-                    id={this.config.id}
-                />
+                <input className={inputClasses} id={id} ref={ref} {...rest} />
             </>
         );
     }
-}
+);
+
+FormInputField.displayName = 'FormInputField';

@@ -67,7 +67,7 @@ importers:
       react-admin-json-view: ^2.0.0
       react-dom: 18.2.0
       react-feather: ^2.0.10
-      react-hook-form: ^7.38.0
+      react-hook-form: ^7.39.1
       react-i18next: ^12.0.0
       react-media-hook: ^0.4.9
       react-router: ^6.4.3

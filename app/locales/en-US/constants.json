@@ -1,0 +1,8 @@
+{
+    "keypressValidators": {
+        "username": {
+            "start-with-letter": "Your username must start with a letter (a-z).",
+            "illegal-character": "Your username cannot contain the following character: \"{{char}}\""
+        }
+    }
+}
