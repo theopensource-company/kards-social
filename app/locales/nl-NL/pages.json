@@ -71,6 +71,7 @@
     "security": {
       "fields": {
         "newpassword": {
+          "faulty": "Voer een nieuw wachtwoord in.",
           "label": "Nieuw wachtwoord",
           "placeholder": "Voer een nieuw wachtwoord in"
         },

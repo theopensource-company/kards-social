@@ -78,7 +78,8 @@
         },
         "newpassword": {
           "label": "New password",
-          "placeholder": "Enter a new password"
+          "placeholder": "Enter a new password",
+          "faulty": "Please enter a new password."
         },
         "verifypassword": {
           "label": "Verify password",

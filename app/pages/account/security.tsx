@@ -1,65 +1,36 @@
 import React, { useState } from 'react';
 import { Check, Icon, Save } from 'react-feather';
+import { FieldErrors, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Id, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { ButtonLarge } from '../../components/Button';
-import { Form } from '../../components/Form';
 import { FormInputField } from '../../components/Form/InputField';
 import AccountLayout from '../../components/Layout/Account';
-import { TForm, TFormItemTheming } from '../../constants/Types';
+import { TFormItemTheming } from '../../constants/Types';
 import { UpdateAuthenticatedUserPassword } from '../../lib/KardsUser';
+
+type TSecurityFields = {
+    oldpassword: string;
+    newpassword: string;
+    verifypassword: string;
+};
 
 export default function Account() {
     const { t } = useTranslation('pages');
     const [ActiveIcon, setIcon] = useState<Icon | false>(Save);
+    const { register, handleSubmit } = useForm<TSecurityFields>();
+
     const InputTheme: TFormItemTheming = {
         tint: 'Light',
         noBorder: true,
         size: 'Small',
     };
 
-    const Input = {
-        PasswordOld: new FormInputField({
-            ...InputTheme,
-            placeholder: t(
-                'account.security.fields.oldpassword.placeholder'
-            ) as string,
-            label: t('account.security.fields.oldpassword.label') as string,
-            name: 'oldpassword',
-            type: 'Password',
-            isValid: (value) => value != '',
-        }),
-        PasswordNew: new FormInputField({
-            ...InputTheme,
-            placeholder: t(
-                'account.security.fields.newpassword.placeholder'
-            ) as string,
-            label: t('account.security.fields.newpassword.label') as string,
-            name: 'newpassword',
-            type: 'Password',
-            isValid: (value) => value != '',
-        }),
-        PasswordNewVerify: new FormInputField({
-            ...InputTheme,
-            placeholder: t(
-                'account.security.fields.verifypassword.placeholder'
-            ) as string,
-            label: t('account.security.fields.verifypassword.label') as string,
-            name: 'verifypassword',
-            type: 'Password',
-        }),
-    };
-
-    const updatePassword: TForm['onSubmit'] = async ({ values, faulty }) => {
+    const onSuccess = async (values: TSecurityFields) => {
         (async () => {
             setIcon(false);
 
-            let err: null | Id = null;
-            if (faulty.oldpassword)
-                err = toast.error('enter your old password');
-            if (faulty.newpassword) err = toast.error('Enter a new password');
-            if (err) return;
-
+            let err;
             const tests = {
                 length: values.newpassword.length > 7,
                 lowercase: !!/[a-z]/.test(values.newpassword),
@@ -132,18 +103,62 @@ export default function Account() {
         });
     };
 
+    const onFailure = async (faulty: FieldErrors<TSecurityFields>) => {
+        if (faulty.oldpassword)
+            toast.error(t('account.security.fields.oldpassword.faulty'));
+        if (faulty.newpassword)
+            toast.error(t('account.security.fields.newpassword.faulty'));
+    };
+
     return (
         <AccountLayout activeKey="security">
             <h1>{t('account.security.title')}</h1>
-            <Form
-                {...{
-                    onSubmit: updatePassword,
-                    inputs: Object.values(Input),
-                }}
-            >
-                <Input.PasswordOld.render />
-                <Input.PasswordNew.render />
-                <Input.PasswordNewVerify.render />
+            <form onSubmit={handleSubmit(onSuccess, onFailure)}>
+                <FormInputField
+                    placeholder={
+                        t(
+                            'account.security.fields.oldpassword.placeholder'
+                        ) as string
+                    }
+                    label={
+                        t('account.security.fields.oldpassword.label') as string
+                    }
+                    type="password"
+                    {...InputTheme}
+                    {...register('oldpassword', {
+                        validate: (v) => v && v !== '',
+                    })}
+                />
+                <FormInputField
+                    placeholder={
+                        t(
+                            'account.security.fields.newpassword.placeholder'
+                        ) as string
+                    }
+                    label={
+                        t('account.security.fields.newpassword.label') as string
+                    }
+                    type="password"
+                    {...InputTheme}
+                    {...register('newpassword', {
+                        validate: (v) => v && v !== '',
+                    })}
+                />
+                <FormInputField
+                    placeholder={
+                        t(
+                            'account.security.fields.verifypassword.placeholder'
+                        ) as string
+                    }
+                    label={
+                        t(
+                            'account.security.fields.verifypassword.label'
+                        ) as string
+                    }
+                    type="password"
+                    {...InputTheme}
+                    {...register('verifypassword')}
+                />
                 <br />
                 <br />
                 <br />
@@ -152,7 +167,7 @@ export default function Account() {
                     icon={ActiveIcon && <ActiveIcon size={22} />}
                     loading={!ActiveIcon}
                 />
-            </Form>
+            </form>
         </AccountLayout>
     );
 }
