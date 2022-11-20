@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Button from '../../components/Button';
 import { toast } from 'react-toastify';
 
-import styles from '../../styles/pages/JoinWaitlist.module.scss';
+import styles from '../../styles/pages/Auth/Signin.module.scss';
 import Logo from '../../components/Logo';
 import { FormInputField } from '../../components/Form/InputField';
 import { SurrealSignin } from '../../lib/Surreal';
@@ -14,6 +14,7 @@ import {
 import AppLayout from '../../components/Layout/App';
 import { useTranslation } from 'react-i18next';
 import { useForm, FieldErrors } from 'react-hook-form';
+import { Check, Icon, LogIn } from 'react-feather';
 
 type TSigninFields = {
     identifier: string;
@@ -22,7 +23,7 @@ type TSigninFields = {
 
 export default function Signin() {
     const router = useRouter();
-    const [working, setWorking] = useState(false);
+    const [ActiveIcon, setIcon] = useState<Icon | false>(LogIn);
     const authenticated = useIsAuthenticated();
     const refreshUserDetails = useDelayedRefreshAuthenticatedUser();
     const { register, handleSubmit } = useForm<TSigninFields>();
@@ -33,7 +34,7 @@ export default function Signin() {
     }, [authenticated, router]);
 
     const onSuccess = async (values: TSigninFields) => {
-        setWorking(true);
+        setIcon(false);
 
         SurrealSignin({
             identifier: values.identifier,
@@ -42,11 +43,14 @@ export default function Signin() {
             .then((authenticated) => {
                 if (authenticated) {
                     refreshUserDetails();
+                    setIcon(Check);
+                    setTimeout(() => setIcon(LogIn), 1000);
                 } else {
                     toast.error(t('auth.signin.submitted.invalid-credentials'));
+                    setIcon(LogIn);
                 }
             })
-            .finally(() => setWorking(false));
+            .catch(() => setIcon(LogIn));
     };
 
     const onFailure = async (faulty: FieldErrors<TSigninFields>) => {
@@ -58,30 +62,38 @@ export default function Signin() {
 
     return (
         <AppLayout>
-            <form onSubmit={handleSubmit(onSuccess, onFailure)}>
-                <Logo />
-                <div className={styles.inputs}>
-                    <FormInputField
-                        {...register('identifier', {
-                            validate: (v) => v && v !== '',
-                        })}
-                        placeholder={
-                            t('auth.signin.input-identifier') as string
-                        }
+            <div className={styles.container}>
+                <form
+                    className={styles.form}
+                    onSubmit={handleSubmit(onSuccess, onFailure)}
+                >
+                    <Logo />
+                    <div className={styles.inputs}>
+                        <FormInputField
+                            {...register('identifier', {
+                                validate: (v) => v && v !== '',
+                            })}
+                            placeholder={
+                                t('auth.signin.input-identifier') as string
+                            }
+                        />
+                        <FormInputField
+                            {...register('password', {
+                                validate: (v) => v && v !== '',
+                            })}
+                            type="password"
+                            placeholder={
+                                t('auth.signin.input-password') as string
+                            }
+                        />
+                    </div>
+                    <Button
+                        text={t('auth.signin.button') as string}
+                        icon={ActiveIcon && <ActiveIcon size={22} />}
+                        loading={!ActiveIcon}
                     />
-                    <FormInputField
-                        {...register('password', {
-                            validate: (v) => v && v !== '',
-                        })}
-                        type="password"
-                        placeholder={t('auth.signin.input-password') as string}
-                    />
-                </div>
-                <Button
-                    text={t('auth.signin.button') as string}
-                    loading={working}
-                />
-            </form>
+                </form>
+            </div>
         </AppLayout>
     );
 }
