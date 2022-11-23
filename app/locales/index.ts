@@ -41,7 +41,6 @@ i18next
                 ) ?? 'en-US'
             );
         },
-        debug: true,
         resources,
     });
 
