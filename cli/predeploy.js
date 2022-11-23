@@ -63,7 +63,7 @@ const migrateDatabase = async () => {
 
         for(var i = 0; i < envvars.length; i++) {
             const key = envvars[i].slice('KARDS_ENV_'.length).toLowerCase();
-            const query = `UPDATE environment:${key} SET value=${JSON.stringify(content)}`;
+            const query = `UPDATE environment:${key} SET value=${JSON.stringify(process.env[envvars[i]])}`;
             console.log(' - Setting environment key ' + key);
             console.log(' + Executing');
             await db.query(query);
