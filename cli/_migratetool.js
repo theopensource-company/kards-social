@@ -1,7 +1,6 @@
 import { Surreal } from '@theopensource-company/surrealdb-cloudflare';
 import fetch from 'node-fetch';
 import fs from 'fs';
-import * as url from 'url';
 import path from 'path';
 
 export const migrateDatabase = async (env, exit = true, log = true, __root = '') => {
