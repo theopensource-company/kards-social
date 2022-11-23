@@ -1,9 +1,6 @@
 import { Surreal } from '@theopensource-company/surrealdb-cloudflare';
 import fetch from 'node-fetch';
 import fs from 'fs';
-import git from 'git-rev-sync';
-
-console.log(git.branch());
 
 console.log(process.env.SURREAL_NAMESPACE);
 if (!process.env.SURREAL_HOST || !process.env.SURREAL_USERNAME || !process.env.SURREAL_PASSWORD || !process.env.SURREAL_NAMESPACE || !process.env.SURREAL_DATABASE) {
