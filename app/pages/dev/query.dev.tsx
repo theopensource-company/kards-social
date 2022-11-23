@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import React, { createRef, useCallback, useState } from 'react';
 import { SurrealQuery } from '../../lib/Surreal';
+import DevLayout from './_layout';
 
 export default function Page() {
     const inputRef = createRef<HTMLInputElement>();
@@ -17,14 +17,7 @@ export default function Page() {
     }, [inputRef, setResult]);
 
     return (
-        <div
-            style={{
-                padding: '50px',
-                fontSize: '20px',
-            }}
-        >
-            <Link href="/dev">back to devtools</Link>
-            <br />
+        <DevLayout>
             <p>Queries are ran as the currently signed in user.</p>
             <input
                 placeholder="query"
@@ -62,6 +55,6 @@ export default function Page() {
             >
                 {JSON.stringify(result, null, 2)}
             </p>
-        </div>
+        </DevLayout>
     );
 }

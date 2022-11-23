@@ -5,13 +5,13 @@
   "author": "The Open Source Company",
   "license": "AGPL-3.0-only",
   "scripts": {
-    "dev": "NEXT_PUBLIC_ENV=\"dev\" NEXT_PUBLIC_SURREAL_ENDPOINT=\"https://dev-db.kards.social\" NEXT_PUBLIC_SURREAL_NAMESPACE=\"micha-test\" next dev -p 12010",
+    "dev": "NEXT_PUBLIC_ENV=\"dev\" next dev -p 12000",
     "deploy": "export SURREAL_NAMESPACE=kards-deployment_$CF_PAGES_BRANCH && export NEXT_PUBLIC_SURREAL_NAMESPACE=$SURREAL_NAMESPACE && node ../cli/predeploy.js && pnpm build",
     "build": "next build && next export && next-sitemap && pnpm build-storybook",
     "start": "next start",
     "lint": "eslint . --ext ts --ext tsx --max-warnings 0",
     "postbuild": "next-sitemap",
-    "storybook": "start-storybook -p 6006 -s ./public",
+    "storybook": "start-storybook -p 12002 -s ./public",
     "build-storybook": "build-storybook -s public -o out/developers/storybook --modern --docs"
   },
   "dependencies": {
