@@ -6,6 +6,7 @@
   "license": "AGPL-3.0-only",
   "scripts": {
     "dev": "NEXT_PUBLIC_ENV=\"dev\" NEXT_PUBLIC_SURREAL_ENDPOINT=\"https://dev-db.kards.social\" NEXT_PUBLIC_SURREAL_NAMESPACE=\"micha-test\" next dev -p 12010",
+    "deploy": "export SURREAL_NAMESPACE=deployment-$(git rev-parse --abbrev-ref HEAD) && node ../cli/predeploy.js && pnpm build",
     "build": "next build && next export && next-sitemap && pnpm build-storybook",
     "start": "next start",
     "lint": "eslint . --ext ts --ext tsx --max-warnings 0",
