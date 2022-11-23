@@ -7,11 +7,15 @@ module.exports = {
     outDir: 'out',
     transform: async (config, path) => {
         const file = `${config.sourceDir}/server/pages${path}.html`;
+
+        if (path.endsWith('.dev')) return null;
+        if (path.startsWith('/admin')) return null;
+        
         if (fs.existsSync(file)) {
           try {
             if ((await fs.promises.readFile(file, 'utf8')).match(/\<meta.*noindex.*>/im)) {
               console.log(`Ingnored path: '${path}', from file: '${file}'.`);
-              return null
+              return null;
             }
           } catch (error) {
             console.error(`Failed to check path: '${path}', from file: '${file}'.`);

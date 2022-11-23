@@ -1,14 +1,22 @@
 import Link from 'next/link';
 import React from 'react';
 import fs from 'fs';
+import DevLayout from './_layout';
 
 export async function getStaticProps() {
+    if (process.env.NODE_ENV == 'production')
+        return {
+            props: {
+                notFound: true,
+            },
+        };
+
     return {
         props: {
             routes: fs
                 .readdirSync('pages/dev')
                 .map((a) => a.split('.')[0])
-                .filter((a) => a !== 'index')
+                .filter((a) => a !== 'index' && !a.startsWith('_'))
                 .sort((a, b) => a.localeCompare(b))
                 .reduce(
                     (
@@ -37,14 +45,7 @@ export default function Page({
     };
 }) {
     return (
-        <div
-            style={{
-                padding: '50px',
-                fontSize: '20px',
-            }}
-        >
-            <Link href="/">back to home</Link>
-            <br />
+        <DevLayout home>
             {Object.keys(routes).map((letter) => {
                 return (
                     <div key={letter}>
@@ -59,7 +60,7 @@ export default function Page({
                                         }}
                                     >
                                         {r[0].toUpperCase()}
-                                        {r.slice(1)}
+                                        {r.slice(1).replace('-', ' ')}
                                     </Link>
                                 </li>
                             ))}
@@ -69,6 +70,6 @@ export default function Page({
                     </div>
                 );
             })}
-        </div>
+        </DevLayout>
     );
 }
