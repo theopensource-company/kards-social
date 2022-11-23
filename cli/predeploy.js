@@ -20,7 +20,7 @@ const migrateDatabase = async () => {
       username: process.env.SURREAL_USERNAME,
       password: process.env.SURREAL_PASSWORD,
       namespace: process.env.SURREAL_NAMESPACE,
-      database: process.env.SURREAL_PASSWORD
+      database: process.env.SURREAL_DATABASE
     }, fetch);
   
     console.log('\nStarting database migrations\n');
@@ -77,11 +77,7 @@ const migrateDatabase = async () => {
 
         const user = JSON.parse(process.env.KARDS_DEFAULT_ADMIN);
         if (user.name && user.email && user.password) {
-            const query = `CREATE admin CONTENT ${JSON.stringify({
-                name: user.name,
-                email: user.email,
-                password: user.password
-            })}`;
+            const query = `CREATE admin SET name=${JSON.stringify(user.name)}, email=${JSON.stringify(user.email)}, password=crypto::argon2::generate(${JSON.stringify(user.password)})`;
             console.log(' + Executing');
             await db.query(query);
         } else {
