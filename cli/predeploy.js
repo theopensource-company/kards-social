@@ -2,14 +2,13 @@ import { Surreal } from '@theopensource-company/surrealdb-cloudflare';
 import fetch from 'node-fetch';
 import fs from 'fs';
 
-console.log(process.env.SURREAL_NAMESPACE);
-if (!process.env.SURREAL_HOST || !process.env.SURREAL_USERNAME || !process.env.SURREAL_PASSWORD || !process.env.SURREAL_NAMESPACE || !process.env.SURREAL_DATABASE) {
-    console.error("One or more environment variables are missing");
-    process.exit(1);
-}
+// if (!process.env.SURREAL_HOST || !process.env.SURREAL_USERNAME || !process.env.SURREAL_PASSWORD || !process.env.SURREAL_NAMESPACE || !process.env.SURREAL_DATABASE) {
+//     console.error("One or more environment variables are missing");
+//     process.exit(1);
+// }
 
-const dbfiles = fs.readdirSync('tables');
-const emailtemplates = fs.readdirSync('email_templates');
+const dbfiles = fs.readdirSync('../tables');
+const emailtemplates = fs.readdirSync('../email_templates');
 
 const migrateDatabase = async () => {
     console.log("\nHost: " + process.env.SURREAL_HOST);
@@ -31,7 +30,7 @@ const migrateDatabase = async () => {
   
       try {
         console.log(' - Importing file ' + f);
-        const q = fs.readFileSync('tables/' + f).toString();
+        const q = fs.readFileSync('../tables/' + f).toString();
         console.log(' + Executing');
         await db.query(q);
       } catch(e) {
@@ -48,7 +47,7 @@ const migrateDatabase = async () => {
   
       try {
         console.log(' - Importing template ' + f);
-        const content = fs.readFileSync('email_templates/' + f).toString();
+        const content = fs.readFileSync('../email_templates/' + f).toString();
         const query = `UPDATE email_templates:${template} SET content=${JSON.stringify(content)}`;
         console.log(' + Executing');
         await db.query(query);
