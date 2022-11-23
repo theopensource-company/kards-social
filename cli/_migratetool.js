@@ -11,6 +11,8 @@ export const migrateDatabase = async (env, exit = true, log = true, __root = '')
     try {
         if (__root == '') __root = path.dirname(path.dirname(import.meta.url));
     } catch(e) {}
+    if (__root.startsWith('file://')) __root = __root.slice('file://'.length);
+
     const dbfiles = fs.readdirSync(__root + '/tables');
     const emailtemplates = fs.readdirSync(__root + '/email_templates');
 
