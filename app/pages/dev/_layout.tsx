@@ -1,6 +1,12 @@
 import Link from 'next/link';
 import React from 'react';
 
+export function getStaticProps() {
+    return {
+        notFound: process.env.NODE_ENV === 'production',
+    };
+}
+
 export default function DevLayout({
     children,
     home,

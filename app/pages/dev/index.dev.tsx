@@ -4,6 +4,13 @@ import fs from 'fs';
 import DevLayout from './_layout';
 
 export async function getStaticProps() {
+    if (process.env.NODE_ENV == 'production')
+        return {
+            props: {
+                notFound: true,
+            },
+        };
+
     return {
         props: {
             routes: fs

@@ -4,6 +4,13 @@ import { migrateDatabase } from '../../../cli/_migratetool';
 import path from 'path';
 
 export async function getStaticProps() {
+    if (process.env.NODE_ENV == 'production')
+        return {
+            props: {
+                notFound: true,
+            },
+        };
+
     await migrateDatabase(
         {
             SURREAL_HOST: 'http://127.0.0.1:12001',
