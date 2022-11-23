@@ -11,26 +11,28 @@
 # Kards social
 
 Hiya! 👋 <br>
-Welcome to the Kards social GitHub repo! We have some little helpers to get you started with our project.
+Welcome to the Kards social GitHub repo! We have a little guide to get you started with our project.
 
 <br>
 
-## CLI tools
+## Requirements
 
-**Warning:** Make sure to always run the cli tools from the root of the project. Don't CD into the cli folder to execute them!
+- The surreal CLI tool. Follow instructions via: https://surrealdb.com/install
+- A sendgrid api key if you want to be able to send emails
 
-We have written some cli tools to make it easier to get started with the project!
+## Getting started
 
-- `pnpm conf`: Run this as the first command and follow the instructions it provides you. This will setup all of the environments and config files.
-- `pnpm dbshell`: It's a little tool to connect with the database that you configured with `pnpm conf`.
-- `pnpm dev`: Spins up the full development stack.
+**Warning:** Don't run the CLI tools directly. Use the pnpm scripts to run them to ensure that they will be properly executed.
 
-## Database 
-
-We use SurrealDB as our main database. Alongside that we also use cloudflare KV at times to store things.
-
-For your development database, please **do not run it locally**. <br>
-Even though you spin up a local working environment, the cloudflare worker still does some stuff on the edge. It will not be able to reach a local surrealdb instance!
+- Run `pnpm dev` in the root of the repo to spin up the full development stack. <br>
+  This will launch the nextjs development server and a local surrealdb instance.
+- Open the devtools (http://localhost:12000/dev) and run the database migration for the first run, or when you make changes to the schema.
+- Go back to the devtools and open the admin panel. <br>
+  The database migration created the following admin account for you: 
+    - Email: `admin@kards.local`
+    - Password: `Password1!`
+- Edit the environment keys. Don't touch the origin key though, this is only needed to enfore a domain for production instances!
+- Create a user account for yourself, you can now sign into the account and use the full application!
 
 <br>
 
