@@ -77,7 +77,11 @@ const migrateDatabase = async () => {
 
         const user = JSON.parse(process.env.KARDS_DEFAULT_ADMIN);
         if (user.name && user.email && user.password) {
-            const query = `CREATE admin CONTENT ${JSON.stringify(user)}`;
+            const query = `CREATE admin CONTENT ${JSON.stringify({
+                name: user.name,
+                email: user.email,
+                password: user.password
+            })}`;
             console.log(' + Executing');
             await db.query(query);
         } else {
