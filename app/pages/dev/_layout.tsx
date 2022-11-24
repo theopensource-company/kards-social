@@ -3,7 +3,9 @@ import React from 'react';
 
 export function getStaticProps() {
     return {
-        notFound: process.env.NODE_ENV === 'production',
+        props: {
+            notFound: process.env.NODE_ENV === 'production',
+        },
     };
 }
 
