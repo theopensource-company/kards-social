@@ -2,8 +2,8 @@
   "layout": {
     "app": {
       "navbar": {
-        "signin": "Signin",
-        "signout": "Signout",
+        "signin": "Sign In",
+        "signout": "Sign Out",
         "account": "Account"
       }
     },

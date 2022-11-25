@@ -33,7 +33,7 @@
     "signin": {
       "input-identifier": "Username or email",
       "input-password": "Password",
-      "button": "Signin",
+      "button": "Sign In",
       "submitted": {
         "faulty-identifier": "Please enter your username or email",
         "faulty-password": "Please enter your password",
