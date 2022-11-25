@@ -18,12 +18,14 @@ Welcome to the Kards social GitHub repo! We have a little guide to get you start
 ## Requirements
 
 - The surreal CLI tool. Follow instructions via: https://surrealdb.com/install
+  - Make sure the it's installed globally in your PATH.
 - A sendgrid api key if you want to be able to send emails
 
 ## Getting started
 
 **Warning:** Don't run the CLI tools directly. Use the pnpm scripts to run them to ensure that they will be properly executed.
 
+- Install all the packages with `pnpm i`.
 - Run `pnpm dev` in the root of the repo to spin up the full development stack. <br>
   This will launch the nextjs development server and a local surrealdb instance.
 - Open the devtools (http://localhost:12000/dev) and run the database migration for the first run, or when you make changes to the schema.

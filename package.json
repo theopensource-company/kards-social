@@ -3,7 +3,7 @@
   "type": "module",
   "description": "Kards is an open source social media platform.",
   "scripts": {
-    "dev": "NEXT_PUBLIC_SURREAL_ENDPOINT=\"http://localhost:12001\" NEXT_PUBLIC_SURREAL_NAMESPACE=\"kards-deployment_local\" NEXT_PUBLIC_SURREAL_DATABASE=\"kards-social\" pnpm rawdev",
+    "dev": "cross-env NEXT_PUBLIC_SURREAL_ENDPOINT=\"http://localhost:12001\" NEXT_PUBLIC_SURREAL_NAMESPACE=\"kards-deployment_local\" NEXT_PUBLIC_SURREAL_DATABASE=\"kards-social\" pnpm rawdev",
     "rawdev": "concurrently --names \"kards\" --hide 1 \"cd app && pnpm run dev\" \"surreal start --user root --pass root --bind 0.0.0.0:12001 file:dev.db\"",
     "conf": "node cli/config.js",
     "dbshell": "node cli/dbshell.js",
@@ -17,6 +17,7 @@
     "@theopensource-company/surrealdb-cloudflare": "^1.0.4",
     "@types/node": "18.7.13",
     "concurrently": "^7.6.0",
+    "cross-env": "^7.0.3",
     "node-fetch": "^3.3.0"
   }
 }
