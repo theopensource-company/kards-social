@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 
-import styles from '../../styles/Post.module.scss';
+import styles from '../../styles/components/Post.module.scss';
 import { StaticImageData } from 'next/image';
 
 import Linkify from 'react-linkify';
