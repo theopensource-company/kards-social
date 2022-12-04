@@ -6,7 +6,7 @@
     "dev": "cross-env NEXT_PUBLIC_SURREAL_ENDPOINT=\"http://localhost:12001\" NEXT_PUBLIC_SURREAL_NAMESPACE=\"kards-deployment_local\" NEXT_PUBLIC_SURREAL_DATABASE=\"kards-social\" pnpm rawdev",
     "rawdev": "concurrently --names \"kards\" --hide 1 \"cd app && pnpm run dev\" \"surreal start --user root --pass root --bind 0.0.0.0:12001 file:dev.db\"",
     "debug": "cross-env NEXT_PUBLIC_SURREAL_ENDPOINT=\"http://localhost:12001\" NEXT_PUBLIC_SURREAL_NAMESPACE=\"kards-deployment_local\" NEXT_PUBLIC_SURREAL_DATABASE=\"kards-social\" pnpm rawdebug",
-    "rawdebug": "concurrently --names \"kards\" \"cd app && pnpm run dev\" \"surreal start --user root --pass root --bind 0.0.0.0:12001 file:dev.db\"",
+    "rawdebug": "concurrently --names \"kards\" \"cd app && pnpm run dev\" \"surreal start --log debug --user root --pass root --bind 0.0.0.0:12001 file:dev.db\"",
     "conf": "node cli/config.js",
     "dbshell": "node cli/dbshell.js",
     "ts": "tsc --watch -p app/tsconfig.json",
