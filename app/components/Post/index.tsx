@@ -13,6 +13,12 @@ type Props = {
 
 class InvalidPostError extends Error {}
 
+const LinkComponent = (href: string, text: string, key: number) => (
+    <Link href={href} key={key} target="_blank">
+        {text}
+    </Link>
+);
+
 export default function Post({ image, caption }: Props) {
     if (!image || !caption)
         throw new InvalidPostError(
