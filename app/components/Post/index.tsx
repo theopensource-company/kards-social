@@ -59,7 +59,9 @@ export default function Post({ image, caption }: Props) {
                         <Image src={image} alt="" />
                     </div>
                     <span className={styles.caption} data-preventflip={true}>
-                        <Linkify>{caption}</Linkify>
+                        <Linkify componentDecorator={LinkComponent}>
+                            {caption}
+                        </Linkify>
                     </span>
                 </div>
             </div>
