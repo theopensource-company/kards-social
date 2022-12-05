@@ -5,6 +5,7 @@ import styles from '../../styles/components/Post.module.scss';
 import { StaticImageData } from 'next/image';
 
 import Linkify from 'react-linkify';
+import Link from 'next/link';
 
 type Props = {
     image: string | StaticImageData;
