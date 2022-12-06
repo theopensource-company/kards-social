@@ -46,17 +46,19 @@ export default function Post({ image, caption }: Props) {
         .filter((a) => !!a)
         .join(' ');
 
+    console.log(image);
+
     return (
         <div className={classes} onClick={postClicked}>
             <div className={styles.card}>
                 <div className={styles.front}>
                     <div className={styles.image}>
-                        <Image src={image} alt="" />
+                        <Image src={image} alt="" fill={true} />
                     </div>
                 </div>
                 <div className={styles.back}>
                     <div className={styles.image}>
-                        <Image src={image} alt="" />
+                        <Image src={image} alt="" fill={true} />
                     </div>
                     <span className={styles.caption} data-preventflip={true}>
                         <Linkify componentDecorator={LinkComponent}>
