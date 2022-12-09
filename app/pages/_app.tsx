@@ -11,13 +11,23 @@ import { AuthProvider } from '../hooks/KardsUser';
 import { I18nextProvider } from 'react-i18next';
 import { i18n } from '../locales';
 import { DevButton } from '../components/DevButton';
+import { NextPage } from 'next';
+import AppLayoutNavbar from '../components/Layout/Navbar';
 
-export default function KardsSocial({ Component, pageProps }: AppProps) {
+export default function KardsSocial({
+    Component,
+    pageProps,
+}: AppProps & {
+    Component: NextPage & {
+        hideNavbar?: boolean;
+    };
+}) {
     return (
         <I18nextProvider i18n={i18n}>
             <InitializeSurreal>
                 <AuthProvider>
                     <DevButton />
+                    {Component.hideNavbar !== true && <AppLayoutNavbar />}
                     <Component {...pageProps} />
                     <ToastContainer
                         position="top-center"

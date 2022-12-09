@@ -1,10 +1,10 @@
 import React from 'react';
-import { LogoSmall } from '../../../Logo';
-import styles from '../../../../styles/components/layout/App/Navbar.module.scss';
-import { useIsAuthenticated } from '../../../../hooks/KardsUser';
+import { LogoSmall } from '../../Logo';
+import styles from '../../../styles/components/layout/App/Navbar.module.scss';
+import { useIsAuthenticated } from '../../../hooks/KardsUser';
 import Link from 'next/link';
-import { SurrealSignout } from '../../../../lib/Surreal';
-import { ButtonSmall } from '../../../Button';
+import { SurrealSignout } from '../../../lib/Surreal';
+import { ButtonSmall } from '../../Button';
 import NavbarIconDropdown from './IconDropdown';
 import { useTranslation } from 'react-i18next';
 

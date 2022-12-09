@@ -5,16 +5,14 @@ import styles from '../styles/pages/Landing.module.scss';
 import Logo from '../components/Logo';
 import LayoutContentMiddle from '../components/Layout/ContentMiddle';
 import { useFeatureFlag } from '../hooks/Environment';
-import AppLayout from '../components/Layout/App';
 import { useTranslation } from 'react-i18next';
-import { useIsAuthenticated } from '../hooks/KardsUser';
+import { featureFlags } from '../lib/Environment';
 
 export default function Landing() {
     const preLaunchPage = useFeatureFlag('preLaunchPage');
-    const authenticated = useIsAuthenticated();
     const { t } = useTranslation('pages');
 
-    return preLaunchPage && !authenticated ? (
+    return preLaunchPage ? (
         <LayoutContentMiddle>
             <div className={styles.content}>
                 <div className="image-frame">
@@ -32,6 +30,8 @@ export default function Landing() {
             </div>
         </LayoutContentMiddle>
     ) : (
-        <AppLayout>Hello</AppLayout>
+        <p>Hello</p>
     );
 }
+
+Landing.hideNavbar = !!featureFlags['preLaunchPage'];

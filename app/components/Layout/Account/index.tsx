@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import AppLayout from '../App';
 import { TPageLayoutAccount } from '../../../constants/Types';
 import styles from '../../../styles/components/layout/Account.module.scss';
 import SidebarItem from './SidebarItem';
@@ -12,7 +11,6 @@ import { useAuthState } from '../../../hooks/KardsUser';
 export default function AccountLayout({
     children,
     activeKey,
-    ...props
 }: TPageLayoutAccount) {
     const { t } = useTranslation('components');
     const auth = useAuthState();
@@ -26,7 +24,7 @@ export default function AccountLayout({
     }, [auth, router, t]);
 
     return (
-        <AppLayout {...props}>
+        <>
             {auth.details && (
                 <div className={styles.container}>
                     <div className={styles.sidebar}>
@@ -47,6 +45,6 @@ export default function AccountLayout({
                     <div className={styles.content}>{children}</div>
                 </div>
             )}
-        </AppLayout>
+        </>
     );
 }

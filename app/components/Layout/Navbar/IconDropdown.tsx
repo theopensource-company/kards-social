@@ -1,7 +1,7 @@
 import React, { ReactNode, useState } from 'react';
 import NavbarDropdownRenderer from './DropdownRenderer';
 import * as Feather from 'react-feather';
-import styles from '../../../../styles/components/layout/App/NavbarIconDropdown.module.scss';
+import styles from '../../../styles/components/layout/App/NavbarIconDropdown.module.scss';
 
 export default function NavbarIconDropdown({
     icon,
