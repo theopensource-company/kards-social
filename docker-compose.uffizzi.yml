@@ -1,0 +1,29 @@
+version: "3"
+
+x-uffizzi:
+  ingress:
+    service: kards-social
+    port: 12000
+
+services:
+  db:
+    image: surrealdb/surrealdb
+    ports:
+      - 12001:12001
+    command: 
+      - "start" 
+      - "--user" 
+      - "root" 
+      - "--pass" 
+      - "root" 
+      - "--bind" 
+      - "0.0.0.0:12001"
+      - "file:dev.db"
+  kards-social:
+    image: "${APP_IMAGE}"
+    ports: 
+      - 12000:12000
+    deploy:
+      resources:
+        limits:
+          memory: 1000M
