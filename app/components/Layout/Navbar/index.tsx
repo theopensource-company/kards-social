@@ -7,7 +7,7 @@ import { SurrealSignout } from '../../../lib/Surreal';
 import { ButtonSmall } from '../../Button';
 import NavbarIconDropdown from './IconDropdown';
 import { useTranslation } from 'react-i18next';
-import SigninModal from '../../Modal/Types/SigninModal';
+import SigninModal from '../../Modal/Variants/SigninModal';
 
 export default function AppLayoutNavbar() {
     const authenticated = useIsAuthenticated();
