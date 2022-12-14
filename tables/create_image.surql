@@ -33,6 +33,3 @@ DEFINE EVENT email ON TABLE create_image WHEN 1=1 THEN (
         }
     }
 );
-    
-
-CREATE create_image SET type = 'profilepicture'
