@@ -17,13 +17,20 @@ export default function Modal({ show, title, children, onClose }: Props) {
         .filter((a) => !!a)
         .join(' ');
 
+    const containerClasses = [
+        styles.container,
+        show ? styles.showContainer : null,
+    ]
+        .filter((a) => !!a)
+        .join(' ');
+
     const { t } = useTranslation('components');
 
     const { X } = Feather;
 
     return (
         <div className={classes}>
-            <div className={styles.container}>
+            <div className={containerClasses}>
                 <div className={styles.top}>
                     <h1>{title}</h1>
                     <ButtonSmall
