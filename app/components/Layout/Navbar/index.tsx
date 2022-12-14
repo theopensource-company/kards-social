@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { LogoSmall } from '../../Logo';
 import styles from '../../../styles/components/layout/App/Navbar.module.scss';
 import { useIsAuthenticated } from '../../../hooks/KardsUser';
@@ -7,9 +7,11 @@ import { SurrealSignout } from '../../../lib/Surreal';
 import { ButtonSmall } from '../../Button';
 import NavbarIconDropdown from './IconDropdown';
 import { useTranslation } from 'react-i18next';
+import SigninModal from '../../Modal/Variants/SigninModal';
 
 export default function AppLayoutNavbar() {
     const authenticated = useIsAuthenticated();
+    const [showSignin, setShowSignin] = useState<boolean>(false);
     const { t } = useTranslation('components');
 
     function Signout(e: React.MouseEvent<HTMLAnchorElement>) {
@@ -21,6 +23,14 @@ export default function AppLayoutNavbar() {
             location.href = '/';
         });
     }
+
+    const OpenSignin = () => {
+        setShowSignin(true);
+    };
+    const CloseSignin = () => {
+        setShowSignin(false);
+        console.log('close');
+    };
 
     return (
         <div className={styles.navbar}>
@@ -39,14 +49,14 @@ export default function AppLayoutNavbar() {
                     </NavbarIconDropdown>
                 ) : (
                     <>
-                        <Link href="/auth/signin">
-                            <ButtonSmall
-                                text={t('layout.app.navbar.signin') as string}
-                            />
-                        </Link>
+                        <ButtonSmall
+                            text={t('layout.app.navbar.signin') as string}
+                            onClick={OpenSignin}
+                        />
                     </>
                 )}
             </div>
+            <SigninModal show={showSignin} onClose={CloseSignin} />
         </div>
     );
 }

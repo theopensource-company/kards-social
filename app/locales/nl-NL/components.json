@@ -3,6 +3,9 @@
     "footer": {
       "all-rights-reserved": "Alle rechten voorbehouden"
     },
+    "modals": {
+      "close": "Sluiten"
+    },
     "account": {
       "sidebar": {
         "privacy": {

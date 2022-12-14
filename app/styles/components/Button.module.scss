@@ -46,6 +46,15 @@
     color: color.$light !important;
 }
 
+.colorTransparent {
+    background: transparent !important;
+    color: color.$dark !important;
+
+    @media (prefers-color-scheme: dark) {
+        color: color.$light !important;
+    }
+}
+
 // ICON PROPERTIES
 
 .iconRound {

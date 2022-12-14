@@ -13,13 +13,19 @@ export const Color = {
     DarkTintDark: '#070C0E',
     DarkTintDarkHover: '#000000',
 
+    Transparent: 'transparent',
+    TransparentTintLight: 'transparent',
+    TransparentTintLightHover: 'transparent',
+    TransparentTintDark: 'transparent',
+    TransparentTintDarkHover: 'transparent',
+
     Blue: '#009FF5',
     Red: '#F24236',
     Green: '#1EAE5A',
 };
 
 export type BasicColorType = 'Light' | 'Dark';
-export type ColorType = 'Tint' | 'Light' | 'Dark';
+export type ColorType = 'Tint' | 'Light' | 'Dark' | 'Transparent';
 export type OtherColor = 'Blue' | 'Red' | 'Green';
 export type ColorTint = keyof Omit<typeof Color, ColorType | OtherColor>;
 export type ColorTintType = 'Light' | 'LightHover' | 'Dark' | 'DarkHover';

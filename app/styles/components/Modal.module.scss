@@ -1,0 +1,75 @@
+@use '../color';
+
+.default {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    --modal-transition-timing: 0.15s;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    visibility: hidden;
+    opacity: 0;
+
+    background: rgba(0, 0, 0, 0.5);
+
+    color: color.$dark;
+
+    @media (prefers-color-scheme: dark) {
+        color: color.$light;
+    }
+
+    transition:
+        visibility 0s linear var(--modal-transition-timing),
+        opacity var(--modal-transition-timing) ease 0s;
+}
+
+.show {
+    visibility: visible;
+    opacity: 1;
+    transition:
+        visibility 0s linear 0s,
+        opacity var(--modal-transition-timing) ease 0s;
+}
+
+.container {
+    padding: 50px 50px;
+    border-radius: 10px;
+    background: color.$light;
+    width: 500px;
+    max-width: 90vw;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    @media (prefers-color-scheme: dark) {
+        background: color.$dark;
+    }
+
+    margin-top: 150vh;
+    transform: scale(0.5);
+    transition: margin-top .4s ease, transform .3s ease;
+}
+
+.showContainer {
+    margin-top: 0px;
+    transform: scale(1);
+    transition: margin-top .3s ease, transform .5s ease;
+}
+
+.top {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    h1 {
+        flex: 1;
+        padding: 0 20px;
+    }
+}

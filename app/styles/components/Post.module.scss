@@ -1,9 +1,13 @@
 @use '../color';
 
+:root {
+}
+
 .default {
     width: 500px;
     height: 500px;
     font-weight: 500;
+    --card-transition-timing: 0.5s;
 }
 
 .card {
@@ -15,7 +19,7 @@
     position: relative;
 
     transform: rotateY(0deg);
-    transition: transform .5s linear;
+    transition: transform var(--card-transition-timing) linear;
 
     > * {
         width: 100%;
@@ -29,12 +33,12 @@
 
     .front {
         visibility: visible;
-        transition: visibility 0s linear .25s;
+        transition: visibility 0s linear calc(var(--card-transition-timing) / 2);
     }
 
     .back {
         visibility: hidden;
-        transition: visibility 0s linear .25s;
+        transition: visibility 0s linear calc(var(--card-transition-timing) / 2);
 
         transform: rotateY(180deg);
     }
