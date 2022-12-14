@@ -5,6 +5,8 @@
     align-items: center;
     justify-content: center;
 
+    --modal-transition-timing: 0.15s;
+
     position: fixed;
     top: 0;
     left: 0;
@@ -22,13 +24,17 @@
         color: color.$light;
     }
 
-    transition: visibility 0s linear .25s, opacity .15s ease 0s;
+    transition:
+        visibility 0s linear var(--modal-transition-timing),
+        opacity var(--modal-transition-timing) ease 0s;
 }
 
 .show {
     visibility: visible;
     opacity: 1;
-    transition: visibility 0s linear 0s, opacity .25s ease 0s;
+    transition:
+        visibility 0s linear 0s,
+        opacity var(--modal-transition-timing) ease 0s;
 }
 
 .container {
