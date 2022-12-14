@@ -1,0 +1,52 @@
+@use '../color';
+
+.default {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    visibility: hidden;
+    opacity: 0;
+
+    background: rgba(255, 255, 255, 0.25);
+
+    color: color.$dark;
+
+    @media (prefers-color-scheme: dark) {
+        color: color.$light;
+    }
+
+    transition: visibility 0s linear .25s, opacity .25s ease 0s;
+}
+
+.show {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s linear 0s, opacity .25s ease 0s;
+}
+
+.container {
+    padding: 20px;
+    border-radius: 10px;
+    background: color.$light;
+
+    @media (prefers-color-scheme: dark) {
+        background: color.$dark;
+    }
+}
+
+.top {
+    display: flex;
+    justify-content: flex-end;
+
+    h1 {
+        flex: 1;
+        padding: 0 20px;
+    }
+}

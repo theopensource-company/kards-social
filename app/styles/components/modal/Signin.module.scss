@@ -1,0 +1,24 @@
+.form {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+
+    img {
+        max-width: 50vw !important;
+    }
+
+    div:last-child {
+        margin-top: 10px;
+    }
+}
+
+.inputs {
+    margin: 40px 0px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+}

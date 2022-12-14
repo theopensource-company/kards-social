@@ -19,7 +19,7 @@ export const Color = {
 };
 
 export type BasicColorType = 'Light' | 'Dark';
-export type ColorType = 'Tint' | 'Light' | 'Dark';
+export type ColorType = 'Tint' | 'Light' | 'Dark' | 'Transparent';
 export type OtherColor = 'Blue' | 'Red' | 'Green';
 export type ColorTint = keyof Omit<typeof Color, ColorType | OtherColor>;
 export type ColorTintType = 'Light' | 'LightHover' | 'Dark' | 'DarkHover';

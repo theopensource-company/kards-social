@@ -7,6 +7,9 @@
         "account": "Account"
       }
     },
+    "modals": {
+      "close": "Close"
+    },
     "account": {
       "sidebar": {
         "profile": {
