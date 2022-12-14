@@ -25,5 +25,5 @@ const Template: ComponentStory<(args: TemplateArgs) => JSX.Element> = (
 
 export const ExampleModal = Template.bind({});
 ExampleModal.args = {
-    children: (<span>Well hello there!</span>)
+    children: <span>Well hello there!</span>,
 };

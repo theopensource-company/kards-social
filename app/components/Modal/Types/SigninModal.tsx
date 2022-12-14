@@ -1,11 +1,10 @@
-import { useRouter } from 'next/router';
-import React, { MouseEventHandler, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Check, Icon, LogIn } from 'react-feather';
 import { FieldErrors, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import Modal from '..';
-import { useDelayedRefreshAuthenticatedUser, useIsAuthenticated } from '../../../hooks/KardsUser';
+import { useDelayedRefreshAuthenticatedUser } from '../../../hooks/KardsUser';
 import { SurrealSignin } from '../../../lib/Surreal';
 import Button from '../../Button';
 import { FormInputField } from '../../Form/InputField';
@@ -14,7 +13,7 @@ import styles from '../../../styles/components/modal/Signin.module.scss';
 
 type Props = {
     show: boolean;
-    onClose: () => any;
+    onClose: () => void;
 };
 
 type TSigninFields = {
@@ -23,16 +22,10 @@ type TSigninFields = {
 };
 
 export default function SigninModal({ show, onClose }: Props) {
-    /*const router = useRouter();*/
     const [ActiveIcon, setIcon] = useState<Icon | false>(LogIn);
-    const authenticated = useIsAuthenticated();
     const refreshUserDetails = useDelayedRefreshAuthenticatedUser();
     const { register, handleSubmit } = useForm<TSigninFields>();
     const { t } = useTranslation('pages');
-
-    /*useEffect(() => {
-        if (authenticated) router.push('/account');
-    }, [authenticated, router]);*/
 
     const onSuccess = async (values: TSigninFields) => {
         setIcon(false);
@@ -45,7 +38,10 @@ export default function SigninModal({ show, onClose }: Props) {
                 if (authenticated) {
                     refreshUserDetails();
                     setIcon(Check);
-                    setTimeout(() => { setIcon(LogIn); onClose(); }, 1000);
+                    setTimeout(() => {
+                        setIcon(LogIn);
+                        onClose();
+                    }, 1000);
                 } else {
                     toast.error(t('auth.signin.submitted.invalid-credentials'));
                     setIcon(LogIn);
@@ -60,9 +56,9 @@ export default function SigninModal({ show, onClose }: Props) {
         if (faulty.password)
             toast.error(t('auth.signin.submitted.faulty-password'));
     };
-    
+
     return (
-        <Modal title='Log In' show={show} onClose={onClose}>
+        <Modal title="Log In" show={show} onClose={onClose}>
             <form
                 className={styles.form}
                 onSubmit={handleSubmit(onSuccess, onFailure)}
@@ -85,7 +81,7 @@ export default function SigninModal({ show, onClose }: Props) {
                     />
                 </div>
                 <Button
-                    color='Tint'
+                    color="Tint"
                     text={t('auth.signin.button') as string}
                     icon={ActiveIcon && <ActiveIcon size={22} />}
                     loading={!ActiveIcon}

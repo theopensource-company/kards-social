@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useState } from 'react';
+import React from 'react';
 import * as Feather from 'react-feather';
 import { useTranslation } from 'react-i18next';
 
@@ -9,14 +9,14 @@ type Props = {
     show: boolean;
     title: string | undefined;
     children: React.ReactNode;
-    onClose: () => any;
+    onClose: () => void;
 };
 
 export default function Modal({ show, title, children, onClose }: Props) {
     const classes = [styles.default, show ? styles.show : null]
         .filter((a) => !!a)
         .join(' ');
-    
+
     const { t } = useTranslation('components');
 
     const { X } = Feather;
@@ -27,12 +27,14 @@ export default function Modal({ show, title, children, onClose }: Props) {
                 <div className={styles.top}>
                     <h1>{title}</h1>
                     <ButtonSmall
-                        color='Transparent'
+                        color="Transparent"
                         icon={<X />}
-                        iconAlt={t("layout.modals.close") as string}
-                        onClick={(e) => { onClose() }}
+                        iconAlt={t('layout.modals.close') as string}
+                        onClick={() => {
+                            onClose();
+                        }}
                         disabled={!onClose}
-                     />
+                    />
                 </div>
                 {children}
             </div>

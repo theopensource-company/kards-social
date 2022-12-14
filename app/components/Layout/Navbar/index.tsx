@@ -24,8 +24,13 @@ export default function AppLayoutNavbar() {
         });
     }
 
-    const OpenSignin = () => { setShowSignin(true); }
-    const CloseSignin = () => { setShowSignin(false); console.log("close"); }
+    const OpenSignin = () => {
+        setShowSignin(true);
+    };
+    const CloseSignin = () => {
+        setShowSignin(false);
+        console.log('close');
+    };
 
     return (
         <div className={styles.navbar}>
