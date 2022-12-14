@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef, useEffect } from 'react';
 import * as Feather from 'react-feather';
 import { useTranslation } from 'react-i18next';
 
@@ -13,6 +13,36 @@ type Props = {
 };
 
 export default function Modal({ show, title, children, onClose }: Props) {
+    const modalContainerRef = createRef<HTMLDivElement>();
+
+    //props: https://stackoverflow.com/a/42234988
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (
+                show &&
+                event.target &&
+                modalContainerRef.current &&
+                !modalContainerRef.current.contains(event.target as Node)
+            ) {
+                onClose();
+            }
+        }
+
+        function handleEscapeKey(event: KeyboardEvent) {
+            if (show && event.key == 'Escape') {
+                onClose();
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('keyup', handleEscapeKey);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('keyup', handleEscapeKey);
+        };
+    }, [modalContainerRef, onClose, show]);
+
     const classes = [styles.default, show ? styles.show : null]
         .filter((a) => !!a)
         .join(' ');
@@ -25,12 +55,11 @@ export default function Modal({ show, title, children, onClose }: Props) {
         .join(' ');
 
     const { t } = useTranslation('components');
-
     const { X } = Feather;
 
     return (
         <div className={classes}>
-            <div className={containerClasses}>
+            <div className={containerClasses} ref={modalContainerRef}>
                 <div className={styles.top}>
                     <h1>{title}</h1>
                     <ButtonSmall
