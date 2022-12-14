@@ -13,6 +13,12 @@ export const Color = {
     DarkTintDark: '#070C0E',
     DarkTintDarkHover: '#000000',
 
+    Transparent: 'transparent',
+    TransparentTintLight: 'transparent',
+    TransparentTintLightHover: 'transparent',
+    TransparentTintDark: 'transparent',
+    TransparentTintDarkHover: 'transparent',
+
     Blue: '#009FF5',
     Red: '#F24236',
     Green: '#1EAE5A',
