@@ -16,6 +16,7 @@ import AppLayoutNavbar from '../components/Layout/Navbar';
 import { IAmRoot } from '../components/IAmRoot';
 import { FeatureFlagContext, FeatureFlagProvider } from '../hooks/Environment';
 import { TFeatureFlagOptions } from '../constants/Types';
+import 'react-image-crop/dist/ReactCrop.css';
 
 export default function KardsSocial({
     Component,

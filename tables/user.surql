@@ -9,6 +9,8 @@ DEFINE FIELD username ON TABLE user TYPE string ASSERT $value != NONE AND $value
 DEFINE FIELD password ON TABLE user TYPE string ASSERT $value != NONE
   PERMISSIONS FOR select NONE FOR update WHERE $scope = 'admin' OR string::length(<string> (select * from user where id = $auth.id and crypto::argon2::compare(password, $oldpassword))) > 2;
 
+DEFINE FIELD picture ON TABLE user TYPE string ASSERT $value = NONE OR $value = /^image:.*/;
+
 DEFINE FIELD created ON TABLE user TYPE datetime VALUE $before OR time::now();
 DEFINE FIELD updated ON TABLE user TYPE datetime VALUE time::now();
 

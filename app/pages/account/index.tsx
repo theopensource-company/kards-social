@@ -16,6 +16,13 @@ import { Check, Icon, Save } from 'react-feather';
 import { FieldErrors, useForm } from 'react-hook-form';
 import { keypressValidation } from '../../lib/KeypressValidation';
 import { usernameValidationSections } from '../../constants/KeypressValidators/username';
+import { requestImageUploadURL } from '../../lib/ImageUpload';
+import ReactCrop, {
+    centerCrop,
+    makeAspectCrop,
+    Crop,
+    PercentCrop,
+} from 'react-image-crop';
 
 type TProfileFields = {
     name: `${string} ${string}`;
@@ -89,6 +96,15 @@ export default function Account() {
                                 ) + 1,
                         })}
                     </p>
+
+                    <UpdateProfilePicture />
+
+                    <ButtonLarge
+                        text="fetch uploadurl"
+                        onClick={() => {
+                            requestImageUploadURL().then(console.log);
+                        }}
+                    />
 
                     <form onSubmit={handleSubmit(onSuccess, onFailure)}>
                         <FormInputField
@@ -170,5 +186,150 @@ export default function Account() {
                 </div>
             )}
         </AccountLayout>
+    );
+}
+
+export function UpdateProfilePicture() {
+    const [uploaded, setUploaded] = useState<File | null>(null);
+    const [blob, setBlob] = useState<Blob>();
+
+    console.log(blob);
+
+    return (
+        <>
+            <input
+                type="file"
+                onChange={(e) => {
+                    setUploaded(e.target.files && e.target.files[0]);
+                }}
+            />
+
+            {uploaded && (
+                <CropProfilePicture file={uploaded} setBlob={setBlob} />
+            )}
+
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            {blob && <img src={URL.createObjectURL(blob)} alt="Result" />}
+        </>
+    );
+}
+
+function centerAspectCrop(
+    mediaWidth: number,
+    mediaHeight: number,
+    aspect: number
+) {
+    return centerCrop(
+        makeAspectCrop(
+            {
+                unit: '%',
+                width: 100,
+            },
+            aspect,
+            mediaWidth,
+            mediaHeight
+        ),
+        mediaWidth,
+        mediaHeight
+    );
+}
+
+function getCroppedImg(input: HTMLImageElement, crop: PercentCrop) {
+    console.log(crop);
+    console.log(input.width, input.height);
+
+    const image = new Image();
+
+    return new Promise<Blob>((resolve) => {
+        image.addEventListener('load', () => {
+            console.log(image.width, image.height);
+            crop.width = (image.width * 100) / crop.width;
+            crop.height = (image.height * 100) / crop.height;
+
+            const canvas = document.createElement('canvas');
+            const scaleX = image.naturalWidth / image.width;
+            const scaleY = image.naturalHeight / image.height;
+            canvas.width = crop.width;
+            canvas.height = crop.height;
+            const ctx = canvas.getContext('2d');
+
+            ctx?.drawImage(
+                image,
+                crop.x * scaleX,
+                crop.y * scaleY,
+                crop.width * scaleX,
+                crop.height * scaleY,
+                0,
+                0,
+                crop.width,
+                crop.height
+            );
+
+            const dataURI = canvas.toDataURL();
+            let byteString;
+            if (dataURI.split(',')[0].indexOf('base64') >= 0)
+                byteString = atob(dataURI.split(',')[1]);
+            else byteString = unescape(dataURI.split(',')[1]);
+
+            // separate out the mime component
+            const mimeString = dataURI
+                .split(',')[0]
+                .split(':')[1]
+                .split(';')[0];
+
+            // write the bytes of the string to a typed array
+            const ia = new Uint8Array(byteString.length);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            resolve(new Blob([ia], { type: mimeString }));
+        });
+
+        image.src = input.src;
+    });
+}
+
+export function CropProfilePicture({
+    file,
+    setBlob,
+}: {
+    file: File;
+    setBlob: (blob: Blob) => void;
+}) {
+    const [crop, setCrop] = useState<Crop>();
+    const [size, setSize] = useState<{
+        width: number;
+        height: number;
+    }>({
+        width: 0,
+        height: 0,
+    });
+
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.addEventListener('load', function () {
+        if (size.width !== this.width && size.height !== this.height) {
+            setSize(this);
+            setCrop(centerAspectCrop(this.width, this.height, 1));
+        }
+    });
+
+    img.src = url;
+    img.alt = 'Selected picture';
+
+    return (
+        <ReactCrop
+            crop={crop}
+            onChange={(c) => setCrop(c)}
+            aspect={1}
+            onComplete={async (_, percentage) => {
+                setBlob(await getCroppedImg(img, percentage));
+            }}
+            circularCrop={true}
+            keepSelection={true}
+        >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={url} alt="Uploaded picture" style={{ width: '400px' }} />
+        </ReactCrop>
     );
 }
