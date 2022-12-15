@@ -5,7 +5,6 @@ DEFINE TABLE create_image SCHEMAFULL
     DROP;
 
 DEFINE FIELD owner ON TABLE create_image TYPE string VALUE $before OR $auth.id;
-DEFINE FIELD type ON TABLE create_image TYPE string ASSERT $value != NONE AND ($value = 'profilepicture' OR $value = 'post');
 
 # Always create the image :D    (1=1)
 DEFINE EVENT email ON TABLE create_image WHEN 1=1 THEN (
