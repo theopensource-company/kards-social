@@ -208,8 +208,10 @@ export function UpdateProfilePicture() {
                 <CropProfilePicture file={uploaded} setBlob={setBlob} />
             )}
 
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            {blob && <img src={URL.createObjectURL(blob)} alt="Result" />}
+            {blob && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={URL.createObjectURL(blob)} alt="Result" width={400} />
+            )}
         </>
     );
 }
@@ -234,35 +236,31 @@ function centerAspectCrop(
     );
 }
 
-function getCroppedImg(input: HTMLImageElement, crop: PercentCrop) {
-    console.log(crop);
-    console.log(input.width, input.height);
-
+async function getCroppedImg(input: HTMLImageElement, crop: PercentCrop) {
     const image = new Image();
-
     return new Promise<Blob>((resolve) => {
         image.addEventListener('load', () => {
             console.log(image.width, image.height);
-            crop.width = (image.width * 100) / crop.width;
-            crop.height = (image.height * 100) / crop.height;
+            crop.x = (image.width / 100) * crop.x;
+            crop.y = (image.height / 100) * crop.y;
+            crop.width = (image.width / 100) * crop.width;
+            crop.height = (image.height / 100) * crop.height;
 
             const canvas = document.createElement('canvas');
-            const scaleX = image.naturalWidth / image.width;
-            const scaleY = image.naturalHeight / image.height;
             canvas.width = crop.width;
             canvas.height = crop.height;
             const ctx = canvas.getContext('2d');
 
             ctx?.drawImage(
                 image,
-                crop.x * scaleX,
-                crop.y * scaleY,
-                crop.width * scaleX,
-                crop.height * scaleY,
+                crop.x,
+                crop.y,
+                crop.width * 2,
+                crop.height * 2,
                 0,
                 0,
-                crop.width,
-                crop.height
+                image.width,
+                image.height
             );
 
             const dataURI = canvas.toDataURL();
