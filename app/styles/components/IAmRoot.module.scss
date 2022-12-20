@@ -15,10 +15,13 @@
     font-size: 20px;
     padding: 20px 30px;
     border-radius: 5px;
-    background-color: color.$darkTintLight;
 
-    &:nth-child(even) {
-        background-color: color.$dark;
+    &:nth-child(odd) {            
+        background-color: color.$lightTintDarkHover;
+
+        @media (prefers-color-scheme: dark) {
+            background-color: color.$darkTintLight;
+        }
     }
 
     & h4 {
