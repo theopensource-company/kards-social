@@ -15,7 +15,9 @@ const featureFlagDefaults: {
     prod: {
         preLaunchPage: true,
     },
-    dev: {},
+    dev: {
+        devTools: true,
+    },
     any: {},
 };
 

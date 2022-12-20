@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useFeatureFlag } from '../hooks/Environment';
 
 export function DevButton() {
     const router = useRouter();
-    const [showDevTools, setShowDevTools] = useState<boolean>(
-        process.env.NEXT_PUBLIC_ENV == 'dev' &&
-            process.env.NEXT_PUBLIC_DEPLOYMENT_STATUS != 'deployed'
-    );
+    const show = useFeatureFlag('devTools');
+    const [showDevTools, setShowDevTools] = useState<boolean>(false);
+
+    useEffect(() => {
+        setShowDevTools(show);
+    }, [show]);
 
     return (
         <>

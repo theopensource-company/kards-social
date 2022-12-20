@@ -6,7 +6,6 @@ import Logo from '../components/Logo';
 import LayoutContentMiddle from '../components/Layout/ContentMiddle';
 import { useFeatureFlag } from '../hooks/Environment';
 import { useTranslation } from 'react-i18next';
-import { featureFlags } from '../lib/Environment';
 
 export default function Landing() {
     const preLaunchPage = useFeatureFlag('preLaunchPage');
@@ -34,4 +33,4 @@ export default function Landing() {
     );
 }
 
-Landing.hideNavbar = !!featureFlags['preLaunchPage'];
+Landing.hideNavbar = 'withFeatureFlag:preLaunchPage';

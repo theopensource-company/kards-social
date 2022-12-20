@@ -13,37 +13,92 @@ import { i18n } from '../locales';
 import { DevButton } from '../components/DevButton';
 import { NextPage } from 'next';
 import AppLayoutNavbar from '../components/Layout/Navbar';
+import { IAmRoot } from '../components/IAmRoot';
+import {
+    FeatureFlagContext,
+    FeatureFlagProvider,
+    useFeatureFlags,
+} from '../hooks/Environment';
+import { TFeatureFlagOptions } from '../constants/Types';
 
 export default function KardsSocial({
     Component,
     pageProps,
 }: AppProps & {
     Component: NextPage & {
-        hideNavbar?: boolean;
+        hideNavbar?:
+            | boolean
+            | `withFeatureFlag:${TFeatureFlagOptions}`
+            | `withoutFeatureFlag:${TFeatureFlagOptions}`;
     };
 }) {
+    function Render() {
+        const fflags = useFeatureFlags();
+
+        return <></>;
+    }
+
     return (
         <I18nextProvider i18n={i18n}>
             <InitializeSurreal>
                 <AuthProvider>
-                    <DevButton />
-                    {Component.hideNavbar !== true && <AppLayoutNavbar />}
-                    <Component {...pageProps} />
-                    <ToastContainer
-                        position="top-center"
-                        closeButton={false}
-                        icon={({ type }) => {
-                            return type == 'error' ? (
-                                <Cross size={15} color="Light" />
-                            ) : (
-                                <Info
-                                    color={
-                                        type == 'default' ? undefined : 'Light'
-                                    }
-                                />
-                            );
-                        }}
-                    />
+                    <FeatureFlagProvider>
+                        <FeatureFlagContext.Consumer>
+                            {(fflags) => (
+                                <>
+                                    <DevButton />
+                                    {(() => {
+                                        if (Component.hideNavbar === undefined)
+                                            return true;
+                                        if (
+                                            typeof Component.hideNavbar ===
+                                            'boolean'
+                                        )
+                                            return !Component.hideNavbar;
+
+                                        if (
+                                            Component.hideNavbar.startsWith(
+                                                'withFeatureFlag:'
+                                            )
+                                        )
+                                            return !fflags[
+                                                Component.hideNavbar.split(
+                                                    ':'
+                                                )[1] as TFeatureFlagOptions
+                                            ];
+
+                                        return fflags[
+                                            Component.hideNavbar.split(
+                                                ':'
+                                            )[1] as TFeatureFlagOptions
+                                        ];
+                                    })() && <AppLayoutNavbar />}
+                                    <Component {...pageProps} />
+                                    <IAmRoot />
+                                    <ToastContainer
+                                        position="top-center"
+                                        closeButton={false}
+                                        icon={({ type }) => {
+                                            return type == 'error' ? (
+                                                <Cross
+                                                    size={15}
+                                                    color="Light"
+                                                />
+                                            ) : (
+                                                <Info
+                                                    color={
+                                                        type == 'default'
+                                                            ? undefined
+                                                            : 'Light'
+                                                    }
+                                                />
+                                            );
+                                        }}
+                                    />
+                                </>
+                            )}
+                        </FeatureFlagContext.Consumer>
+                    </FeatureFlagProvider>
                 </AuthProvider>
             </InitializeSurreal>
         </I18nextProvider>
