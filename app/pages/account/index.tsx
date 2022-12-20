@@ -23,6 +23,8 @@ import ReactCrop, {
     Crop,
     PercentCrop,
 } from 'react-image-crop';
+import Modal from '../../components/Modal';
+import profilePictureStyles from '../../styles/components/modal/ProfilePicture.module.scss';
 
 type TProfileFields = {
     name: `${string} ${string}`;
@@ -37,6 +39,7 @@ export default function Account() {
     const { register, handleSubmit, getValues, setValue } =
         useForm<TProfileFields>();
     const { t } = useTranslation('pages');
+    const [showUploadModal, setShowUploadModal] = useState<boolean>(false);
 
     const InputTheme: TFormItemTheming = {
         tint: 'Light',
@@ -97,14 +100,18 @@ export default function Account() {
                         })}
                     </p>
 
-                    <UpdateProfilePicture />
+                    <Modal show={showUploadModal} title={t("account.profile.avatar-modal-title") as string} onClose={() => { setShowUploadModal(false); }}>
+                        <UpdateProfilePicture />
 
-                    <ButtonLarge
-                        text="fetch uploadurl"
-                        onClick={() => {
-                            requestImageUploadURL().then(console.log);
-                        }}
-                    />
+                        <ButtonLarge
+                            text="Fetch Upload URL"
+                            onClick={() => {
+                                requestImageUploadURL().then(console.log);
+                            }}
+                        />
+                    </Modal>
+
+                    <ButtonLarge text={t("account.profile.upload-avatar") as string} onClick={() => { setShowUploadModal(true); }} />
 
                     <form onSubmit={handleSubmit(onSuccess, onFailure)}>
                         <FormInputField
@@ -193,8 +200,6 @@ export function UpdateProfilePicture() {
     const [uploaded, setUploaded] = useState<File | null>(null);
     const [blob, setBlob] = useState<Blob>();
 
-    console.log(blob);
-
     return (
         <>
             <input
@@ -209,8 +214,13 @@ export function UpdateProfilePicture() {
             )}
 
             {blob && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={URL.createObjectURL(blob)} alt="Result" width={400} />
+                <>
+                    <h2>Preview</h2>
+                    {
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={URL.createObjectURL(blob)} alt="Preview" width={400} />
+                    }
+                </>
             )}
         </>
     );
@@ -316,18 +326,21 @@ export function CropProfilePicture({
     img.alt = 'Selected picture';
 
     return (
-        <ReactCrop
-            crop={crop}
-            onChange={(c) => setCrop(c)}
-            aspect={1}
-            onComplete={async (_, percentage) => {
-                setBlob(await getCroppedImg(img, percentage));
-            }}
-            circularCrop={true}
-            keepSelection={true}
-        >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={url} alt="Uploaded picture" style={{ width: '400px' }} />
-        </ReactCrop>
+        <div className={profilePictureStyles.crop}>
+            <ReactCrop
+                crop={crop}
+                onChange={(c) => setCrop(c)}
+                aspect={1}
+                onComplete={async (_, percentage) => {
+                    setBlob(await getCroppedImg(img, percentage));
+                }}
+                circularCrop={true}
+                keepSelection={true}
+            >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={url} alt="Uploaded picture" style={{ width: '400px' }} />
+            </ReactCrop>
+        </div>
+        
     );
 }

@@ -44,6 +44,8 @@
   "account": {
     "profile": {
       "member-since-days": "Member since {{days}} days",
+      "avatar-modal-title": "Change Avatar",
+      "upload-avatar": "Change your Avatar",
       "fields": {
         "name": {
           "label": "Name",
