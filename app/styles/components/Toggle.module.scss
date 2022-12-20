@@ -1,0 +1,42 @@
+@use '../color';
+
+.toggle {
+    width: 50px;
+    height: 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    position: relative;
+    background-color: color.$darkTintLightHover;
+    margin: 5px;
+    box-shadow: 0 8px 20px 0 rgba(0,0,0,0.15);
+  
+    & > div {
+        background-color: color.$tint;
+        width: 20px;
+        height: 20px;
+        border-radius: 20px;
+        transition: background-color .3s ease, width .3s ease;
+
+        & > div {
+            background-color: color.$light;
+            width: 30px;
+            height: 30px;
+            border-radius: 30px;
+            transition: background-color .3s ease, right .3s ease;
+            box-shadow: 0 8px 20px 0 rgba(0,0,0,0.25);
+            position: absolute;
+            right: 25px;
+            top: -5px;
+        }
+    }
+  }
+  
+  .toggleOn {
+    & > div {
+        width: 50px;
+
+        & > div {
+            right: -5px;
+        }
+    }
+  }
