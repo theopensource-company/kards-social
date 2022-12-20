@@ -14,11 +14,7 @@ import { DevButton } from '../components/DevButton';
 import { NextPage } from 'next';
 import AppLayoutNavbar from '../components/Layout/Navbar';
 import { IAmRoot } from '../components/IAmRoot';
-import {
-    FeatureFlagContext,
-    FeatureFlagProvider,
-    useFeatureFlags,
-} from '../hooks/Environment';
+import { FeatureFlagContext, FeatureFlagProvider } from '../hooks/Environment';
 import { TFeatureFlagOptions } from '../constants/Types';
 
 export default function KardsSocial({
@@ -32,12 +28,6 @@ export default function KardsSocial({
             | `withoutFeatureFlag:${TFeatureFlagOptions}`;
     };
 }) {
-    function Render() {
-        const fflags = useFeatureFlags();
-
-        return <></>;
-    }
-
     return (
         <I18nextProvider i18n={i18n}>
             <InitializeSurreal>
