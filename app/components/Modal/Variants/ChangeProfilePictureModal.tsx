@@ -10,6 +10,8 @@ import ReactCrop, {
     makeAspectCrop,
 } from 'react-image-crop';
 import styles from '../../../styles/components/modal/ChangeProfilePicture.module.scss';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 export default function ChangeProfilePictureModal({
     show,
@@ -54,9 +56,26 @@ export default function ChangeProfilePictureModal({
             />
 
             <ButtonLarge
-                text="Fetch Upload URL"
-                onClick={() => {
-                    requestImageUploadURL().then(console.log);
+                text="Save"
+                onClick={async () => {
+                    if (!blob) {
+                        toast.error('Make a selection first');
+                        return;
+                    }
+
+                    const data = new FormData();
+                    data.append('file', blob, 'profilepicture.png');
+                    const uploadURL = await requestImageUploadURL();
+
+                    if (uploadURL) {
+                        axios
+                            .post(uploadURL, data, {
+                                timeout: 30000,
+                            })
+                            .then(console.log);
+                    } else {
+                        toast.error('Failed to upload picture');
+                    }
                 }}
             />
         </Modal>
