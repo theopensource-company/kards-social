@@ -138,7 +138,6 @@ async function getCroppedImg(input: HTMLImageElement, crop: PercentCrop) {
     const image = new Image();
     return new Promise<Blob>((resolve) => {
         image.addEventListener('load', () => {
-            console.log(image.width, image.height);
             crop.x = (image.width / 100) * crop.x;
             crop.y = (image.height / 100) * crop.y;
             crop.width = (image.width / 100) * crop.width;
@@ -153,12 +152,12 @@ async function getCroppedImg(input: HTMLImageElement, crop: PercentCrop) {
                 image,
                 crop.x,
                 crop.y,
-                crop.width * 2,
-                crop.height * 2,
+                crop.width,
+                crop.height,
                 0,
                 0,
-                image.width,
-                image.height
+                crop.width,
+                crop.height
             );
 
             const dataURI = canvas.toDataURL();
