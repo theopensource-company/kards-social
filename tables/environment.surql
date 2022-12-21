@@ -16,6 +16,10 @@ IF array::len((SELECT * FROM environment:cloudflare_account_id)) == 0 THEN
         ( CREATE environment:cloudflare_account_id SET value = "BLANK" )
 END;
 
+IF array::len((SELECT * FROM environment:cloudflare_account_hash)) == 0 THEN
+        ( CREATE environment:cloudflare_account_hash SET value = "BLANK" )
+END;
+
 IF array::len((SELECT * FROM environment:cloudflare_images_api_token)) == 0 THEN
         ( CREATE environment:cloudflare_images_api_token SET value = "BLANK" )
 END;
