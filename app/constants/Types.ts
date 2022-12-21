@@ -98,6 +98,7 @@ export type TKardsUserDetails = {
     name: `${string} ${string}`; //It's not strict about what comes after it, but this way it must contain at least one space (first & lastname)
     email: TEmail;
     username: string;
+    picture?: `image:${string}`;
     created: Date;
     updated: Date;
 };

@@ -1,0 +1,31 @@
+@use '../../color';
+
+.modal {
+    width: 800px;
+}
+
+.preview {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 40px 0px;
+
+    & hr {
+        height: 150px;
+        width: 3px;
+        background-color: color.$light;
+        border-radius: 5px;
+        margin: 0px;
+        border: none;
+    }
+}
+
+.result {
+    height: 250px;
+    border-radius: 250px;
+}
+
+.crop {
+    width: 100%;
+    max-width: 250px;
+}
