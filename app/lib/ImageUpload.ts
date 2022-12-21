@@ -18,9 +18,19 @@ export async function requestImageUploadURL() {
 
     const createRecordID = request[0]?.result[0]?.id;
     const result = await fetchImageRecordByCreateRecordID(createRecordID);
-    if (result) return result.endpoint.uploadURL;
+    if (result)
+        return {
+            id: result.id,
+            uploadURL: result.endpoint.uploadURL,
+        };
 
-    return new Promise<string | false>((resolve) => {
+    return new Promise<
+        | {
+              id: string;
+              uploadURL: string;
+          }
+        | false
+    >((resolve) => {
         let retries = 0;
         const refetchInterval = setInterval(async () => {
             retries++;
@@ -30,7 +40,10 @@ export async function requestImageUploadURL() {
 
             if (result) {
                 clearInterval(refetchInterval);
-                resolve(result.endpoint.uploadURL);
+                resolve({
+                    id: result.id,
+                    uploadURL: result.endpoint.uploadURL,
+                });
             } else if (retries == CREATE_IMAGE_REFETCH_LIMIT) {
                 console.error(
                     `Failed to fetch uploadURL after and ${retries} retries`

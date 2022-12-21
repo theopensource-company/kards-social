@@ -12,6 +12,7 @@ import ReactCrop, {
 import styles from '../../../styles/components/modal/ChangeProfilePicture.module.scss';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { SurrealQuery } from '../../../lib/Surreal';
 
 export default function ChangeProfilePictureModal({
     show,
@@ -65,14 +66,26 @@ export default function ChangeProfilePictureModal({
 
                     const data = new FormData();
                     data.append('file', blob, 'profilepicture.png');
-                    const uploadURL = await requestImageUploadURL();
+                    const rawResult = await requestImageUploadURL();
 
-                    if (uploadURL) {
+                    if (rawResult) {
+                        const { id: imageRecordID, uploadURL } = rawResult;
                         axios
                             .post(uploadURL, data, {
                                 timeout: 30000,
                             })
-                            .then(console.log);
+                            .then(async (res) => {
+                                if (res.data?.success) {
+                                    const updateProfileResult =
+                                        await SurrealQuery(
+                                            `UPDATE user SET picture = ${imageRecordID}`
+                                        );
+
+                                    console.log(updateProfileResult);
+                                } else {
+                                    toast.error('Failed to update profile');
+                                }
+                            });
                     } else {
                         toast.error('Failed to upload picture');
                     }
