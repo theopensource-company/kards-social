@@ -100,7 +100,15 @@ export default function Account() {
                         })}
                     </p>
 
-                    <Modal show={showUploadModal} title={t("account.profile.avatar-modal-title") as string} onClose={() => { setShowUploadModal(false); }}>
+                    <Modal
+                        show={showUploadModal}
+                        title={
+                            t('account.profile.avatar-modal-title') as string
+                        }
+                        onClose={() => {
+                            setShowUploadModal(false);
+                        }}
+                    >
                         <UpdateProfilePicture />
 
                         <ButtonLarge
@@ -111,7 +119,12 @@ export default function Account() {
                         />
                     </Modal>
 
-                    <ButtonLarge text={t("account.profile.upload-avatar") as string} onClick={() => { setShowUploadModal(true); }} />
+                    <ButtonLarge
+                        text={t('account.profile.upload-avatar') as string}
+                        onClick={() => {
+                            setShowUploadModal(true);
+                        }}
+                    />
 
                     <form onSubmit={handleSubmit(onSuccess, onFailure)}>
                         <FormInputField
@@ -218,7 +231,11 @@ export function UpdateProfilePicture() {
                     <h2>Preview</h2>
                     {
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={URL.createObjectURL(blob)} alt="Preview" width={400} />
+                        <img
+                            src={URL.createObjectURL(blob)}
+                            alt="Preview"
+                            width={400}
+                        />
                     }
                 </>
             )}
@@ -338,9 +355,12 @@ export function CropProfilePicture({
                 keepSelection={true}
             >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={url} alt="Uploaded picture" style={{ width: '400px' }} />
+                <img
+                    src={url}
+                    alt="Uploaded picture"
+                    style={{ width: '400px' }}
+                />
             </ReactCrop>
         </div>
-        
     );
 }
