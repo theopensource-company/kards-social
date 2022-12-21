@@ -11,4 +11,6 @@ const AdminPage = () => {
     );
 };
 
+AdminPage.hideNavbar = true;
+
 export default AdminPage;
