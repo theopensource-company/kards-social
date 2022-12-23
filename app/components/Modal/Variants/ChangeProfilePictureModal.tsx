@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from '../';
 import { useTranslation } from 'react-i18next';
 import { ButtonLarge } from '../../Button';
@@ -26,7 +26,14 @@ export default function ChangeProfilePictureModal({
     const { t } = useTranslation('pages');
     const [uploaded, setUploaded] = useState<File | null>(null);
     const refreshUserDetails = useDelayedRefreshAuthenticatedUser();
-    const [blob, setBlob] = useState<Blob>();
+    const [blob, setBlob] = useState<Blob | null>(null);
+
+    // FIXME: Nasty workaround to force react-image-crop to reexecute the "onComplete" function by unrendering and rerendering the whole component.
+    // This is needed because otherwise the output will not update when selecting a new picture.
+    const [refresh, setRefresh] = useState(true);
+    useEffect(() => {
+        if (!refresh) setRefresh(true);
+    }, [refresh, setRefresh]);
 
     return (
         <Modal
@@ -37,7 +44,9 @@ export default function ChangeProfilePictureModal({
         >
             {uploaded && (
                 <div className={styles.preview}>
-                    <CropProfilePicture file={uploaded} setBlob={setBlob} />
+                    {refresh && (
+                        <CropProfilePicture file={uploaded} setBlob={setBlob} />
+                    )}
 
                     <hr />
 
@@ -56,6 +65,7 @@ export default function ChangeProfilePictureModal({
                 type="file"
                 onChange={(e) => {
                     setUploaded(e.target.files && e.target.files[0]);
+                    setRefresh(false);
                 }}
             />
 
@@ -85,6 +95,11 @@ export default function ChangeProfilePictureModal({
 
                                     refreshUserDetails();
                                     onClose();
+
+                                    setTimeout(() => {
+                                        setBlob(null);
+                                        setUploaded(null);
+                                    }, 250);
                                 } else {
                                     toast.error('Failed to update profile');
                                 }
@@ -195,6 +210,7 @@ async function getCroppedImg(input: HTMLImageElement, crop: PercentCrop) {
                 crop.height
             );
 
+            // Credit where due: https://stackoverflow.com/a/5100158
             const dataURI = canvas.toDataURL();
             let byteString;
             if (dataURI.split(',')[0].indexOf('base64') >= 0)
