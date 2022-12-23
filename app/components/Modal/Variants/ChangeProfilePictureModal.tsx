@@ -13,6 +13,8 @@ import styles from '../../../styles/components/modal/ChangeProfilePicture.module
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { SurrealQuery } from '../../../lib/Surreal';
+import { TKardsUserDetails } from '../../../constants/Types';
+import { useDelayedRefreshAuthenticatedUser } from '../../../hooks/KardsUser';
 
 export default function ChangeProfilePictureModal({
     show,
@@ -23,6 +25,7 @@ export default function ChangeProfilePictureModal({
 }) {
     const { t } = useTranslation('pages');
     const [uploaded, setUploaded] = useState<File | null>(null);
+    const refreshUserDetails = useDelayedRefreshAuthenticatedUser();
     const [blob, setBlob] = useState<Blob>();
 
     return (
@@ -76,12 +79,12 @@ export default function ChangeProfilePictureModal({
                             })
                             .then(async (res) => {
                                 if (res.data?.success) {
-                                    const updateProfileResult =
-                                        await SurrealQuery(
-                                            `UPDATE user SET picture = ${imageRecordID}`
-                                        );
+                                    await SurrealQuery<TKardsUserDetails>(
+                                        `UPDATE user SET picture = ${imageRecordID}`
+                                    );
 
-                                    console.log(updateProfileResult);
+                                    refreshUserDetails();
+                                    onClose();
                                 } else {
                                     toast.error('Failed to update profile');
                                 }

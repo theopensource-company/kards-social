@@ -17,6 +17,7 @@ import { FieldErrors, useForm } from 'react-hook-form';
 import { keypressValidation } from '../../lib/KeypressValidation';
 import { usernameValidationSections } from '../../constants/KeypressValidators/username';
 import ChangeProfilePictureModal from '../../components/Modal/Variants/ChangeProfilePictureModal';
+import ProfilePicture from '../../components/Common/ProfilePicture';
 
 type TProfileFields = {
     name: `${string} ${string}`;
@@ -81,27 +82,31 @@ export default function Account() {
         <AccountLayout activeKey="profile">
             {auth.details && (
                 <div>
-                    <h1>{auth.details.name}</h1>
-                    <p>
-                        {t('account.profile.member-since-days', {
-                            days:
-                                moment(new Date()).diff(
-                                    moment(auth.details?.created),
-                                    'days'
-                                ) + 1,
-                        })}
-                    </p>
+                    <div>
+                        <ProfilePicture
+                            variant="Small"
+                            onClick={() => {
+                                setShowUploadModal(true);
+                            }}
+                        />
+
+                        <div>
+                            <h1>{auth.details.name}</h1>
+                            <p>
+                                {t('account.profile.member-since-days', {
+                                    days:
+                                        moment(new Date()).diff(
+                                            moment(auth.details?.created),
+                                            'days'
+                                        ) + 1,
+                                })}
+                            </p>
+                        </div>
+                    </div>
 
                     <ChangeProfilePictureModal
                         show={showUploadModal}
                         onClose={() => setShowUploadModal(false)}
-                    />
-
-                    <ButtonLarge
-                        text={t('account.profile.upload-avatar') as string}
-                        onClick={() => {
-                            setShowUploadModal(true);
-                        }}
                     />
 
                     <form onSubmit={handleSubmit(onSuccess, onFailure)}>

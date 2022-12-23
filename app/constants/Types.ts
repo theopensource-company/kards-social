@@ -2,6 +2,7 @@ import { HTMLProps, ReactNode } from 'react';
 import { BasicColorTintType, BasicColorType, ColorType } from './Colors';
 import * as Feather from 'react-feather';
 import { AccountSidebarItem } from './AccountSidebar';
+import { ImageProps } from 'next/image';
 
 /* ENVIRONMENT */
 
@@ -99,6 +100,7 @@ export type TKardsUserDetails = {
     email: TEmail;
     username: string;
     picture?: `image:${string}`;
+    picture_base_url: TImageBaseURL;
     created: Date;
     updated: Date;
 };
@@ -139,4 +141,21 @@ export type TAccountSidebarItem = {
     key: string;
     link: `/account${string}`;
     active?: boolean;
+};
+
+/* image types */
+
+export type TImageBaseURL = `https://imagedelivery.net/${string}/${string}`;
+export const ImageVariant = {
+    Loading: 256,
+    Small: 256,
+    Normal: 512,
+    Big: 1024,
+    Detail: 10000,
+};
+
+export type TImageVariant = keyof typeof ImageVariant;
+export type TImage = Omit<ImageProps, 'src' | 'width' | 'height'> & {
+    baseURL: TImageBaseURL;
+    variant?: TImageVariant;
 };
