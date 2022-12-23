@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Modal from '../';
 import { useTranslation } from 'react-i18next';
 import { ButtonLarge } from '../../Button';
@@ -15,6 +15,8 @@ import axios from 'axios';
 import { SurrealQuery } from '../../../lib/Surreal';
 import { TKardsUserDetails } from '../../../constants/Types';
 import { useDelayedRefreshAuthenticatedUser } from '../../../hooks/KardsUser';
+import { useDropzone } from 'react-dropzone';
+import { RotateCw as RotateCwIcon, Save as SaveIcon } from 'react-feather';
 
 export default function ChangeProfilePictureModal({
     show,
@@ -35,81 +37,110 @@ export default function ChangeProfilePictureModal({
         if (!refresh) setRefresh(true);
     }, [refresh, setRefresh]);
 
-    return (
-        <Modal
-            show={show}
-            title={t('account.profile.avatar-modal-title') as string}
-            onClose={onClose}
-            className={styles.modal}
-        >
-            {uploaded && (
-                <div className={styles.preview}>
-                    {refresh && (
-                        <CropProfilePicture file={uploaded} setBlob={setBlob} />
-                    )}
+    const onDrop = useCallback((files: File[]) => {
+        setUploaded(files && files[0]);
+        setRefresh(false);
+    }, []);
 
-                    <hr />
+    const { getRootProps, getInputProps, open } = useDropzone({
+        onDrop,
+        noClick: true,
+        noKeyboard: true,
+    });
 
-                    {
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                            src={blob ? URL.createObjectURL(blob) : ''}
-                            alt="Preview"
-                            className={styles.result}
-                        />
-                    }
-                </div>
-            )}
+    const saveImage = async () => {
+        if (!blob) {
+            toast.error('Make a selection first');
+            return;
+        }
 
-            <input
-                type="file"
-                onChange={(e) => {
-                    setUploaded(e.target.files && e.target.files[0]);
-                    setRefresh(false);
-                }}
-            />
+        const data = new FormData();
+        data.append('file', blob, 'profilepicture.png');
+        const rawResult = await requestImageUploadURL();
 
-            <ButtonLarge
-                text="Save"
-                onClick={async () => {
-                    if (!blob) {
-                        toast.error('Make a selection first');
-                        return;
-                    }
+        if (rawResult) {
+            const { id: imageRecordID, uploadURL } = rawResult;
+            axios
+                .post(uploadURL, data, {
+                    timeout: 30000,
+                })
+                .then(async (res) => {
+                    if (res.data?.success) {
+                        await SurrealQuery<TKardsUserDetails>(
+                            `UPDATE user SET picture = ${imageRecordID}`
+                        );
 
-                    const data = new FormData();
-                    data.append('file', blob, 'profilepicture.png');
-                    const rawResult = await requestImageUploadURL();
+                        refreshUserDetails();
+                        onClose();
 
-                    if (rawResult) {
-                        const { id: imageRecordID, uploadURL } = rawResult;
-                        axios
-                            .post(uploadURL, data, {
-                                timeout: 30000,
-                            })
-                            .then(async (res) => {
-                                if (res.data?.success) {
-                                    await SurrealQuery<TKardsUserDetails>(
-                                        `UPDATE user SET picture = ${imageRecordID}`
-                                    );
-
-                                    refreshUserDetails();
-                                    onClose();
-
-                                    setTimeout(() => {
-                                        setBlob(null);
-                                        setUploaded(null);
-                                    }, 250);
-                                } else {
-                                    toast.error('Failed to update profile');
-                                }
-                            });
+                        setTimeout(() => {
+                            setBlob(null);
+                            setUploaded(null);
+                        }, 250);
                     } else {
-                        toast.error('Failed to upload picture');
+                        toast.error('Failed to update profile');
                     }
-                }}
-            />
-        </Modal>
+                });
+        } else {
+            toast.error('Failed to upload picture');
+        }
+    };
+
+    return (
+        <div {...getRootProps()}>
+            <Modal
+                show={show}
+                title={t('account.profile.avatar-modal-title') as string}
+                onClose={onClose}
+                className={styles.modal}
+            >
+                <input {...getInputProps()} />
+                {!uploaded && (
+                    <div onClick={open} className={styles.unselected}>
+                        <p>
+                            Drag a file into your browser or click here to
+                            select one.
+                        </p>
+                    </div>
+                )}
+
+                {uploaded && (
+                    <div className="selected">
+                        <div className={styles.preview}>
+                            {refresh && (
+                                <CropProfilePicture
+                                    file={uploaded}
+                                    setBlob={setBlob}
+                                />
+                            )}
+
+                            <hr />
+
+                            {
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img
+                                    src={blob ? URL.createObjectURL(blob) : ''}
+                                    alt="Preview"
+                                    className={styles.result}
+                                />
+                            }
+                        </div>
+                        <div className={styles.buttons}>
+                            <ButtonLarge
+                                text="Save picture"
+                                onClick={saveImage}
+                                icon={<SaveIcon />}
+                            />
+                            <ButtonLarge
+                                text="Change"
+                                onClick={open}
+                                icon={<RotateCwIcon />}
+                            />
+                        </div>
+                    </div>
+                )}
+            </Modal>
+        </div>
     );
 }
 

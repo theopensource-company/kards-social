@@ -65,6 +65,7 @@ importers:
       react-admin: ^4.5.2
       react-admin-json-view: ^2.0.0
       react-dom: 18.2.0
+      react-dropzone: ^14.2.3
       react-feather: ^2.0.10
       react-hook-form: ^7.39.5
       react-i18next: ^12.0.0
@@ -100,6 +101,7 @@ importers:
       react-admin: 4.5.2_7vhz6zwuflomapgph4de74xeya
       react-admin-json-view: 2.0.0_jover67xbpvqqqfr2gtghpocpq
       react-dom: 18.2.0_react@18.2.0
+      react-dropzone: 14.2.3_react@18.2.0
       react-feather: 2.0.10_react@18.2.0
       react-hook-form: 7.39.5_react@18.2.0
       react-i18next: 12.0.0_nger6pvrp5hnzeykouhwqmsdti
@@ -7362,6 +7364,13 @@ packages:
       tslib: 2.4.1
     dev: false
 
+  /file-selector/0.6.0:
+    resolution: {integrity: sha512-QlZ5yJC0VxHxQQsQhXvBaC7VRJ2uaxTf+Tfpu4Z/OcVQJVpZO+DGU0rkoVW5ce2SccxugvpBJoMvUs59iILYdw==}
+    engines: {node: '>= 12'}
+    dependencies:
+      tslib: 2.4.1
+    dev: false
+
   /file-system-cache/1.1.0:
     resolution: {integrity: sha512-IzF5MBq+5CR0jXx5RxPe4BICl/oEhBSXKaL9fLhAXrIfIUS77Hr4vzrYyqYMHN6uTt+BOqi3fDCTjjEBCjERKw==}
     dependencies:
@@ -10995,6 +11004,18 @@ packages:
     dependencies:
       attr-accept: 2.2.2
       file-selector: 0.5.0
+      prop-types: 15.8.1
+      react: 18.2.0
+    dev: false
+
+  /react-dropzone/14.2.3_react@18.2.0:
+    resolution: {integrity: sha512-O3om8I+PkFKbxCukfIR3QAGftYXDZfOE2N1mr/7qebQJHs7U+/RSL/9xomJNpRg9kM5h9soQSdf0Gc7OHF5Fug==}
+    engines: {node: '>= 10.13'}
+    peerDependencies:
+      react: '>= 16.8 || 18.0.0'
+    dependencies:
+      attr-accept: 2.2.2
+      file-selector: 0.6.0
       prop-types: 15.8.1
       react: 18.2.0
     dev: false
