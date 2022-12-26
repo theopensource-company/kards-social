@@ -58,7 +58,7 @@
     border: 4px dashed color.$tint;
     background-color: color.$darkTintLight;
     padding: 10% 20%;
-    margin: 30px 10px 0px 20px;
+    margin: 30px 10px 10px 20px;
     border-radius: 15px;
     display: flex;
     align-items: center;
@@ -72,4 +72,15 @@
     justify-content: center;
     gap: 40px;
     padding-bottom: 10px;
+}
+
+.removeLink {
+    text-align: center;
+    margin-top: 35px;
+    color: color.$red;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { MouseEvent, useCallback, useEffect, useState } from 'react';
 import Modal from '../';
 import { useTranslation } from 'react-i18next';
 import { ButtonLarge } from '../../Button';
@@ -174,6 +174,21 @@ export default function ChangeProfilePictureModal({
         });
     };
 
+    const removePicture = async (e: MouseEvent) => {
+        e.preventDefault();
+
+        await SurrealQuery(`UPDATE user SET picture = NONE`);
+        setTimeout(() => {
+            setBlob(null);
+            setUploaded(null);
+        }, 250);
+
+        onClose();
+        refreshUserDetails();
+
+        toast.success('Profile picture is removed');
+    };
+
     return (
         <div {...getRootProps()}>
             <Modal
@@ -239,6 +254,14 @@ export default function ChangeProfilePictureModal({
                         </div>
                     </div>
                 )}
+
+                <a
+                    href="#"
+                    className={styles.removeLink}
+                    onClick={removePicture}
+                >
+                    Remove my profile picture
+                </a>
             </Modal>
         </div>
     );
