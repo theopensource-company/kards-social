@@ -19,6 +19,8 @@ import { usernameValidationSections } from '../../constants/KeypressValidators/u
 import ChangeProfilePictureModal from '../../components/Modal/Variants/ChangeProfilePictureModal';
 import ProfilePicture from '../../components/Common/ProfilePicture';
 
+import styles from '../../styles/pages/Account/Profile.module.scss';
+
 type TProfileFields = {
     name: `${string} ${string}`;
     username: string;
@@ -82,15 +84,18 @@ export default function Account() {
         <AccountLayout activeKey="profile">
             {auth.details && (
                 <div>
-                    <div>
-                        <ProfilePicture
-                            variant="Small"
+                    <div className={styles.intro}>
+                        <div
+                            className={styles.picture}
                             onClick={() => {
                                 setShowUploadModal(true);
                             }}
-                        />
+                        >
+                            <ProfilePicture variant="Small" />
+                            <div className="pictureHover"></div>
+                        </div>
 
-                        <div>
+                        <div className={styles.introInfo}>
                             <h1>{auth.details.name}</h1>
                             <p>
                                 {t('account.profile.member-since-days', {

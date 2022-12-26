@@ -20,12 +20,7 @@ import { SurrealQuery } from '../../../lib/Surreal';
 import { TKardsUserDetails } from '../../../constants/Types';
 import { useDelayedRefreshAuthenticatedUser } from '../../../hooks/KardsUser';
 import { useDropzone } from 'react-dropzone';
-import {
-    Check as CheckIcon,
-    Icon,
-    RotateCw as RotateCwIcon,
-    Save as SaveIcon,
-} from 'react-feather';
+import { RotateCw as RotateCwIcon, Save as SaveIcon } from 'react-feather';
 import Spinner from '../../Icon/Spinner';
 
 export default function ChangeProfilePictureModal({
@@ -39,7 +34,7 @@ export default function ChangeProfilePictureModal({
     const [uploaded, setUploaded] = useState<File | null>(null);
     const refreshUserDetails = useDelayedRefreshAuthenticatedUser();
     const [blob, setBlob] = useState<Blob | null>(null);
-    const [ActiveIcon, setIcon] = useState<Icon | false>(SaveIcon);
+    const [isUploading, setIsUploading] = useState<boolean>(false);
     const toastId = React.useRef(null as unknown as Id);
 
     // FIXME: Nasty workaround to force react-image-crop to reexecute the "onComplete" function by unrendering and rerendering the whole component.
@@ -84,7 +79,7 @@ export default function ChangeProfilePictureModal({
         }, (CREATE_IMAGE_REFETCH_INTERVAL * CREATE_IMAGE_REFETCH_LIMIT * 2.5) / 100);
 
         (async (): Promise<true | void> => {
-            setIcon(false);
+            setIsUploading(true);
 
             const data = new FormData();
             data.append('file', blob, 'profilepicture.png');
@@ -137,14 +132,6 @@ export default function ChangeProfilePictureModal({
                     );
 
                     clearInterval(updateProfileInterval);
-                    toast.update(toastId.current, {
-                        progress: 0,
-                        icon: null,
-                        autoClose: 5000,
-                        render: 'Your profile picture was updated!',
-                        type: toast.TYPE.SUCCESS,
-                    });
-
                     return true;
                 } else {
                     toast.update(toastId.current, {
@@ -165,21 +152,24 @@ export default function ChangeProfilePictureModal({
                 });
             }
         })().then((success) => {
+            setIsUploading(false);
+
             if (success) {
                 setTimeout(() => {
-                    setTimeout(() => {
-                        setBlob(null);
-                        setUploaded(null);
-                        setIcon(SaveIcon);
-                    }, 250);
-
-                    onClose();
+                    setBlob(null);
+                    setUploaded(null);
                 }, 250);
 
-                setIcon(CheckIcon);
+                onClose();
                 refreshUserDetails();
-            } else {
-                setIcon(SaveIcon);
+
+                toast.update(toastId.current, {
+                    progress: 0,
+                    icon: null,
+                    autoClose: 5000,
+                    render: 'Your profile picture was updated!',
+                    type: toast.TYPE.SUCCESS,
+                });
             }
         });
     };
@@ -192,6 +182,16 @@ export default function ChangeProfilePictureModal({
                 onClose={onClose}
                 className={styles.modal}
             >
+                <div
+                    className={[
+                        styles.uploadingOverlay,
+                        isUploading ? styles.showUploadingOverlay : 0,
+                    ]
+                        .filter((a) => !!a)
+                        .join(' ')}
+                >
+                    <Spinner color="Light" size={100} />
+                </div>
                 <input {...getInputProps()} />
                 {!uploaded && (
                     <div onClick={open} className={styles.unselected}>
@@ -227,16 +227,14 @@ export default function ChangeProfilePictureModal({
                             <ButtonLarge
                                 text="Save picture"
                                 onClick={saveImage}
-                                icon={ActiveIcon && <ActiveIcon size={22} />}
-                                loading={!ActiveIcon}
-                                disabled={!ActiveIcon}
+                                icon={<SaveIcon />}
+                                disabled={isUploading}
                             />
                             <ButtonLarge
                                 text="Change"
                                 onClick={open}
                                 icon={<RotateCwIcon />}
-                                loading={!ActiveIcon}
-                                disabled={!ActiveIcon}
+                                disabled={isUploading}
                             />
                         </div>
                     </div>
