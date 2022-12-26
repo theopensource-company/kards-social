@@ -16,25 +16,37 @@
     cursor: pointer;
     background-color: color.$darkTintLight;
 
-    &::after {
-        position: absolute;
-        top: 0;
-        left: 0;
-        background-color: rgba(0, 0, 0, 0.6);
-        width: 100%;
-        height: 100%;
-        content: 'Change';
-        opacity: 0;
-        transition: opacity .1s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-    }
+    
 
-    &:hover::after {
+    &:hover > div {
         opacity: 1;
     }
+}
+
+.pictureHover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+    content: 'Change';
+    opacity: 0;
+    transition: opacity .1s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    & p {
+        margin: 0px;
+        font-size: 1.2rem;
+    }
+}
+
+.pictureHoverIcon {
+    margin-top: 10px;
 }
 
 .introInfo {

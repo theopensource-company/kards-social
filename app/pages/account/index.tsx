@@ -12,7 +12,7 @@ import { FormInputField } from '../../components/Form/InputField';
 import { TFormItemTheming } from '../../constants/Types';
 import { ButtonLarge } from '../../components/Button';
 import { useTranslation } from 'react-i18next';
-import { Check, Icon, Save } from 'react-feather';
+import { Check, Icon, Save, Camera } from 'react-feather';
 import { FieldErrors, useForm } from 'react-hook-form';
 import { keypressValidation } from '../../lib/KeypressValidation';
 import { usernameValidationSections } from '../../constants/KeypressValidators/username';
@@ -92,7 +92,13 @@ export default function Account() {
                             }}
                         >
                             <ProfilePicture variant="Small" />
-                            <div className="pictureHover"></div>
+                            <div className={styles.pictureHover}>
+                                <Camera
+                                    size={40}
+                                    className={styles.pictureHoverIcon}
+                                />
+                                <p>{t('common:change')}</p>
+                            </div>
                         </div>
 
                         <div className={styles.introInfo}>

@@ -30,7 +30,7 @@ export default function ChangeProfilePictureModal({
     show: boolean;
     onClose: () => void;
 }) {
-    const { t } = useTranslation('pages');
+    const { t } = useTranslation('components');
     const [uploaded, setUploaded] = useState<File | null>(null);
     const refreshUserDetails = useDelayedRefreshAuthenticatedUser();
     const [blob, setBlob] = useState<Blob | null>(null);
@@ -57,14 +57,17 @@ export default function ChangeProfilePictureModal({
 
     const saveImage = async () => {
         if (!blob) {
-            toast.error('Make a selection first');
+            toast.error(t('modal.change-profile-picture.make-selection'));
             return;
         }
 
-        toastId.current = toast.info('Requesting upload URL', {
-            autoClose: false,
-            icon: <Spinner color="Light" />,
-        });
+        toastId.current = toast.info(
+            t('modal.change-profile-picture.requesting-url'),
+            {
+                autoClose: false,
+                icon: <Spinner color="Light" />,
+            }
+        );
 
         let urlRequestProgress = 0;
         const urlRequestInterval = setInterval(() => {
@@ -87,7 +90,7 @@ export default function ChangeProfilePictureModal({
 
             clearInterval(urlRequestInterval);
             toast.update(toastId.current, {
-                render: 'Uploading your image',
+                render: t('modal.change-profile-picture.uploading-image'),
                 progress: 0.4,
             });
 
@@ -101,6 +104,9 @@ export default function ChangeProfilePictureModal({
                         );
 
                         toast.update(toastId.current, {
+                            render: t(
+                                'modal.change-profile-picture.uploading-image'
+                            ),
                             progress:
                                 (40 + Math.round(percentCompleted / 2.5)) / 100,
                         });
@@ -111,7 +117,9 @@ export default function ChangeProfilePictureModal({
 
                 if (res.data?.success) {
                     toast.update(toastId.current, {
-                        render: 'Updating your profile',
+                        render: t(
+                            'modal.change-profile-picture.updating-profile'
+                        ),
                         progress: 0.8,
                     });
 
@@ -119,6 +127,9 @@ export default function ChangeProfilePictureModal({
                     const updateProfileInterval = setInterval(() => {
                         updateProfileProgress++;
                         toast.update(toastId.current, {
+                            render: t(
+                                'modal.change-profile-picture.updating-profile'
+                            ),
                             progress: (80 + updateProfileProgress) / 100,
                         });
 
@@ -138,7 +149,9 @@ export default function ChangeProfilePictureModal({
                         progress: 0,
                         icon: null,
                         autoClose: 5000,
-                        render: 'Failed to upload new profile picture',
+                        render: t(
+                            'modal.change-profile-picture.image-upload-failed'
+                        ),
                         type: toast.TYPE.ERROR,
                     });
                 }
@@ -147,7 +160,9 @@ export default function ChangeProfilePictureModal({
                     progress: 0,
                     icon: null,
                     autoClose: 5000,
-                    render: 'Failed to request upload URL',
+                    render: t(
+                        'modal.change-profile-picture.url-request-failed'
+                    ),
                     type: toast.TYPE.ERROR,
                 });
             }
@@ -167,7 +182,7 @@ export default function ChangeProfilePictureModal({
                     progress: 0,
                     icon: null,
                     autoClose: 5000,
-                    render: 'Your profile picture was updated!',
+                    render: t('modal.change-profile-picture.picture-updated'),
                     type: toast.TYPE.SUCCESS,
                 });
             }
@@ -186,14 +201,14 @@ export default function ChangeProfilePictureModal({
         onClose();
         refreshUserDetails();
 
-        toast.success('Profile picture is removed');
+        toast.success(t('modal.change-profile-picture.picture-removed'));
     };
 
     return (
         <div {...getRootProps()}>
             <Modal
                 show={show}
-                title={t('account.profile.avatar-modal-title') as string}
+                title={t<string>('modal.change-profile-picture.title')}
                 onClose={onClose}
                 className={styles.modal}
             >
@@ -210,10 +225,7 @@ export default function ChangeProfilePictureModal({
                 <input {...getInputProps()} />
                 {!uploaded && (
                     <div onClick={open} className={styles.unselected}>
-                        <p>
-                            Drag a file into your browser or click here to
-                            select one.
-                        </p>
+                        <p>{t('modal.change-profile-picture.drag-zone')}</p>
                     </div>
                 )}
 
@@ -240,13 +252,15 @@ export default function ChangeProfilePictureModal({
                         </div>
                         <div className={styles.buttons}>
                             <ButtonLarge
-                                text="Save picture"
+                                text={t<string>(
+                                    'modal.change-profile-picture.save-picture'
+                                )}
                                 onClick={saveImage}
                                 icon={<SaveIcon />}
                                 disabled={isUploading}
                             />
                             <ButtonLarge
-                                text="Change"
+                                text={t<string>('common:change')}
                                 onClick={open}
                                 icon={<RotateCwIcon />}
                                 disabled={isUploading}
@@ -260,7 +274,7 @@ export default function ChangeProfilePictureModal({
                     className={styles.removeLink}
                     onClick={removePicture}
                 >
-                    Remove my profile picture
+                    {t('modal.change-profile-picture.remove-picture')}
                 </a>
             </Modal>
         </div>

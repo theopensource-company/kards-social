@@ -43,7 +43,6 @@
   },
   "account": {
     "profile": {
-      "avatar-modal-title": "Verander Profielfoto",
       "upload-avatar": "Verander je Profielfoto",
       "fields": {
         "email": {
