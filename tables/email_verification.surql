@@ -2,10 +2,10 @@ DEFINE TABLE email_verification SCHEMAFULL DROP;
 
 DEFINE FIELD email ON email_verification TYPE string ASSERT is::email($value);
 DEFINE FIELD recipient ON email_verification TYPE string ASSERT $value != "NONE";
-DEFINE FIELD template ON email_verification TYPE string ASSERT $value = 'waitlist';
+DEFINE FIELD template ON email_verification TYPE string ASSERT $value = 'waitlist' OR $value = 'reset_password';
 DEFINE FIELD origin ON email_verification TYPE string ASSERT $value != NONE;
 
-DEFINE EVENT email ON TABLE email_verification WHEN 1=1 THEN (
+DEFINE EVENT email ON TABLE email_verification WHEN $after.template = 'waitlist' THEN (
     CREATE send_email_verification CONTENT {
         email: $after.email,
         recipient: $after.recipient,
@@ -14,6 +14,14 @@ DEFINE EVENT email ON TABLE email_verification WHEN 1=1 THEN (
     }
 );
 
+DEFINE EVENT email ON TABLE email_verification WHEN $after.template = 'reset_password' THEN (
+    CREATE send_email_verification CONTENT {
+        email: string::slice((SELECT email FROM user WHERE email = $after.email), 2, -2),
+        recipient: string::slice((SELECT name FROM user WHERE email = $after.email), 2, -2),
+        template: $after.template,
+        origin: $after.origin
+    }
+);
 
 ///////////////////////////////////
 ////  SEND EMAIL VERIFICATION  ////
@@ -27,7 +35,7 @@ DEFINE FIELD created ON send_email_verification TYPE datetime VALUE $before OR t
 DEFINE FIELD email ON send_email_verification TYPE string ASSERT is::email($value);
 DEFINE FIELD recipient ON send_email_verification TYPE string ASSERT $value != "NONE";
 DEFINE FIELD secret ON send_email_verification TYPE string VALUE $before OR rand::string(32);
-DEFINE FIELD template ON send_email_verification TYPE string ASSERT $value = 'waitlist';
+DEFINE FIELD template ON send_email_verification TYPE string ASSERT $value = 'waitlist' OR $value = 'reset_password';
 DEFINE FIELD origin ON send_email_verification TYPE string ASSERT $value != NONE;
 
 DEFINE EVENT email ON TABLE send_email_verification WHEN $after.template = 'waitlist' THEN (
@@ -56,6 +64,44 @@ DEFINE EVENT email ON TABLE send_email_verification WHEN $after.template = 'wait
                     string::replace(
                         string::replace(
                             string::replace("{{origin}}/join-waitlist?email={{email}}&secret={{secret}}", "{{secret}}", $after.secret),
+                            "{{origin}}",
+                            string::slice((select value from environment:origin), 2, (string::length((select value from environment:origin)) - 4)) || $after.origin
+                        ),
+                        "{{email}}",
+                        $after.email
+                    )
+                )
+            }
+        ]
+    }
+);
+
+DEFINE EVENT email ON TABLE send_email_verification WHEN $after.template = 'reset_password' THEN (
+    CREATE send_email CONTENT {
+        to_name: $after.recipient,
+        to_email: $after.email,
+        subject: "Reset your password!",
+        content: [
+            {
+                type: "text/plain",
+                value: "Reset your password with the following link: " + string::replace(
+                    string::replace(
+                        string::replace("{{origin}}/auth/reset-password?email={{email}}&secret={{secret}}", "{{secret}}", $after.secret),
+                        "{{origin}}",
+                        string::slice((select value from environment:origin), 2, (string::length((select value from environment:origin)) - 4)) || $after.origin
+                    ),
+                    "{{email}}",
+                    $after.email
+                )
+            },
+            {
+                type: "text/html",
+                value: string::replace(
+                    string::slice((select content from email_templates:reset_password), 2, (string::length((select content from email_templates:reset_password)) - 4)),
+                    "{{verificationlink}}",
+                    string::replace(
+                        string::replace(
+                            string::replace("{{origin}}/auth/reset-password?email={{email}}&secret={{secret}}", "{{secret}}", $after.secret),
                             "{{origin}}",
                             string::slice((select value from environment:origin), 2, (string::length((select value from environment:origin)) - 4)) || $after.origin
                         ),

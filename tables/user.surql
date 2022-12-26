@@ -1,13 +1,21 @@
 DEFINE TABLE user SCHEMAFULL 
   PERMISSIONS 
-    FOR select, update, delete WHERE ($scope = 'user' && id = $auth.id) OR $scope = 'admin' 
+    FOR select WHERE ($scope = 'user' && id = $auth.id) 
+      OR $scope = 'admin' 
+      OR ($scope = 'verify_reset_password' && id = $auth.id)
+    FOR update, delete WHERE ($scope = 'user' && id = $auth.id) OR $scope = 'admin' 
     FOR create WHERE $scope = 'admin';
 
 DEFINE FIELD name ON TABLE user TYPE string ASSERT $value != NONE AND array::len(string::words($value)) > 1;
 DEFINE FIELD email ON TABLE user TYPE string ASSERT is::email($value);
 DEFINE FIELD username ON TABLE user TYPE string ASSERT $value != NONE AND $value = /^[a-z0-9](?:[a-z0-9._-]{1,18}[a-z0-9.])$/;
 DEFINE FIELD password ON TABLE user TYPE string ASSERT $value != NONE
-  PERMISSIONS FOR select NONE FOR update WHERE $scope = 'admin' OR string::length(<string> (select * from user where id = $auth.id and crypto::argon2::compare(password, $oldpassword))) > 2;
+  PERMISSIONS 
+    FOR select NONE 
+    FOR update WHERE $scope = 'admin' 
+      OR string::length(<string> (select * from user where id = $auth.id and crypto::argon2::compare(password, $oldpassword))) > 2
+      OR ($scope = 'verify_reset_password' && id = $auth.id)
+;
 
 DEFINE FIELD created ON TABLE user TYPE datetime VALUE $before OR time::now();
 DEFINE FIELD updated ON TABLE user TYPE datetime VALUE time::now();
