@@ -2,7 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Modal from '../';
 import { useTranslation } from 'react-i18next';
 import { ButtonLarge } from '../../Button';
-import { requestImageUploadURL } from '../../../lib/ImageUpload';
+import {
+    requestImageUploadURL,
+    CREATE_IMAGE_REFETCH_INTERVAL,
+    CREATE_IMAGE_REFETCH_LIMIT,
+} from '../../../lib/ImageUpload';
 import ReactCrop, {
     Crop,
     PercentCrop,
@@ -10,13 +14,19 @@ import ReactCrop, {
     makeAspectCrop,
 } from 'react-image-crop';
 import styles from '../../../styles/components/modal/ChangeProfilePicture.module.scss';
-import { toast } from 'react-toastify';
+import { Id, toast } from 'react-toastify';
 import axios from 'axios';
 import { SurrealQuery } from '../../../lib/Surreal';
 import { TKardsUserDetails } from '../../../constants/Types';
 import { useDelayedRefreshAuthenticatedUser } from '../../../hooks/KardsUser';
 import { useDropzone } from 'react-dropzone';
-import { RotateCw as RotateCwIcon, Save as SaveIcon } from 'react-feather';
+import {
+    Check as CheckIcon,
+    Icon,
+    RotateCw as RotateCwIcon,
+    Save as SaveIcon,
+} from 'react-feather';
+import Spinner from '../../Icon/Spinner';
 
 export default function ChangeProfilePictureModal({
     show,
@@ -29,6 +39,8 @@ export default function ChangeProfilePictureModal({
     const [uploaded, setUploaded] = useState<File | null>(null);
     const refreshUserDetails = useDelayedRefreshAuthenticatedUser();
     const [blob, setBlob] = useState<Blob | null>(null);
+    const [ActiveIcon, setIcon] = useState<Icon | false>(SaveIcon);
+    const toastId = React.useRef(null as unknown as Id);
 
     // FIXME: Nasty workaround to force react-image-crop to reexecute the "onComplete" function by unrendering and rerendering the whole component.
     // This is needed because otherwise the output will not update when selecting a new picture.
@@ -54,36 +66,122 @@ export default function ChangeProfilePictureModal({
             return;
         }
 
-        const data = new FormData();
-        data.append('file', blob, 'profilepicture.png');
-        const rawResult = await requestImageUploadURL();
+        toastId.current = toast.info('Requesting upload URL', {
+            autoClose: false,
+            icon: <Spinner color="Light" />,
+        });
 
-        if (rawResult) {
-            const { id: imageRecordID, uploadURL } = rawResult;
-            axios
-                .post(uploadURL, data, {
+        let urlRequestProgress = 0;
+        const urlRequestInterval = setInterval(() => {
+            urlRequestProgress++;
+            toast.update(toastId.current, {
+                progress: Math.round(urlRequestProgress / 2.5) / 100,
+            });
+
+            if (urlRequestProgress >= 100) {
+                clearInterval(urlRequestInterval);
+            }
+        }, (CREATE_IMAGE_REFETCH_INTERVAL * CREATE_IMAGE_REFETCH_LIMIT * 2.5) / 100);
+
+        (async (): Promise<true | void> => {
+            setIcon(false);
+
+            const data = new FormData();
+            data.append('file', blob, 'profilepicture.png');
+            const rawResult = await requestImageUploadURL();
+
+            clearInterval(urlRequestInterval);
+            toast.update(toastId.current, {
+                render: 'Uploading your image',
+                progress: 0.4,
+            });
+
+            if (rawResult) {
+                const { id: imageRecordID, uploadURL } = rawResult;
+                const res = await axios.post(uploadURL, data, {
                     timeout: 30000,
-                })
-                .then(async (res) => {
-                    if (res.data?.success) {
-                        await SurrealQuery<TKardsUserDetails>(
-                            `UPDATE user SET picture = ${imageRecordID}`
+                    onUploadProgress: function (progressEvent) {
+                        const percentCompleted = Math.round(
+                            (progressEvent.loaded * 100) / progressEvent.total
                         );
 
-                        refreshUserDetails();
-                        onClose();
+                        toast.update(toastId.current, {
+                            progress:
+                                (40 + Math.round(percentCompleted / 2.5)) / 100,
+                        });
 
-                        setTimeout(() => {
-                            setBlob(null);
-                            setUploaded(null);
-                        }, 250);
-                    } else {
-                        toast.error('Failed to update profile');
-                    }
+                        console.log(percentCompleted);
+                    },
                 });
-        } else {
-            toast.error('Failed to upload picture');
-        }
+
+                if (res.data?.success) {
+                    toast.update(toastId.current, {
+                        render: 'Updating your profile',
+                        progress: 0.8,
+                    });
+
+                    let updateProfileProgress = 0;
+                    const updateProfileInterval = setInterval(() => {
+                        updateProfileProgress++;
+                        toast.update(toastId.current, {
+                            progress: (80 + updateProfileProgress) / 100,
+                        });
+
+                        if (updateProfileProgress >= 20) {
+                            clearInterval(updateProfileInterval);
+                        }
+                    }, 10);
+
+                    await SurrealQuery<TKardsUserDetails>(
+                        `UPDATE user SET picture = ${imageRecordID}`
+                    );
+
+                    clearInterval(updateProfileInterval);
+                    toast.update(toastId.current, {
+                        progress: 0,
+                        icon: null,
+                        autoClose: 5000,
+                        render: 'Your profile picture was updated!',
+                        type: toast.TYPE.SUCCESS,
+                    });
+
+                    return true;
+                } else {
+                    toast.update(toastId.current, {
+                        progress: 0,
+                        icon: null,
+                        autoClose: 5000,
+                        render: 'Failed to upload new profile picture',
+                        type: toast.TYPE.ERROR,
+                    });
+                }
+            } else {
+                toast.update(toastId.current, {
+                    progress: 0,
+                    icon: null,
+                    autoClose: 5000,
+                    render: 'Failed to request upload URL',
+                    type: toast.TYPE.ERROR,
+                });
+            }
+        })().then((success) => {
+            if (success) {
+                setTimeout(() => {
+                    setTimeout(() => {
+                        setBlob(null);
+                        setUploaded(null);
+                        setIcon(SaveIcon);
+                    }, 250);
+
+                    onClose();
+                }, 250);
+
+                setIcon(CheckIcon);
+                refreshUserDetails();
+            } else {
+                setIcon(SaveIcon);
+            }
+        });
     };
 
     return (
@@ -129,12 +227,16 @@ export default function ChangeProfilePictureModal({
                             <ButtonLarge
                                 text="Save picture"
                                 onClick={saveImage}
-                                icon={<SaveIcon />}
+                                icon={ActiveIcon && <ActiveIcon size={22} />}
+                                loading={!ActiveIcon}
+                                disabled={!ActiveIcon}
                             />
                             <ButtonLarge
                                 text="Change"
                                 onClick={open}
                                 icon={<RotateCwIcon />}
+                                loading={!ActiveIcon}
+                                disabled={!ActiveIcon}
                             />
                         </div>
                     </div>
