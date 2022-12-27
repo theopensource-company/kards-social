@@ -1,19 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import Button, { ButtonLarge } from '../../components/Button';
+import { ButtonLarge } from '../../components/Button';
 import { toast } from 'react-toastify';
 
 import styles from '../../styles/pages/JoinWaitlist.module.scss';
-import axios from 'axios';
 import Logo from '../../components/Logo';
 import { FormInputField } from '../../components/Form/InputField';
 import LayoutContentMiddle from '../../components/Layout/ContentMiddle';
-import {
-    SurrealEndpoint,
-    SurrealNamespace,
-    SurrealDatabase,
-    SurrealQuery,
-} from '../../lib/Surreal';
+import { SurrealQuery } from '../../lib/Surreal';
 import { useTranslation } from 'react-i18next';
 import { FieldErrors, useForm } from 'react-hook-form';
 import { Check, Icon, Save, Send } from 'react-feather';
