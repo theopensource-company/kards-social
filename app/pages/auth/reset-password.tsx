@@ -10,7 +10,7 @@ import LayoutContentMiddle from '../../components/Layout/ContentMiddle';
 import { SurrealQuery } from '../../lib/Surreal';
 import { useTranslation } from 'react-i18next';
 import { FieldErrors, useForm } from 'react-hook-form';
-import { Check, Icon, Save, Send } from 'react-feather';
+import { Icon, Send, Check, Save } from 'react-feather';
 import { UpdateUnauthenticatedUserPassword } from '../../lib/KardsUser';
 
 type TPreVerifiedForm = {
@@ -25,9 +25,7 @@ type TPostVerifiedForm = {
 export default function JoinWaitlist() {
     const router = useRouter();
     const { email, secret, success } = router.query;
-    const [ActiveIcon, setIcon] = useState<Icon | false>(
-        email && secret ? false : Send
-    );
+    const [ActiveIcon, setIcon] = useState<Icon | false>(Send);
     const preVerifiedForm = useForm<TPreVerifiedForm>();
     const postVerifiedForm = useForm<TPostVerifiedForm>();
     const { t } = useTranslation('pages');
@@ -40,7 +38,7 @@ export default function JoinWaitlist() {
                     id: `email_verification:${string}`;
                     email: `${string}@${string}.${string}`;
                     recipient: string;
-                    template: 'waitlist';
+                    template: 'reset_password';
                 }>(
                     `CREATE email_verification CONTENT ${JSON.stringify({
                         email: values.email,
@@ -154,15 +152,9 @@ export default function JoinWaitlist() {
                 );
 
             toast.success(t('account.security.submitted.success'));
+            router.push('/auth/signin');
             return true;
-        })().then((success) => {
-            if (success) {
-                setIcon(Check);
-                setTimeout(() => setIcon(Save), 1000);
-            } else {
-                setIcon(Save);
-            }
-        });
+        })();
     };
 
     const onFailurePostVerified = async (
@@ -207,7 +199,7 @@ export default function JoinWaitlist() {
                     </div>
                     <ButtonLarge
                         text={t('account.security.submitted.button') as string}
-                        icon={ActiveIcon && <ActiveIcon size={22} />}
+                        icon={ActiveIcon && <Save size={22} />}
                         loading={!ActiveIcon}
                         disabled={!ActiveIcon}
                     />
@@ -249,3 +241,5 @@ export default function JoinWaitlist() {
         );
     }
 }
+
+// JoinWaitlist.hideNavbar = true;
