@@ -3,10 +3,9 @@ import { useRouter } from 'next/router';
 import { ButtonLarge } from '../../components/Button';
 import { toast } from 'react-toastify';
 
-import styles from '../../styles/pages/JoinWaitlist.module.scss';
+import styles from '../../styles/pages/Auth/ResetPassword.module.scss';
 import Logo from '../../components/Logo';
 import { FormInputField } from '../../components/Form/InputField';
-import LayoutContentMiddle from '../../components/Layout/ContentMiddle';
 import { SurrealQuery } from '../../lib/Surreal';
 import { useTranslation } from 'react-i18next';
 import { FieldErrors, useForm } from 'react-hook-form';
@@ -166,7 +165,7 @@ export default function JoinWaitlist() {
 
     if ((email && secret) || success !== undefined) {
         return (
-            <LayoutContentMiddle>
+            <div className={styles.container}>
                 <form
                     className={styles.form}
                     onSubmit={postVerifiedForm.handleSubmit(
@@ -204,11 +203,11 @@ export default function JoinWaitlist() {
                         disabled={!ActiveIcon}
                     />
                 </form>
-            </LayoutContentMiddle>
+            </div>
         );
     } else {
         return (
-            <LayoutContentMiddle>
+            <div className={styles.container}>
                 <form
                     className={styles.form}
                     onSubmit={preVerifiedForm.handleSubmit(
@@ -237,7 +236,7 @@ export default function JoinWaitlist() {
                         disabled={!ActiveIcon}
                     />
                 </form>
-            </LayoutContentMiddle>
+            </div>
         );
     }
 }
