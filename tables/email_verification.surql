@@ -32,7 +32,8 @@ DEFINE TABLE send_email_verification SCHEMAFULL
     PERMISSIONS NONE;
 
 DEFINE FIELD created ON send_email_verification TYPE datetime VALUE $before OR time::now();
-DEFINE FIELD email ON send_email_verification TYPE string ASSERT is::email($value);
+// No verification here because it would leak if a user exists for the reset_password event :D
+DEFINE FIELD email ON send_email_verification TYPE string;
 DEFINE FIELD recipient ON send_email_verification TYPE string ASSERT $value != "NONE";
 DEFINE FIELD secret ON send_email_verification TYPE string VALUE $before OR rand::string(32);
 DEFINE FIELD template ON send_email_verification TYPE string ASSERT $value = 'waitlist' OR $value = 'reset_password';
@@ -76,7 +77,7 @@ DEFINE EVENT waitlist ON TABLE send_email_verification WHEN $after.template = 'w
     }
 );
 
-DEFINE EVENT reset_password ON TABLE send_email_verification WHEN $after.template = 'reset_password' THEN (
+DEFINE EVENT reset_password ON TABLE send_email_verification WHEN $after.template = 'reset_password' && is::email($after.email) THEN (
     CREATE send_email CONTENT {
         to_name: $after.recipient,
         to_email: $after.email,
