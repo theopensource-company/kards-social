@@ -115,7 +115,7 @@ export const UpdateUnauthenticatedUserPassword = async (arg: {
             .post(
                 `${SurrealEndpoint.slice(0, -4)}/sql`,
                 `
-                    LET $newpassword = "${arg.newpassword}";
+                    LET $newpassword = "${arg.newpassword.replace('"', '\\"')}";
                     UPDATE user SET password = crypto::argon2::generate($newpassword);
                     SELECT * FROM user WHERE crypto::argon2::compare(password, $newpassword);
                 `,

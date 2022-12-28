@@ -30,7 +30,7 @@ export default function JoinWaitlist() {
     const [ActiveIcon, setIcon] = useState<Icon | boolean>(
         email && secret ? false : Send
     );
-    const { register, handleSubmit } = useForm<TWaitlistFields>();
+    const { register, handleSubmit, reset } = useForm<TWaitlistFields>();
     const { t } = useTranslation('pages');
 
     const onSuccess = async (values: TWaitlistFields) => {
@@ -64,6 +64,7 @@ export default function JoinWaitlist() {
                         })
                     );
 
+                reset();
                 toast.success(t('waitlist.join.submitted.success'));
                 return true;
             } catch (e) {
