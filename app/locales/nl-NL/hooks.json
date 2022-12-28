@@ -1,0 +1,13 @@
+{
+  "field-validation": {
+    "password": {
+      "invalid": "Je wachtwoord moet ook nog tenminste {{criteria}} bevatten.",
+      "no-match": "De wachtwoorden komen niet overeen.",
+      "test-length": "acht karakters",
+      "test-lowercase": "één kleine letter",
+      "test-number": "één nummer",
+      "test-special": "één speciaal karakter",
+      "test-uppercase": "één grote letter"
+    }
+  }
+}
