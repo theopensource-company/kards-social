@@ -6,6 +6,7 @@ import { StaticImageData } from 'next/image';
 
 import Linkify from 'react-linkify';
 import Link from 'next/link';
+import ProfilePreview from '../Profile/ProfilePreview';
 
 type Props = {
     image: string | StaticImageData;
@@ -34,7 +35,9 @@ export default function Post({ image, caption }: Props) {
         <div className={classes}>
             <div className={styles.images}></div>
             <div className={styles.post}>
-                <div className={styles.author}></div>
+                <div className={styles.author}>
+                    <ProfilePreview showName={true} showUsername={true} showProfilePicture={true} profile={{ username: "kards", name: "Kards" }} />
+                </div>
                 <div className={styles.caption}></div>
                 <div className={styles.comments}></div>
             </div>

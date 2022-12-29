@@ -95,15 +95,20 @@ export type TEmail = `${string}@${string}.${string}`;
 export type TKardsUserID = `user:${string}`;
 export type TKardsUserDetails = {
     id: TKardsUserID;
-    name: `${string} ${string}`; //It's not strict about what comes after it, but this way it must contain at least one space (first & lastname)
+    name: `${string}`; //It's not strict about what comes after it, but this way it must contain at least one space (first & lastname)
     email: TEmail;
     username: string;
     created: Date;
     updated: Date;
 };
 
+export type TKardsProfile = {
+    name: `${string}`;
+    username: string;
+}
+
 export type TUpdateKardsUser = {
-    name?: `${string} ${string}`; //It's not strict about what comes after it, but this way it must contain at least one space (first & lastname)
+    name?: `${string}`; //It's not strict about what comes after it, but this way it must contain at least one space (first & lastname)
     email?: TEmail;
     username?: string;
 };
