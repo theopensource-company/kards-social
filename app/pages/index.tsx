@@ -6,6 +6,7 @@ import Logo from '../components/Logo';
 import LayoutContentMiddle from '../components/Layout/ContentMiddle';
 import { useFeatureFlag } from '../hooks/Environment';
 import { useTranslation } from 'react-i18next';
+import Post from '../components/Post';
 
 export default function Landing() {
     const preLaunchPage = useFeatureFlag('preLaunchPage');
@@ -29,7 +30,7 @@ export default function Landing() {
             </div>
         </LayoutContentMiddle>
     ) : (
-        <p>Hello</p>
+        <Post image={}
     );
 }
 

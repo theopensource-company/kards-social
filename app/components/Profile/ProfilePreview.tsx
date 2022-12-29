@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import Image from 'next/image';
 
 import { TKardsProfile } from '../../constants/Types';
@@ -20,11 +20,19 @@ export default function Profile({
 
     return (
         <div className={classes}>
-            <Image src={KardsSampleLogo} alt={profile.name}></Image>
+            {showProfilePicture && (
+                <Image src={KardsSampleLogo} alt={profile.name} />
+            )}
             {(showUsername || showUsername) && (
                 <div className={styles.names}>
-                    {showName && <span className={styles.name}></span>}
-                    {showUsername && <span className={styles.username}></span>}
+                    {showName && (
+                        <span className={styles.name}>{profile.name}</span>
+                    )}
+                    {showUsername && (
+                        <span className={styles.username}>
+                            {profile.username}
+                        </span>
+                    )}
                 </div>
             )}
         </div>

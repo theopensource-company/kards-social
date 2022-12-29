@@ -3,6 +3,7 @@ import React from 'react';
 import styles from '../../styles/components/Post.module.scss';
 import { StaticImageData } from 'next/image';
 
+import Linkify from 'react-linkify';
 import Link from 'next/link';
 import ProfilePreview from '../Profile/ProfilePreview';
 
@@ -36,10 +37,21 @@ export default function Post({ image, caption }: Props) {
                         showName={true}
                         showUsername={true}
                         showProfilePicture={true}
-                        profile={{ username: 'kards', name: 'Kards' }}
+                        profile={{
+                            username: 'kards',
+                            name: 'Kards',
+                            description:
+                                'The open source, no non-sense social media.',
+                            website: 'https://www.kards.social/',
+                            created: new Date(),
+                        }}
                     />
                 </div>
-                <div className={styles.caption}></div>
+                <div className={styles.caption}>
+                    <Linkify componentDecorator={LinkComponent}>
+                        {caption}
+                    </Linkify>
+                </div>
                 <div className={styles.comments}></div>
             </div>
         </div>
