@@ -1,24 +1,21 @@
-import Image from "next/image";
+import Image from 'next/image';
 
-import { TKardsProfile } from "../../constants/Types";
-import styles from "../../styles/components/Post.module.scss";
-import KardsSampleLogo from "../../public/images/icon_128x128.png";
+import { TKardsProfile } from '../../constants/Types';
+import styles from '../../styles/components/Post.module.scss';
+import KardsSampleLogo from '../../public/images/icon_128x128.png';
 
 export default function Profile({
     showUsername = true,
     showName = true,
     showProfilePicture = true,
-    profile
+    profile,
 }: {
     showUsername: boolean;
     showName: boolean;
     showProfilePicture: boolean;
     profile: TKardsProfile;
 }) {
-
-    const classes = [styles.default]
-        .filter((a) => !!a)
-        .join(' ');
+    const classes = [styles.default].filter((a) => !!a).join(' ');
 
     return (
         <div className={classes}>

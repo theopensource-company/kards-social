@@ -105,7 +105,7 @@ export type TKardsUserDetails = {
 export type TKardsProfile = {
     name: `${string}`;
     username: string;
-}
+};
 
 export type TUpdateKardsUser = {
     name?: `${string}`; //It's not strict about what comes after it, but this way it must contain at least one space (first & lastname)
