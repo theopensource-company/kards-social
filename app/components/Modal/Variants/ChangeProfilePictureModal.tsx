@@ -65,6 +65,7 @@ export default function ChangeProfilePictureModal({
             t('modal.change-profile-picture.requesting-url'),
             {
                 autoClose: false,
+                closeOnClick: false,
                 icon: <Spinner color="Light" />,
             }
         );
@@ -91,6 +92,7 @@ export default function ChangeProfilePictureModal({
             clearInterval(urlRequestInterval);
             toast.update(toastId.current, {
                 render: t('modal.change-profile-picture.uploading-image'),
+                closeOnClick: false,
                 progress: 0.4,
             });
 
@@ -120,6 +122,7 @@ export default function ChangeProfilePictureModal({
                         render: t(
                             'modal.change-profile-picture.updating-profile'
                         ),
+                        closeOnClick: false,
                         progress: 0.8,
                     });
 
@@ -149,6 +152,7 @@ export default function ChangeProfilePictureModal({
                         progress: 0,
                         icon: null,
                         autoClose: 5000,
+                        closeOnClick: true,
                         render: t(
                             'modal.change-profile-picture.image-upload-failed'
                         ),
@@ -160,6 +164,7 @@ export default function ChangeProfilePictureModal({
                     progress: 0,
                     icon: null,
                     autoClose: 5000,
+                    closeOnClick: true,
                     render: t(
                         'modal.change-profile-picture.url-request-failed'
                     ),
