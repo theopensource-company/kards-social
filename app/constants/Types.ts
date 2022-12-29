@@ -39,26 +39,6 @@ export type TPageLayoutAccount = TPageLayout & {
     activeKey: AccountSidebarItem;
 };
 
-/* KARDS API */
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type TApiSuccessResponse<TResultType = any> = {
-    success: true;
-    message?: string;
-    result?: TResultType;
-};
-
-export type TApiErrorResponse = {
-    success: false;
-    message: string;
-    error: string;
-};
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type TApiResponse<TResultType = any> =
-    | TApiSuccessResponse<TResultType>
-    | TApiErrorResponse;
-
 /* FORM TYPES */
 
 export type TFormItemSize = 'Small' | 'Large';
@@ -95,7 +75,7 @@ export type TEmail = `${string}@${string}.${string}`;
 export type TKardsUserID = `user:${string}`;
 export type TKardsUserDetails = {
     id: TKardsUserID;
-    name: `${string}`; //It's not strict about what comes after it, but this way it must contain at least one space (first & lastname)
+    name: string;
     email: TEmail;
     username: string;
     created: Date;
@@ -111,7 +91,7 @@ export type TKardsProfile = {
 };
 
 export type TUpdateKardsUser = {
-    name?: `${string}`; //It's not strict about what comes after it, but this way it must contain at least one space (first & lastname)
+    name?: string;
     email?: TEmail;
     username?: string;
 };
