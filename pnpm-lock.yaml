@@ -65,9 +65,11 @@ importers:
       react-admin: ^4.5.2
       react-admin-json-view: ^2.0.0
       react-dom: 18.2.0
+      react-dropzone: ^14.2.3
       react-feather: ^2.0.10
       react-hook-form: ^7.39.5
       react-i18next: ^12.0.0
+      react-image-crop: ^10.0.9
       react-linkify: 1.0.0-alpha
       react-media-hook: ^0.4.9
       react-router: ^6.4.3
@@ -99,9 +101,11 @@ importers:
       react-admin: 4.5.2_7vhz6zwuflomapgph4de74xeya
       react-admin-json-view: 2.0.0_jover67xbpvqqqfr2gtghpocpq
       react-dom: 18.2.0_react@18.2.0
+      react-dropzone: 14.2.3_react@18.2.0
       react-feather: 2.0.10_react@18.2.0
       react-hook-form: 7.39.5_react@18.2.0
       react-i18next: 12.0.0_nger6pvrp5hnzeykouhwqmsdti
+      react-image-crop: 10.0.9_react@18.2.0
       react-linkify: 1.0.0-alpha
       react-media-hook: 0.4.9_react@18.2.0
       react-router: 6.4.3_react@18.2.0
@@ -1613,7 +1617,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.20.1
       '@types/react': 18.0.17
-      clsx: 1.1.0
+      clsx: 1.2.1
       focus-lock: 0.8.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -5781,7 +5785,6 @@ packages:
   /clsx/1.2.1:
     resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
     engines: {node: '>=6'}
-    dev: false
 
   /collapse-white-space/1.0.6:
     resolution: {integrity: sha512-jEovNnrhMuqyCcjfEJA56v0Xq8SkIoPKDyaHahwo3POf4qcSXqMYuwNcOTzp74vTsR9Tn08z4MxWqAhcekogkQ==}
@@ -7357,6 +7360,13 @@ packages:
   /file-selector/0.5.0:
     resolution: {integrity: sha512-s8KNnmIDTBoD0p9uJ9uD0XY38SCeBOtj0UMXyQSLg1Ypfrfj8+dAvwsLjYQkQ2GjhVtp2HrnF5cJzMhBjfD8HA==}
     engines: {node: '>= 10'}
+    dependencies:
+      tslib: 2.4.1
+    dev: false
+
+  /file-selector/0.6.0:
+    resolution: {integrity: sha512-QlZ5yJC0VxHxQQsQhXvBaC7VRJ2uaxTf+Tfpu4Z/OcVQJVpZO+DGU0rkoVW5ce2SccxugvpBJoMvUs59iILYdw==}
+    engines: {node: '>= 12'}
     dependencies:
       tslib: 2.4.1
     dev: false
@@ -10998,6 +11008,18 @@ packages:
       react: 18.2.0
     dev: false
 
+  /react-dropzone/14.2.3_react@18.2.0:
+    resolution: {integrity: sha512-O3om8I+PkFKbxCukfIR3QAGftYXDZfOE2N1mr/7qebQJHs7U+/RSL/9xomJNpRg9kM5h9soQSdf0Gc7OHF5Fug==}
+    engines: {node: '>= 10.13'}
+    peerDependencies:
+      react: '>= 16.8 || 18.0.0'
+    dependencies:
+      attr-accept: 2.2.2
+      file-selector: 0.6.0
+      prop-types: 15.8.1
+      react: 18.2.0
+    dev: false
+
   /react-element-to-jsx-string/14.3.4_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-t4ZwvV6vwNxzujDQ+37bspnLwA4JlgUPWhLjBJWsNIDceAf6ZKUTCjdm08cN6WeZ5pTMKiCJkmAYnpmR4Bm+dg==}
     peerDependencies:
@@ -11057,6 +11079,15 @@ packages:
       i18next: 22.0.6
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /react-image-crop/10.0.9_react@18.2.0:
+    resolution: {integrity: sha512-fqn6a811cx/sE7jtu8txL4lBTwgZYuEVNvy7UPKMNMWeRcZa6v0ja11+Gd9nZQiBfaxDal3PBcKhGBLQ956UNg==}
+    peerDependencies:
+      react: '>=16.13.1'
+    dependencies:
+      clsx: 1.2.1
+      react: 18.2.0
     dev: false
 
   /react-inspector/5.1.1_react@18.2.0:

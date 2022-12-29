@@ -13,7 +13,8 @@ import { SurrealQueryAdmin } from './Surreal';
 export function SelectFilterBuilder(filters: any) {
     let result = `ORDER BY ${filters._sort} ${filters._order ?? 'DESC'}`;
     if (filters.end) result += ` LIMIT BY ${filters.end}`;
-    if (filters.start) result += ` START AT ${filters.start}`;
+    if (filters.start && filters.start > 0)
+        result += ` START AT ${filters.start}`;
     return result;
 }
 
@@ -44,7 +45,14 @@ export const Fetcher = (): DataProvider => ({
         const { field, order } = params.sort;
         const start = (page - 1) * perPage;
         const limit = page * perPage - start;
-        const query = `SELECT *, count((select id from ${resource})) as total FROM ${resource} ORDER BY ${field} ${order} LIMIT BY ${limit} START AT ${start}`;
+        const query = `
+            SELECT 
+                *, 
+                count((select id from ${resource})) as total 
+            FROM ${resource} 
+            ORDER BY ${field} ${order} 
+            LIMIT BY ${limit} 
+            ${start > 0 ? `START AT ${start}` : ''}`;
 
         return SurrealQueryAdmin(query).then((result) => {
             if (result[0]?.result) {
@@ -110,7 +118,9 @@ export const Fetcher = (): DataProvider => ({
             params.target
         } = ${JSON.stringify(
             params.id
-        )} ORDER BY ${field} ${order} LIMIT BY ${limit} START AT ${start}`;
+        )} ORDER BY ${field} ${order} LIMIT BY ${limit} ${
+            start > 0 ? `START AT ${start}` : ''
+        }`;
 
         return SurrealQueryAdmin(query).then((result) => {
             if (result[0]?.result) {

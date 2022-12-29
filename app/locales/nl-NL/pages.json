@@ -43,6 +43,7 @@
   },
   "account": {
     "profile": {
+      "upload-avatar": "Verander je Profielfoto",
       "fields": {
         "email": {
           "faulty": "Voor een valide e-mailadres in.",

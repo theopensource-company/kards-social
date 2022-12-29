@@ -16,6 +16,7 @@
     align-items: center;
     justify-content: center;
     transition: border-radius .2s ease;
+    overflow: hidden;
 
     &:hover {
         border-radius: 15px;

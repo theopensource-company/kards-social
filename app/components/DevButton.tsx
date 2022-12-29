@@ -14,33 +14,35 @@ export function DevButton() {
 
     return (
         <>
-            {showDevTools && !router.pathname.startsWith('/dev') && (
-                <div
-                    style={{
-                        position: 'absolute',
-                        margin: '15px',
-                        padding: '5px 10px',
-                        backgroundColor: 'red',
-                        color: 'white',
-                        borderRadius: '3px',
-                        right: 0,
-                        display: 'flex',
-                        gap: '10px',
-                    }}
-                >
-                    <Link href="/dev">Devtools</Link>
-                    <span>-</span>
-                    <a
-                        href="#"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            setShowDevTools(false);
+            {showDevTools &&
+                !router.pathname.startsWith('/dev') &&
+                !router.pathname.startsWith('/admin') && (
+                    <div
+                        style={{
+                            position: 'absolute',
+                            margin: '15px',
+                            padding: '5px 10px',
+                            backgroundColor: 'red',
+                            color: 'white',
+                            borderRadius: '3px',
+                            right: 0,
+                            display: 'flex',
+                            gap: '10px',
                         }}
                     >
-                        Hide
-                    </a>
-                </div>
-            )}
+                        <Link href="/dev">Devtools</Link>
+                        <span>-</span>
+                        <a
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setShowDevTools(false);
+                            }}
+                        >
+                            Hide
+                        </a>
+                    </div>
+                )}
         </>
     );
 }
