@@ -109,7 +109,7 @@ export default function ChangeProfilePictureModal({
                             render: t(
                                 'modal.change-profile-picture.uploading-image'
                             ),
-                            closeOnClick: true,
+                            closeOnClick: false,
                             progress:
                                 (40 + Math.round(percentCompleted / 2.5)) / 100,
                         });
@@ -134,6 +134,7 @@ export default function ChangeProfilePictureModal({
                             render: t(
                                 'modal.change-profile-picture.updating-profile'
                             ),
+                            closeOnClick: false,
                             progress: (80 + updateProfileProgress) / 100,
                         });
 
