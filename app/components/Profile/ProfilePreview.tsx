@@ -2,7 +2,7 @@ import * as React from 'react';
 import Image from 'next/image';
 
 import { TKardsProfile } from '../../constants/Types';
-import styles from '../../styles/components/Post.module.scss';
+import styles from '../../styles/components/ProfilePreview.module.scss';
 import KardsSampleLogo from '../../public/images/icon_128x128.png';
 
 export default function Profile({
@@ -21,7 +21,13 @@ export default function Profile({
     return (
         <div className={classes}>
             {showProfilePicture && (
-                <Image src={KardsSampleLogo} alt={profile.name} />
+                <div className={styles.profilePicture}>
+                    <Image
+                        fill={true}
+                        src={KardsSampleLogo}
+                        alt={profile.name}
+                    />
+                </div>
             )}
             {(showUsername || showUsername) && (
                 <div className={styles.names}>
@@ -30,7 +36,7 @@ export default function Profile({
                     )}
                     {showUsername && (
                         <span className={styles.username}>
-                            {profile.username}
+                            @{profile.username}
                         </span>
                     )}
                 </div>

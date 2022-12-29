@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 import styles from '../../styles/components/Post.module.scss';
 import { StaticImageData } from 'next/image';
@@ -30,8 +31,10 @@ export default function Post({ image, caption }: Props) {
 
     return (
         <div className={classes}>
-            <div className={styles.images}></div>
-            <div className={styles.post}>
+            <div className={styles.images}>
+                <Image fill={true} src={image} alt={'Image'} />
+            </div>
+            <div className={styles.postInfo}>
                 <div className={styles.author}>
                     <ProfilePreview
                         showName={true}

@@ -1,0 +1,34 @@
+@use '../color';
+
+.default {
+    display: flex;
+    flex-direction: row;
+
+    background-color: color.$lightTintDark;
+    color: color.$dark;
+
+    width: 100%;
+    aspect-ratio: 2 / 1;
+
+    border-radius: 30px;
+    overflow: hidden;
+
+    @media (prefers-color-scheme: dark) {
+        background-color: color.$darkTintDark;
+        color: color.$light;
+    }
+}
+
+.images {
+    aspect-ratio: 1 / 1;
+    height: 100%;
+
+    position: relative;
+}
+
+.postInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 3em;
+    padding: 3em;
+}

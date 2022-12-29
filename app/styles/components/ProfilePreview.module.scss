@@ -1,0 +1,44 @@
+@use '../color';
+
+.default {
+    display: flex;
+    flex-direction: row;
+
+    font-size: 16px;
+
+    gap: 1em;
+}
+
+.profilePicture {
+    width: 5em;
+    height: 5em;
+
+    position: relative;
+
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.names {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    gap: .6em;
+
+    .name {
+        font-size: 2em;
+        line-height: 1em;
+    }
+
+    .username {
+        font-size: 1em;
+        line-height: 1em;
+
+        color: color.$darkTintLight;
+
+        @media (prefers-color-scheme: dark) {
+            color: color.$lightTintDark;
+        }
+    }
+}
