@@ -10,7 +10,6 @@ DEFINE FIELD owner ON TABLE create_image TYPE string VALUE $before OR $auth.id;
 DEFINE EVENT email ON TABLE create_image WHEN 1=1 THEN (
     CREATE image CONTENT {
         owner: $after.owner,
-        type: $after.type,
         from_create_record: $after.id,
         endpoint: function(http::post(string::replace(
             'https://api.cloudflare.com/client/v4/accounts/{{accountid}}/images/v2/direct_upload',
