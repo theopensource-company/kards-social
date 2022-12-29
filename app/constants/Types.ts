@@ -103,8 +103,11 @@ export type TKardsUserDetails = {
 };
 
 export type TKardsProfile = {
-    name: `${string}`;
+    name: string;
     username: string;
+    description: string;
+    website: string;
+    created: Date;
 };
 
 export type TUpdateKardsUser = {
