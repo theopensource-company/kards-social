@@ -15,6 +15,7 @@ type Props = {
 
 class InvalidPostError extends Error {}
 
+/* eslint-disable-next-line unused-imports/no-unused-vars */
 const LinkComponent = (href: string, text: string, key: number) => (
     <Link href={href} key={key} target="_blank">
         {text}

@@ -11,9 +11,9 @@ export default function Profile({
     showProfilePicture = true,
     profile,
 }: {
-    showUsername: boolean;
-    showName: boolean;
-    showProfilePicture: boolean;
+    showUsername?: boolean;
+    showName?: boolean;
+    showProfilePicture?: boolean;
     profile: TKardsProfile;
 }) {
     const classes = [styles.default].filter((a) => !!a).join(' ');
@@ -29,7 +29,8 @@ export default function Profile({
                     />
                 </div>
             )}
-            {(showUsername || showUsername) && (
+
+            {(showUsername || showName) && (
                 <div className={styles.names}>
                     {showName && (
                         <span className={styles.name}>{profile.name}</span>
