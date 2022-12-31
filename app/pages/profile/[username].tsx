@@ -7,15 +7,19 @@ import Profile from '../../components/Profile/ProfilePreview';
 export default function ProfileTemplate() {
     const router = useRouter();
     const { profile, loading } = useKardsProfile(
-        typeof router.query.user == 'object'
-            ? router.query.user[0]
-            : router.query.user || ''
+        typeof router.query.username == 'object'
+            ? router.query.username[0]
+            : router.query.username || ''
     );
 
     return (
         <Layout
             title={profile?.name ?? 'Profile not found'}
-            description="Check out {{user.name}}'s profile and posts on Kards!"
+            description={
+                profile
+                    ? `Check out ${profile.name}'s profile and posts on Kards!`
+                    : 'Profile not found'
+            }
         >
             {loading && <p>Loading profile</p>}
             {!loading && profile && <Profile profile={profile} />}
