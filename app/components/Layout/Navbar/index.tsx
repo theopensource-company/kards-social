@@ -5,9 +5,10 @@ import { useIsAuthenticated } from '../../../hooks/KardsUser';
 import Link from 'next/link';
 import { SurrealSignout } from '../../../lib/Surreal';
 import { ButtonSmall } from '../../Button';
-import NavbarIconDropdown from './IconDropdown';
 import { useTranslation } from 'react-i18next';
 import SigninModal from '../../Modal/Variants/SigninModal';
+import ProfilePicture from '../../Common/ProfilePicture';
+import NavbarImageDropdown from './ImageDropdown';
 
 export default function AppLayoutNavbar() {
     const authenticated = useIsAuthenticated();
@@ -39,14 +40,16 @@ export default function AppLayoutNavbar() {
             </Link>
             <div>
                 {authenticated ? (
-                    <NavbarIconDropdown icon="User">
+                    <NavbarImageDropdown
+                        image={ProfilePicture({ rounded: false })}
+                    >
                         <Link href="/account">
                             {t('layout.app.navbar.account')}
                         </Link>
                         <a href="#" onClick={Signout}>
                             {t('layout.app.navbar.signout')}
                         </a>
-                    </NavbarIconDropdown>
+                    </NavbarImageDropdown>
                 ) : (
                     <>
                         <ButtonSmall

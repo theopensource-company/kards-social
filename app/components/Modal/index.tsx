@@ -10,9 +10,16 @@ type Props = {
     title: string | undefined;
     children: React.ReactNode;
     onClose: () => void;
+    className?: string;
 };
 
-export default function Modal({ show, title, children, onClose }: Props) {
+export default function Modal({
+    show,
+    title,
+    children,
+    onClose,
+    className,
+}: Props) {
     const modalContainerRef = createRef<HTMLDivElement>();
 
     //props: https://stackoverflow.com/a/42234988
@@ -50,6 +57,7 @@ export default function Modal({ show, title, children, onClose }: Props) {
     const containerClasses = [
         styles.container,
         show ? styles.showContainer : null,
+        className,
     ]
         .filter((a) => !!a)
         .join(' ');
