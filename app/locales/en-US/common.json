@@ -3,5 +3,8 @@
   "and": "and",
   "close": "Close",
   "save": "Save",
-  "change": "Change"
+  "change": "Change",
+  "errors": {
+    "generic": "Something went wrong, please try again later or contact hi@kards.social (Code: {{code, string}})"
+  }
 }

@@ -39,6 +39,36 @@
         "faulty-password": "Vul je wachtwoord in",
         "invalid-credentials": "Je gebruikersnaam/e-mailadres of wachtwoord in incorrect."
       }
+    },
+    "reset-password": {
+      "pre-verified": {
+        "fields": {
+          "email": {
+            "placeholder": "Voer je E-mailadres in",
+            "faulty": "Voer een E-mailadres in."
+          }
+        },
+        "submitted": {
+          "success": "Als een account met dit E-mailadres bestaat ontvang je daarop een E-mail. Check ook je spambox!",
+          "button": "Verstuur email"
+        }
+      },
+      "post-verified": {
+        "fields": {
+          "newpassword": {
+            "faulty": "Voer een nieuw wachtwoord in.",
+            "placeholder": "Voer een nieuw wachtwoord in"
+          },
+          "verifypassword": {
+            "placeholder": "Voer je nieuwe wachtwoord nogmaals in"
+          }
+        },
+        "submitted": {
+          "error-criteria-not-met": "Je nieuwe wachtwoord voldoet niet aan de gestelde criteria.",
+          "success": "Je wachtwoord is bijgewerkt!",
+          "button": "Wachtwoord bijwerken"
+        }
+      }
     }
   },
   "account": {
@@ -85,15 +115,6 @@
           "label": "Herhaal wachtwoord",
           "placeholder": "Voer je nieuwe wachtwoord nogmaals in"
         }
-      },
-      "password-validation": {
-        "invalid": "Je wachtwoord moet tenminste {{criteria}} bevatten.",
-        "no-match": "De wachtwoorden komen niet overeen.",
-        "test-length": "acht karakters",
-        "test-lowercase": "één kleine letter",
-        "test-number": "één nummer",
-        "test-special": "één speciaal karakter",
-        "test-uppercase": "één grote letter"
       },
       "submitted": {
         "button": "Wachtwoord bijwerken",

@@ -1,0 +1,13 @@
+{
+  "field-validation": {
+    "password": {
+      "invalid": "Your password must contain at least {{criteria}}.",
+      "test-lowercase": "one lowercase letter",
+      "test-uppercase": "one uppercase letter",
+      "test-special": "one special character",
+      "test-number": "one number",
+      "test-length": "eight characters",
+      "no-match": "The password don't match."
+    }
+  }
+}

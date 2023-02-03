@@ -1,13 +1,21 @@
 DEFINE TABLE user SCHEMAFULL 
   PERMISSIONS 
-    FOR select, update, delete WHERE ($scope = 'user' && id = $auth.id) OR $scope = 'admin' 
+    FOR select, update WHERE ($scope = 'user' && id = $auth.id) 
+      OR $scope = 'admin' 
+      OR ($scope = 'verify_reset_password' && id = $auth.id)
+    FOR delete WHERE ($scope = 'user' && id = $auth.id) OR $scope = 'admin' 
     FOR create WHERE $scope = 'admin';
 
 DEFINE FIELD name ON TABLE user TYPE string ASSERT $value != NONE AND array::len(string::words($value)) > 1;
 DEFINE FIELD email ON TABLE user TYPE string ASSERT is::email($value);
 DEFINE FIELD username ON TABLE user TYPE string ASSERT $value != NONE AND $value = /^[a-z0-9](?:[a-z0-9._-]{1,18}[a-z0-9.])$/;
 DEFINE FIELD password ON TABLE user TYPE string ASSERT $value != NONE
-  PERMISSIONS FOR select NONE FOR update WHERE $scope = 'admin' OR string::length(<string> (select * from user where id = $auth.id and crypto::argon2::compare(password, $oldpassword))) > 2;
+  PERMISSIONS 
+    FOR select NONE 
+    FOR update WHERE $scope = 'admin' 
+      OR ($scope = 'verify_reset_password' && id = $auth.id)
+      OR string::length(<string> (select * from user where id = $auth.id and crypto::argon2::compare(password, $oldpassword))) > 2
+;
 
 DEFINE FIELD picture ON TABLE user TYPE string ASSERT $value = NONE OR $value = /^image:.*/;
 DEFINE FIELD picture_base_url ON TABLE user VALUE string::replace(

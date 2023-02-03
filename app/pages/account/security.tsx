@@ -8,6 +8,7 @@ import { FormInputField } from '../../components/Form/InputField';
 import AccountLayout from '../../components/Layout/Account';
 import { TFormItemTheming } from '../../constants/Types';
 import { UpdateAuthenticatedUserPassword } from '../../lib/KardsUser';
+import usePasswordValidator from '../../hooks/FieldValidation/password';
 
 type TSecurityFields = {
     oldpassword: string;
@@ -18,7 +19,8 @@ type TSecurityFields = {
 export default function Account() {
     const { t } = useTranslation('pages');
     const [ActiveIcon, setIcon] = useState<Icon | false>(Save);
-    const { register, handleSubmit } = useForm<TSecurityFields>();
+    const { register, handleSubmit, reset } = useForm<TSecurityFields>();
+    const { isValidPassword } = usePasswordValidator();
 
     const InputTheme: TFormItemTheming = {
         tint: 'Light',
@@ -30,47 +32,7 @@ export default function Account() {
         (async () => {
             setIcon(false);
 
-            let err;
-            const tests = {
-                length: values.newpassword.length > 7,
-                lowercase: !!/[a-z]/.test(values.newpassword),
-                uppercase: !!/[A-Z]/.test(values.newpassword),
-                number: !!/[0-9]/.test(values.newpassword),
-                special: !!/[^a-zA-Z0-9]/.test(values.newpassword),
-            };
-
-            if (Object.values(tests).includes(false)) {
-                const missing = Object.keys(tests).filter(
-                    (t) => !tests[t as keyof typeof tests]
-                );
-
-                err = toast.error(
-                    t('account.security.password-validation.invalid', {
-                        criteria:
-                            missing
-                                .slice(0, -1)
-                                .map((a) =>
-                                    t(
-                                        `account.security.password-validation.test-${a}`
-                                    )
-                                )
-                                .join(', ') +
-                            (missing.length > 0
-                                ? ` ${t('common:and')} ${t(
-                                      `account.security.password-validation.test-${
-                                          missing.slice(-1)[0]
-                                      }`
-                                  )}`
-                                : ''),
-                    }) as string
-                );
-            }
-            if (values.newpassword !== values.verifypassword)
-                err = toast.error(
-                    t('account.security.password-validation.no-match')
-                );
-            if (err) return;
-
+            if (!isValidPassword(values)) return;
             const result = await UpdateAuthenticatedUserPassword({
                 oldpassword: values.oldpassword,
                 newpassword: values.newpassword,
@@ -91,6 +53,7 @@ export default function Account() {
                     )
                 );
 
+            reset();
             toast.success(t('account.security.submitted.success'));
             return true;
         })().then((success) => {

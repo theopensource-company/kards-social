@@ -39,6 +39,36 @@
         "faulty-password": "Please enter your password",
         "invalid-credentials": "Your username/email or password is incorrect."
       }
+    },
+    "reset-password": {
+      "pre-verified": {
+        "fields": {
+          "email": {
+            "placeholder": "Enter your email",
+            "faulty": "Please enter a valid email."
+          }
+        },
+        "submitted": {
+          "success": "If an account with this E-mail address exists, you should receive an email. Make sure to also check your spambox.",
+          "button": "Send email"
+        }
+      },
+      "post-verified": {
+        "fields": {
+          "newpassword": {
+            "placeholder": "Enter a new password",
+            "faulty": "Please enter a new password."
+          },
+          "verifypassword": {
+            "placeholder": "Enter new password again"
+          }
+        },
+        "submitted": {
+          "error-criteria-not-met": "Your new password does not meet the set criteria.",
+          "success": "Your password has been updated!",
+          "button": "Update password"
+        }
+      }
     }
   },
   "account": {
@@ -86,15 +116,6 @@
           "label": "Verify password",
           "placeholder": "Enter new password again"
         }
-      },
-      "password-validation": {
-        "invalid": "Your password must contain at least {{criteria}}.",
-        "test-lowercase": "one lowercase letter",
-        "test-uppercase": "one uppercase letter",
-        "test-special": "one special character",
-        "test-number": "one number",
-        "test-length": "eight characters",
-        "no-match": "The password don't match."
       },
       "submitted": {
         "error-invalid-password": "Your old password is incorrect.",
