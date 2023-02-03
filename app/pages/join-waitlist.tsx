@@ -212,3 +212,5 @@ export default function JoinWaitlist() {
         );
     }
 }
+
+JoinWaitlist.hideNavbar = true;

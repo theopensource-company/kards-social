@@ -1,6 +1,9 @@
 {
   "back": "Terug",
   "and": "en",
+  "change": "Aanpassen",
+  "close": "Sluiten",
+  "save": "Opslaan",
   "errors": {
     "generic": "Er is iets mis gegaan. Probeer het later opnieuw of neem contact op met hi@kards.social (Code: {{code, string}})"
   }

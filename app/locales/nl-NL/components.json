@@ -3,9 +3,7 @@
     "footer": {
       "all-rights-reserved": "Alle rechten voorbehouden"
     },
-    "modals": {
-      "close": "Sluiten"
-    },
+    "modals": {},
     "account": {
       "sidebar": {
         "privacy": {
@@ -29,6 +27,22 @@
         "signin": "Inloggen",
         "signout": "Uitloggen"
       }
+    }
+  },
+  "modal": {
+    "change-profile-picture": {
+      "drag-zone": "Sleep een bestand in je browser of klik hier om een te selecteren.",
+      "image-upload-failed": "Uploaden van bestand is niet gelukt",
+      "make-selection": "Selecteer eerst een afbeelding!",
+      "picture-removed": "Je profielfoto is verwijderd.",
+      "picture-updated": "Je profielfoto is bijgewerkt!",
+      "remove-picture": "Verwijder mijn profielfoto",
+      "requesting-url": "Upload URL aan het aanvragen",
+      "save-picture": "Bewaar foto",
+      "title": "Verander foto",
+      "updating-profile": "Profiel aan het bijwerken",
+      "uploading-image": "Foto aan het uploaden",
+      "url-request-failed": "Aanvraag voor upload URL is mislukt"
     }
   }
 }

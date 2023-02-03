@@ -12,10 +12,14 @@ import { FormInputField } from '../../components/Form/InputField';
 import { TFormItemTheming } from '../../constants/Types';
 import { ButtonLarge } from '../../components/Button';
 import { useTranslation } from 'react-i18next';
-import { Check, Icon, Save } from 'react-feather';
+import { Check, Icon, Save, Camera } from 'react-feather';
 import { FieldErrors, useForm } from 'react-hook-form';
 import { keypressValidation } from '../../lib/KeypressValidation';
 import { usernameValidationSections } from '../../constants/KeypressValidators/username';
+import ChangeProfilePictureModal from '../../components/Modal/Variants/ChangeProfilePictureModal';
+import ProfilePicture from '../../components/Common/ProfilePicture';
+
+import styles from '../../styles/pages/Account/Profile.module.scss';
 
 type TProfileFields = {
     name: `${string} ${string}`;
@@ -30,6 +34,7 @@ export default function Account() {
     const { register, handleSubmit, getValues, setValue } =
         useForm<TProfileFields>();
     const { t } = useTranslation('pages');
+    const [showUploadModal, setShowUploadModal] = useState<boolean>(false);
 
     const InputTheme: TFormItemTheming = {
         tint: 'Light',
@@ -79,16 +84,41 @@ export default function Account() {
         <AccountLayout activeKey="profile">
             {auth.details && (
                 <div>
-                    <h1>{auth.details.name}</h1>
-                    <p>
-                        {t('account.profile.member-since-days', {
-                            days:
-                                moment(new Date()).diff(
-                                    moment(auth.details?.created),
-                                    'days'
-                                ) + 1,
-                        })}
-                    </p>
+                    <div className={styles.intro}>
+                        <div
+                            className={styles.picture}
+                            onClick={() => {
+                                setShowUploadModal(true);
+                            }}
+                        >
+                            <ProfilePicture variant="Small" />
+                            <div className={styles.pictureHover}>
+                                <Camera
+                                    size={40}
+                                    className={styles.pictureHoverIcon}
+                                />
+                                <p>{t('common:change')}</p>
+                            </div>
+                        </div>
+
+                        <div className={styles.introInfo}>
+                            <h1>{auth.details.name}</h1>
+                            <p>
+                                {t('account.profile.member-since-days', {
+                                    days:
+                                        moment(new Date()).diff(
+                                            moment(auth.details?.created),
+                                            'days'
+                                        ) + 1,
+                                })}
+                            </p>
+                        </div>
+                    </div>
+
+                    <ChangeProfilePictureModal
+                        show={showUploadModal}
+                        onClose={() => setShowUploadModal(false)}
+                    />
 
                     <form onSubmit={handleSubmit(onSuccess, onFailure)}>
                         <FormInputField
