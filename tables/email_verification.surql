@@ -60,7 +60,11 @@ DEFINE EVENT waitlist ON TABLE send_email_verification WHEN $after.template = 'w
             {
                 type: "text/html",
                 value: string::replace(
-                    string::slice((select content from email_templates:waitlist), 2, (string::length((select content from email_templates:waitlist)) - 4)),
+                    string::replace(
+                        string::slice((select content from email_templates:waitlist), 2, -5),
+                        '\\"',
+                        '"'
+                    ),
                     "{{verificationlink}}",
                     string::replace(
                         string::replace(
@@ -99,7 +103,11 @@ DEFINE EVENT reset_password ON TABLE send_email_verification WHEN $after.templat
                 type: "text/html",
                 value: string::replace(
                     string::replace(
-                        string::slice((select content from email_templates:reset_password), 2, (string::length((select content from email_templates:reset_password)) - 4)),
+                        string::replace(
+                            string::slice((select content from email_templates:reset_password), 2, -5),
+                            '\\"',
+                            '"'
+                        ),
                         "{{verificationlink}}",
                         string::replace(
                             string::replace(
