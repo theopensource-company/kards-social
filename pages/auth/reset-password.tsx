@@ -10,7 +10,7 @@ import { FormInputField } from '../../components/Form/InputField';
 import Logo from '../../components/Logo';
 import usePasswordValidator from '../../hooks/FieldValidation/password';
 import { UpdateUnauthenticatedUserPassword } from '../../lib/KardsUser';
-import { SurrealQuery } from '../../lib/Surreal';
+import { SurrealInstance } from '../../lib/Surreal';
 import styles from '../../styles/pages/Auth/ResetPassword.module.scss';
 
 type TPreVerifiedForm = {
@@ -35,7 +35,7 @@ export default function JoinWaitlist() {
         (async () => {
             setIcon(false);
             try {
-                const result = await SurrealQuery<{
+                const result = await SurrealInstance.opiniatedQuery<{
                     id: `email_verification:${string}`;
                     email: `${string}@${string}.${string}`;
                     recipient: string;

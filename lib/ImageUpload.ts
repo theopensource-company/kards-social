@@ -1,10 +1,10 @@
-import { SurrealQuery } from './Surreal';
+import { SurrealInstance } from './Surreal';
 
 export const CREATE_IMAGE_REFETCH_INTERVAL = 200;
 export const CREATE_IMAGE_REFETCH_LIMIT = 5;
 
 export async function requestImageUploadURL() {
-    const request = await SurrealQuery<{
+    const request = await SurrealInstance.opiniatedQuery<{
         id: `create_image:${string}`;
         owner: `user:${string}`;
     }>(`CREATE create_image`);
@@ -59,7 +59,7 @@ export async function requestImageUploadURL() {
 export async function fetchImageRecordByCreateRecordID(
     id: `create_image:${string}`
 ) {
-    const result = await SurrealQuery<{
+    const result = await SurrealInstance.opiniatedQuery<{
         id: `image:${string}`;
         owner: `user:${string}`;
         from_create_record: `create_image:${string}`;

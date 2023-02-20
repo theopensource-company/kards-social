@@ -1,5 +1,5 @@
 import React, { createRef, useCallback, useState } from 'react';
-import { SurrealQuery } from '../../lib/Surreal';
+import { SurrealInstance } from '../../lib/Surreal';
 import DevLayout from './_layout';
 
 export function getStaticProps() {
@@ -16,9 +16,11 @@ export default function Page() {
 
     const run = useCallback(() => {
         if (inputRef.current && inputRef.current.value.length > 0) {
-            SurrealQuery(inputRef.current.value).then((res) => {
-                setResult(res);
-            });
+            SurrealInstance.opiniatedQuery(inputRef.current.value).then(
+                (res) => {
+                    setResult(res);
+                }
+            );
         } else {
             alert('No query');
         }

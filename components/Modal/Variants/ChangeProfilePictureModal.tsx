@@ -19,7 +19,7 @@ import {
     CREATE_IMAGE_REFETCH_LIMIT,
     requestImageUploadURL,
 } from '../../../lib/ImageUpload';
-import { SurrealQuery } from '../../../lib/Surreal';
+import { SurrealInstance } from '../../../lib/Surreal';
 import styles from '../../../styles/components/modal/ChangeProfilePicture.module.scss';
 import { ButtonLarge } from '../../Button';
 import Spinner from '../../Icon/Spinner';
@@ -144,7 +144,7 @@ export default function ChangeProfilePictureModal({
                         }
                     }, 10);
 
-                    await SurrealQuery<TKardsUser>(
+                    await SurrealInstance.opiniatedQuery<TKardsUser>(
                         `UPDATE user SET picture = ${imageRecordID}`
                     );
 
@@ -201,7 +201,7 @@ export default function ChangeProfilePictureModal({
     const removePicture = async (e: MouseEvent) => {
         e.preventDefault();
 
-        await SurrealQuery(`UPDATE user SET picture = NONE`);
+        await SurrealInstance.opiniatedQuery(`UPDATE user SET picture = NONE`);
         setTimeout(() => {
             setBlob(null);
             setUploaded(null);

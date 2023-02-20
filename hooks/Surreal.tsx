@@ -1,18 +1,6 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Result } from 'surrealdb.js';
-import { SurrealInit, SurrealQuery } from '../lib/Surreal';
-
-export function InitializeSurreal({ children }: { children: ReactNode }) {
-    const [ready, setReady] = useState<boolean>(false);
-    useEffect(() => {
-        (async () => {
-            await SurrealInit();
-            setReady(true);
-        })();
-    }, []);
-
-    return <>{ready && children}</>;
-}
+import { SurrealInstance } from '../lib/Surreal';
 
 export function useSurrealQuery<T = unknown>(
     query: string,
@@ -25,7 +13,7 @@ export function useSurrealQuery<T = unknown>(
     const [result, setResult] = useState<Result<T[]>[] | null>(null);
 
     useEffect(() => {
-        SurrealQuery<T>(query, vars)
+        SurrealInstance.opiniatedQuery<T>(query, vars)
             .then(setResult)
             .catch(console.error)
             .finally(() => {

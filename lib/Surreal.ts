@@ -1,4 +1,4 @@
-import Surreal, { Result } from 'surrealdb.js';
+import AwaitedSurreal from '@theopensource-company/awaited-surrealdb';
 
 export const SurrealEndpoint = `${
     process.env.NEXT_PUBLIC_SURREAL_ENDPOINT ?? 'http://localhost:12001'
@@ -7,28 +7,12 @@ export const SurrealNamespace =
     process.env.NEXT_PUBLIC_SURREAL_NAMESPACE ?? 'kards-deployment_local';
 export const SurrealDatabase =
     process.env.NEXT_PUBLIC_SURREAL_DATABASE ?? 'kards-social';
-export const SurrealInstance = new Surreal(SurrealEndpoint);
 
-export const SurrealInit = async () => {
-    await SurrealInstance.use(SurrealNamespace, SurrealDatabase);
-    const token = localStorage.getItem('kusrsess');
-    if (token) {
-        console.log('Authenticating user with existing token');
-        try {
-            await SurrealInstance.authenticate(token);
-        } catch (e) {
-            console.error(
-                'Failed to authenticate user with existing token, clearing it.'
-            );
-            localStorage.removeItem('kusrsess');
-        }
-    }
-};
-
-export const SurrealQuery = async <T = unknown>(
-    query: string,
-    vars?: Record<string, unknown>
-): Promise<Result<T[]>[]> => SurrealInstance.query<Result<T[]>[]>(query, vars);
+export const SurrealInstance = new AwaitedSurreal({
+    endpoint: SurrealEndpoint,
+    namespace: SurrealNamespace,
+    database: SurrealDatabase,
+});
 
 export const SurrealSignin = async (auth: {
     identifier: string;

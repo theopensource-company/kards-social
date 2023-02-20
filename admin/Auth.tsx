@@ -2,10 +2,10 @@ import { UserIdentity } from 'ra-core';
 
 import { TAdminUserDetails } from '../constants/Types/Admin.types';
 import { SurrealDatabase, SurrealNamespace } from '../lib/Surreal';
-import { SurrealInstanceAdmin, SurrealQueryAdmin } from './Surreal';
+import { SurrealInstanceAdmin, SurrealQuery } from './Surreal';
 
 export const AdminUserDetails = async (): Promise<TAdminUserDetails | null> => {
-    const result = await SurrealQueryAdmin<TAdminUserDetails>(
+    const result = await SurrealQuery<TAdminUserDetails>(
         'SELECT * FROM admin WHERE id = $auth.id'
     );
     const preParse =

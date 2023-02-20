@@ -7,7 +7,7 @@ import {
     UpdateManyResult,
     UpdateResult,
 } from 'ra-core';
-import { SurrealQueryAdmin } from './Surreal';
+import { SurrealQuery } from './Surreal';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function SelectFilterBuilder(filters: any) {
@@ -54,7 +54,7 @@ export const Fetcher = (): DataProvider => ({
             LIMIT BY ${limit} 
             ${start > 0 ? `START AT ${start}` : ''}`;
 
-        return SurrealQueryAdmin(query).then((result) => {
+        return SurrealQuery(query).then((result) => {
             if (result[0]?.result) {
                 let total = 0;
                 const data =
@@ -79,7 +79,7 @@ export const Fetcher = (): DataProvider => ({
 
     getOne: (resource, params) => {
         const query = `SELECT * FROM ${resource} WHERE id="${params.id}"`;
-        return SurrealQueryAdmin(query).then((result) => {
+        return SurrealQuery(query).then((result) => {
             if (result[0]?.result) {
                 return {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -95,7 +95,7 @@ export const Fetcher = (): DataProvider => ({
         const query = `SELECT * FROM ${resource} WHERE ${JSON.stringify(
             params.ids
         )} CONTAINS id`;
-        return SurrealQueryAdmin(query).then((result) => {
+        return SurrealQuery(query).then((result) => {
             if (result[0]?.result) {
                 return {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -122,7 +122,7 @@ export const Fetcher = (): DataProvider => ({
             start > 0 ? `START AT ${start}` : ''
         }`;
 
-        return SurrealQueryAdmin(query).then((result) => {
+        return SurrealQuery(query).then((result) => {
             if (result[0]?.result) {
                 let total = 0;
                 const data =
@@ -150,7 +150,7 @@ export const Fetcher = (): DataProvider => ({
             params.data as RaRecord
         ).join(', ')}`;
 
-        return SurrealQueryAdmin(query).then((result) => {
+        return SurrealQuery(query).then((result) => {
             if (result[0]?.result) {
                 return Promise.resolve({
                     data: result[0]?.result[0],
@@ -167,7 +167,7 @@ export const Fetcher = (): DataProvider => ({
             params.data as RaRecord
         ).join(', ')} WHERE ${JSON.stringify(params.ids)} CONTAINS id`;
 
-        return SurrealQueryAdmin<{
+        return SurrealQuery<{
             id?: string;
         }>(query).then((result) => {
             if (result[0]?.result) {
@@ -188,7 +188,7 @@ export const Fetcher = (): DataProvider => ({
             params.data as RaRecord
         ).join(', ')}`;
 
-        return SurrealQueryAdmin(query).then((result) => {
+        return SurrealQuery(query).then((result) => {
             if (result[0]?.result) {
                 return Promise.resolve({
                     data: result[0]?.result[0],
@@ -203,7 +203,7 @@ export const Fetcher = (): DataProvider => ({
     delete: (_resource, params) => {
         const query = `DELETE ${params.id}`;
 
-        return SurrealQueryAdmin(query).then((result) => {
+        return SurrealQuery(query).then((result) => {
             if (result[0]?.result) {
                 return Promise.resolve({
                     data: result[0]?.result[0],
@@ -220,7 +220,7 @@ export const Fetcher = (): DataProvider => ({
             params.ids
         )} CONTAINS id`;
 
-        return SurrealQueryAdmin<{
+        return SurrealQuery<{
             id?: string;
         }>(query).then((result) => {
             if (result[0]?.result) {

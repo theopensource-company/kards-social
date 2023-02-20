@@ -14,8 +14,8 @@ import Logo from '../components/Logo';
 import {
     SurrealDatabase,
     SurrealEndpoint,
+    SurrealInstance,
     SurrealNamespace,
-    SurrealQuery,
 } from '../lib/Surreal';
 import styles from '../styles/pages/JoinWaitlist.module.scss';
 
@@ -37,7 +37,7 @@ export default function JoinWaitlist() {
         (async () => {
             setIcon(false);
             try {
-                const result = await SurrealQuery<{
+                const result = await SurrealInstance.opiniatedQuery<{
                     id: `email_verification:${string}`;
                     email: `${string}@${string}.${string}`;
                     recipient: string;

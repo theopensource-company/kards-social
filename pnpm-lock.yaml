@@ -13,6 +13,8 @@ specifiers:
   '@storybook/preset-scss': ^1.0.3
   '@storybook/react': ^6.5.13
   '@storybook/testing-library': ^0.0.13
+  '@tanstack/react-query': ^4.24.9
+  '@theopensource-company/awaited-surrealdb': ^0.5.1
   '@theopensource-company/surrealdb-cloudflare': ^1.0.4
   '@types/node': 18.7.13
   '@types/react': 18.0.17
@@ -76,6 +78,8 @@ dependencies:
   '@babel/core': 7.21.0
   '@mui/material': 5.11.10_zxljzmqdrxwnuenbkrz77w74uy
   '@next/env': 12.3.4
+  '@tanstack/react-query': 4.24.9_biqbaboplfbrettd7655fr4n2y
+  '@theopensource-company/awaited-surrealdb': 0.5.1
   axios: 0.27.2
   history: 5.3.0
   i18next: 22.4.10
@@ -3916,6 +3920,28 @@ packages:
       tslib: 2.5.0
     dev: false
 
+  /@tanstack/query-core/4.24.9:
+    resolution: {integrity: sha512-pZQ2NpdaHzx8gPPkAPh06d6zRkjfonUzILSYBXrdHDapP2eaBbGsx5L4/dMF+fyAglFzQZdDDzZgAykbM20QVw==}
+    dev: false
+
+  /@tanstack/react-query/4.24.9_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-6WLwUT9mrngIinRtcZjrWOUENOuLbWvQpKmU6DZCo2iPQVA+qvv3Ji90Amme4AkUyWQ8ZSSRTnAFq8V2tj2ACg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      '@tanstack/query-core': 4.24.9
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      use-sync-external-store: 1.2.0_react@18.2.0
+    dev: false
+
   /@testing-library/dom/8.20.0:
     resolution: {integrity: sha512-d9ULIT+a4EXLX3UU8FBjauG9NnsZHkHztXoIcTsOKoOw030fyjheN9svkTULjJxtYag9DZz5Jz5qkWZDPxTFwA==}
     engines: {node: '>=12'}
@@ -3939,6 +3965,15 @@ packages:
       '@babel/runtime': 7.21.0
       '@testing-library/dom': 8.20.0
     dev: true
+
+  /@theopensource-company/awaited-surrealdb/0.5.1:
+    resolution: {integrity: sha512-zpO9DI2vc3PbKTZH9kRDYimehB1anMBWhwY85C1UBH5HnH+RYhph75a6xGuCdIgJS3yyMopJ86MS6Bukt5Q1PQ==}
+    dependencies:
+      surrealdb.js: 0.5.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+    dev: false
 
   /@theopensource-company/surrealdb-cloudflare/1.0.4:
     resolution: {integrity: sha512-iHIurXlugjVn/LGrvaXJfvJheJPlUsIE4m/DNlzw133eXInzgL7QrbUdGjFWhdPW7g1SA4GUT71mTawp8Cc1xw==}

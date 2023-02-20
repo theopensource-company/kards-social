@@ -7,12 +7,14 @@ import {
 import {
     SurrealDatabase,
     SurrealEndpoint,
+    SurrealInstance,
     SurrealNamespace,
-    SurrealQuery,
 } from './Surreal';
 
 export const UserDetails = async (): Promise<TKardsUser | null> => {
-    const result = await SurrealQuery<TKardsUser>('SELECT * FROM user');
+    const result = await SurrealInstance.opiniatedQuery<TKardsUser>(
+        'SELECT * FROM user'
+    );
     const preParse =
         result && result[0].result ? result[0].result[0] : null ?? null;
     if (preParse) {
@@ -31,7 +33,8 @@ export const UpdateAuthenticatedUser = async (
         return false;
     }
 
-    const result = await SurrealQuery<TKardsUser>(`UPDATE user SET 
+    const result =
+        await SurrealInstance.opiniatedQuery<TKardsUser>(`UPDATE user SET 
         ${Object.keys(user).map((prop) => {
             const val = JSON.stringify({ ...user }[prop]);
             switch (prop) {
@@ -58,7 +61,7 @@ export const UpdateAuthenticatedUserPassword = async (arg: {
     password_correct: boolean;
     replacement_valid: boolean;
 }> => {
-    const result = await SurrealQuery(
+    const result = await SurrealInstance.opiniatedQuery(
         `
         SELECT * FROM user WHERE id = $auth.id AND crypto::argon2::compare(password, $oldpassword);
         UPDATE user SET password = crypto::argon2::generate($newpassword) WHERE id = $auth.id;

@@ -24,7 +24,7 @@ export const SurrealInitAdmin = async () => {
     }
 };
 
-export const SurrealQueryAdmin = async <T = unknown,>(
+export const SurrealQuery = async <T = unknown,>(
     query: string,
     vars?: Record<string, unknown>
 ): Promise<Result<T[]>[]> =>
