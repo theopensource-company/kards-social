@@ -14,10 +14,12 @@ export const migrateDatabase = async (
     log?.('NS: ' + env.SURREAL_NAMESPACE);
     log?.('DB: ' + env.SURREAL_DATABASE);
 
-    if (__root == '')
-        __root = path
-            .dirname(path.dirname(import.meta.url))
-            .catch(() => console.log('Failed to update __root path variable'));
+    try {
+        if (__root == '') __root = path.dirname(path.dirname(import.meta.url));
+    } catch (_e) {
+        console.log('Failed to update __root path variable');
+    }
+
     if (__root.startsWith('file://')) __root = __root.slice('file://'.length);
 
     const dbfiles = fs.readdirSync(__root + '/tables');
