@@ -18,4 +18,4 @@ export const AccountSidebarItems = [
     },
 ] as const;
 
-export type AccountSidebarItem = typeof AccountSidebarItems[number]['key'];
+export type AccountSidebarItem = (typeof AccountSidebarItems)[number]['key'];
