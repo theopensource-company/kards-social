@@ -1,5 +1,5 @@
 import React from 'react';
-import { migrateDatabase } from '../../cli/_migratetool';
+import { migrateDatabase } from '../../cli/_migratetool.mjs';
 import DevLayout from './_layout';
 
 export async function getStaticProps() {
