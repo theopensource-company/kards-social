@@ -3,7 +3,8 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { AccountSidebarItems } from '../../../constants/AccountSidebar';
-import { TPageLayoutAccount } from '../../../constants/Types';
+
+import { TPageLayoutAccount } from '../../../constants/Types/Page.types';
 import { useAuthState } from '../../../hooks/KardsUser';
 import styles from '../../../styles/components/layout/Account.module.scss';
 import SidebarItem from './SidebarItem';

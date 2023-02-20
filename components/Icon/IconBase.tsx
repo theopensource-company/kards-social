@@ -1,6 +1,6 @@
 import React from 'react';
 import { Color } from '../../constants/Colors';
-import { ColoredSvgProps } from '../../constants/Types';
+import { ColoredSvgProps } from '../../constants/Types/Svg.types';
 
 export default function IconBase({
     children,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Color } from '../constants/Colors';
-import { SvgBaseProps } from '../constants/Types';
+import { SvgBaseProps } from '../constants/Types/Svg.types';
 
 const LogoStyle = `.svg-Logo-styles .fillLight { fill: ${Color.Light} !important} .svg-Logo-styles .fillDark { fill: ${Color.Dark} !important}`;
 export function Logo({ size = 200, className }: SvgBaseProps) {

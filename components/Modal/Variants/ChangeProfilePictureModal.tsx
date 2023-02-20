@@ -11,7 +11,8 @@ import ReactCrop, {
 } from 'react-image-crop';
 import { Id, toast } from 'react-toastify';
 import Modal from '../';
-import { TKardsUserDetails } from '../../../constants/Types';
+
+import { TKardsUser } from '../../../constants/Types/KardsUser.types';
 import { useDelayedRefreshAuthenticatedUser } from '../../../hooks/KardsUser';
 import {
     CREATE_IMAGE_REFETCH_INTERVAL,
@@ -143,7 +144,7 @@ export default function ChangeProfilePictureModal({
                         }
                     }, 10);
 
-                    await SurrealQuery<TKardsUserDetails>(
+                    await SurrealQuery<TKardsUser>(
                         `UPDATE user SET picture = ${imageRecordID}`
                     );
 

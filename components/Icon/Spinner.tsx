@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { ColoredSvgProps } from '../../constants/Types';
+
+import { ColoredSvgProps } from '../../constants/Types/Svg.types';
 import IconBase from './IconBase';
 
 export default function Spinner({ color, size = 20 }: ColoredSvgProps) {

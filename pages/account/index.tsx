@@ -11,7 +11,7 @@ import { FormInputField } from '../../components/Form/InputField';
 import AccountLayout from '../../components/Layout/Account';
 import ChangeProfilePictureModal from '../../components/Modal/Variants/ChangeProfilePictureModal';
 import { usernameValidationSections } from '../../constants/KeypressValidators/username';
-import { TFormItemTheming } from '../../constants/Types';
+
 import {
     useAuthState,
     useDelayedRefreshAuthenticatedUser,
@@ -19,6 +19,7 @@ import {
 import { UpdateAuthenticatedUser } from '../../lib/KardsUser';
 import { keypressValidation } from '../../lib/KeypressValidation';
 
+import { TFormItemTheming } from '../../constants/Types/Form.types';
 import styles from '../../styles/pages/Account/Profile.module.scss';
 
 type TProfileFields = {

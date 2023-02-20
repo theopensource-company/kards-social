@@ -1,6 +1,7 @@
 import React from 'react';
 import Layout from '.';
-import { TPageLayoutContentMiddle } from '../../constants/Types';
+
+import { TPageLayoutContentMiddle } from '../../constants/Types/Page.types';
 import styles from '../../styles/components/layout/ContentMiddle.module.scss';
 
 export default function ContentMiddle({

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
-import { ImageVariant, TImage } from '../../constants/Types';
+import { ImageVariant, TImage } from '../../constants/Types/Image.types';
 
 export default function KardsImage({
     baseURL,

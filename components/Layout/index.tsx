@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Color } from '../../constants/Colors';
-import { TPageLayout } from '../../constants/Types';
+import { TPageLayout } from '../../constants/Types/Page.types';
 
 export default function Layout({
     title,

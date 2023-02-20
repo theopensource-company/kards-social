@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { Result } from 'surrealdb.js';
-import { TKardsUserDetails, TUpdateKardsUser } from '../constants/Types';
+import {
+    TKardsUser,
+    TUpdateKardsUser,
+} from '../constants/Types/KardsUser.types';
 import {
     SurrealDatabase,
     SurrealEndpoint,
@@ -8,8 +11,8 @@ import {
     SurrealQuery,
 } from './Surreal';
 
-export const UserDetails = async (): Promise<TKardsUserDetails | null> => {
-    const result = await SurrealQuery<TKardsUserDetails>('SELECT * FROM user');
+export const UserDetails = async (): Promise<TKardsUser | null> => {
+    const result = await SurrealQuery<TKardsUser>('SELECT * FROM user');
     const preParse =
         result && result[0].result ? result[0].result[0] : null ?? null;
     if (preParse) {
@@ -22,13 +25,13 @@ export const UserDetails = async (): Promise<TKardsUserDetails | null> => {
 
 export const UpdateAuthenticatedUser = async (
     user: TUpdateKardsUser
-): Promise<TKardsUserDetails | false> => {
+): Promise<TKardsUser | false> => {
     if (user.email) {
         alert('Cannot yet update email field');
         return false;
     }
 
-    const result = await SurrealQuery<TKardsUserDetails>(`UPDATE user SET 
+    const result = await SurrealQuery<TKardsUser>(`UPDATE user SET 
         ${Object.keys(user).map((prop) => {
             const val = JSON.stringify({ ...user }[prop]);
             switch (prop) {

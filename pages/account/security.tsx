@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { ButtonLarge } from '../../components/Button';
 import { FormInputField } from '../../components/Form/InputField';
 import AccountLayout from '../../components/Layout/Account';
-import { TFormItemTheming } from '../../constants/Types';
+import { TFormItemTheming } from '../../constants/Types/Form.types';
 import usePasswordValidator from '../../hooks/FieldValidation/password';
 import { UpdateAuthenticatedUserPassword } from '../../lib/KardsUser';
 

@@ -26,7 +26,7 @@ const EnvironmentTitle = () => {
     return <>{ctx ? `Key: ${`${ctx.id}`.split(':')[1]}` : 'Loading'}</>;
 };
 
-export const EditEnvironment = () => (
+export const EdiTEnv = () => (
     <Edit title={<EnvironmentTitle />}>
         <SimpleForm>
             <TextInput disabled source="id" />
@@ -39,7 +39,7 @@ export const EnvironmentResource = (
     <Resource
         name="environment"
         list={EnvironmentList}
-        edit={EditEnvironment}
+        edit={EdiTEnv}
         options={{ label: 'Environment keys' }}
     />
 );

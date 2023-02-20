@@ -10,7 +10,7 @@ import { IAmRoot } from '../components/IAmRoot';
 import Cross from '../components/Icon/Cross';
 import Info from '../components/Icon/Info';
 import AppLayoutNavbar from '../components/Layout/Navbar';
-import { TFeatureFlagOptions } from '../constants/Types';
+import { TFeatureFlagOptions } from '../constants/Types/FeatureFlags.types';
 import { FeatureFlagContext, FeatureFlagProvider } from '../hooks/Environment';
 import { AuthProvider } from '../hooks/KardsUser';
 import '../hooks/Surreal'; //Initialize surrealdb instance

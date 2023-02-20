@@ -1,6 +1,7 @@
 import React from 'react';
 import { User as UserIcon } from 'react-feather';
-import { ImageVariant, TImage } from '../../constants/Types';
+
+import { ImageVariant, TImage } from '../../constants/Types/Image.types';
 import { useAuthenticatedUser } from '../../hooks/KardsUser';
 import KardsImage from './Image';
 

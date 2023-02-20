@@ -7,7 +7,7 @@ import React, {
     useEffect,
     useState,
 } from 'react';
-import { TAuthState, TKardsUserDetails } from '../constants/Types';
+import { TAuthState, TKardsUser } from '../constants/Types/KardsUser.types';
 import { UserDetails } from '../lib/KardsUser';
 
 export const AuthContext = createContext<
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useRefreshAuthenticatedUser = (): {
     isReady: boolean;
-    result: TKardsUserDetails | null;
+    result: TKardsUser | null;
 } => {
     const state = useContext(AuthContext);
     const [isReady, setReady] = useState<boolean>(false);
@@ -79,7 +79,7 @@ export const useRefreshAuthenticatedUser = (): {
 
 export const useDelayedRefreshAuthenticatedUser = (): (() => {
     isReady: boolean;
-    result: TKardsUserDetails | null;
+    result: TKardsUser | null;
 }) => {
     const state = useContext(AuthContext);
     const [isReady, setReady] = useState<boolean>(false);
@@ -115,6 +115,6 @@ export const useIsAuthenticated = (): boolean => {
     return useContext(AuthContext)[0].authenticated;
 };
 
-export const useAuthenticatedUser = (): TKardsUserDetails | null => {
+export const useAuthenticatedUser = (): TKardsUser | null => {
     return useContext(AuthContext)[0].details;
 };

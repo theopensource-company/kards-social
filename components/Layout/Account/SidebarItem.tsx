@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import React from 'react';
 import * as Feather from 'react-feather';
-import { TAccountSidebarItem } from '../../../constants/Types';
+
+import { TAccountSidebarItem } from '../../../constants/Types/Page.types';
 import styles from '../../../styles/components/layout/Account.module.scss';
 
 export default function AccountLayoutSidebarItem({
