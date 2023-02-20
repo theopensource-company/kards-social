@@ -11,6 +11,7 @@
     "ts": "tsc --watch",
     "lint": "eslint . --ext ts --ext tsx --max-warnings 0",
     "storybook": "start-storybook -p 12002 -s ./public",
+    "deploy": "export NEXT_PUBLIC_DEPLOYMENT_STATUS=\"deployed\" SURREAL_NAMESPACE=kards-deployment_$CF_PAGES_BRANCH && export NEXT_PUBLIC_SURREAL_NAMESPACE=$SURREAL_NAMESPACE && node ./cli/predeploy.js && pnpm build",
     "build": "next build && next export && next-sitemap && pnpm build-storybook && rm -rf out/dev",
     "build-storybook": "build-storybook -s public -o out/developers/storybook --modern --docs"
   },
