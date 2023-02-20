@@ -45,6 +45,7 @@ specifiers:
   next-sitemap: ^3.1.32
   node-fetch: ^3.3.0
   prettier: ^2.8.0
+  prettier-plugin-organize-imports: ^3.2.2
   query-string: ^7.1.1
   ra-core: ^4.5.2
   ra-data-json-server: ^4.5.2
@@ -137,6 +138,7 @@ devDependencies:
   mini-css-extract-plugin: 2.7.2_webpack@5.75.0
   node-fetch: 3.3.0
   prettier: 2.8.4
+  prettier-plugin-organize-imports: 3.2.2_rtbpvpaz4vtzaod2jjlgr2djlm
   require-from-string: 2.0.2
   sass: 1.54.5
   sass-loader: 13.2.0_sass@1.54.5+webpack@5.75.0
@@ -10563,6 +10565,23 @@ packages:
     engines: {node: '>=6.0.0'}
     dependencies:
       fast-diff: 1.2.0
+    dev: true
+
+  /prettier-plugin-organize-imports/3.2.2_rtbpvpaz4vtzaod2jjlgr2djlm:
+    resolution: {integrity: sha512-e97lE6odGSiHonHJMTYC0q0iLXQyw0u5z/PJpvP/3vRy6/Zi9kLBwFAbEGjDzIowpjQv8b+J04PDamoUSQbzGA==}
+    peerDependencies:
+      '@volar/vue-language-plugin-pug': ^1.0.4
+      '@volar/vue-typescript': ^1.0.4
+      prettier: '>=2.0'
+      typescript: '>=2.9'
+    peerDependenciesMeta:
+      '@volar/vue-language-plugin-pug':
+        optional: true
+      '@volar/vue-typescript':
+        optional: true
+    dependencies:
+      prettier: 2.8.4
+      typescript: 4.8.2
     dev: true
 
   /prettier/2.3.0:

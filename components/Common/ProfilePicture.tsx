@@ -1,7 +1,7 @@
 import React from 'react';
-import { useAuthenticatedUser } from '../../hooks/KardsUser';
 import { User as UserIcon } from 'react-feather';
 import { ImageVariant, TImage } from '../../constants/Types';
+import { useAuthenticatedUser } from '../../hooks/KardsUser';
 import KardsImage from './Image';
 
 export default function ProfilePicture({

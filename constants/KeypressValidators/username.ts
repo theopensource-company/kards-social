@@ -1,6 +1,6 @@
+import { TFunction } from 'i18next';
 import { toast } from 'react-toastify';
 import { TValidationSections } from '../../lib/KeypressValidation';
-import { TFunction } from 'i18next';
 
 export const usernameValidationSections = (
     t: TFunction

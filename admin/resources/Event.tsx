@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Datagrid, TextField, Resource, DateField } from 'react-admin';
+import { Datagrid, DateField, List, Resource, TextField } from 'react-admin';
 import { JsonField } from 'react-admin-json-view';
 
 export const EventList = () => (

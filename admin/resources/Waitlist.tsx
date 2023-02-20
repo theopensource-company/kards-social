@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-    List,
     Datagrid,
-    TextField,
-    EmailField,
-    Resource,
     DateField,
+    EmailField,
+    List,
+    Resource,
+    TextField,
 } from 'react-admin';
 
 export const WaitlistList = () => (

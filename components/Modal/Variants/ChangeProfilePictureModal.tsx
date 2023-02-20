@@ -1,26 +1,26 @@
-import React, { MouseEvent, useCallback, useEffect, useState } from 'react';
-import Modal from '../';
-import { useTranslation } from 'react-i18next';
-import { ButtonLarge } from '../../Button';
-import {
-    requestImageUploadURL,
-    CREATE_IMAGE_REFETCH_INTERVAL,
-    CREATE_IMAGE_REFETCH_LIMIT,
-} from '../../../lib/ImageUpload';
-import ReactCrop, {
-    Crop,
-    PercentCrop,
-    centerCrop,
-    makeAspectCrop,
-} from 'react-image-crop';
-import styles from '../../../styles/components/modal/ChangeProfilePicture.module.scss';
-import { Id, toast } from 'react-toastify';
 import axios from 'axios';
-import { SurrealQuery } from '../../../lib/Surreal';
-import { TKardsUserDetails } from '../../../constants/Types';
-import { useDelayedRefreshAuthenticatedUser } from '../../../hooks/KardsUser';
+import React, { MouseEvent, useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { RotateCw as RotateCwIcon, Save as SaveIcon } from 'react-feather';
+import { useTranslation } from 'react-i18next';
+import ReactCrop, {
+    centerCrop,
+    Crop,
+    makeAspectCrop,
+    PercentCrop,
+} from 'react-image-crop';
+import { Id, toast } from 'react-toastify';
+import Modal from '../';
+import { TKardsUserDetails } from '../../../constants/Types';
+import { useDelayedRefreshAuthenticatedUser } from '../../../hooks/KardsUser';
+import {
+    CREATE_IMAGE_REFETCH_INTERVAL,
+    CREATE_IMAGE_REFETCH_LIMIT,
+    requestImageUploadURL,
+} from '../../../lib/ImageUpload';
+import { SurrealQuery } from '../../../lib/Surreal';
+import styles from '../../../styles/components/modal/ChangeProfilePicture.module.scss';
+import { ButtonLarge } from '../../Button';
 import Spinner from '../../Icon/Spinner';
 
 export default function ChangeProfilePictureModal({

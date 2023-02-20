@@ -1,11 +1,11 @@
 import {
+    CreateResult,
     DataProvider,
-    UpdateResult,
+    DeleteManyResult,
+    DeleteResult,
     RaRecord,
     UpdateManyResult,
-    CreateResult,
-    DeleteResult,
-    DeleteManyResult,
+    UpdateResult,
 } from 'ra-core';
 import { SurrealQueryAdmin } from './Surreal';
 

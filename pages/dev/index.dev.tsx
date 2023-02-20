@@ -1,6 +1,6 @@
+import fs from 'fs';
 import Link from 'next/link';
 import React from 'react';
-import fs from 'fs';
 import DevLayout from './_layout';
 
 export async function getStaticProps() {

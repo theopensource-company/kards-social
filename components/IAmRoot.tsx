@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-import Modal from './Modal';
 import { useFeatureFlags } from '../hooks/Environment';
 import styles from '../styles/components/IAmRoot.module.scss';
-import { Toggle } from './Toggle';
 import Button from './Button';
+import Modal from './Modal';
+import { Toggle } from './Toggle';
 
 export function IAmRoot() {
     const fflags = useFeatureFlags();

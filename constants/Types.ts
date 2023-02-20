@@ -1,8 +1,8 @@
+import { ImageProps } from 'next/image';
 import { HTMLProps, ReactNode } from 'react';
-import { BasicColorTintType, BasicColorType, ColorType } from './Colors';
 import * as Feather from 'react-feather';
 import { AccountSidebarItem } from './AccountSidebar';
-import { ImageProps } from 'next/image';
+import { BasicColorTintType, BasicColorType, ColorType } from './Colors';
 
 /* ENVIRONMENT */
 

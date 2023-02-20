@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
 import Image from 'next/image';
+import React, { useState } from 'react';
 
-import styles from '../../styles/components/Post.module.scss';
 import { StaticImageData } from 'next/image';
+import styles from '../../styles/components/Post.module.scss';
 
-import Linkify from 'react-linkify';
 import Link from 'next/link';
+import Linkify from 'react-linkify';
 
 type Props = {
     image: string | StaticImageData;

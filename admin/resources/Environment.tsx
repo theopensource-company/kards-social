@@ -1,14 +1,14 @@
 import React from 'react';
 import {
-    List,
     Datagrid,
-    TextField,
-    Resource,
     Edit,
+    EditButton,
+    List,
+    Resource,
     SimpleForm,
+    TextField,
     TextInput,
     useRecordContext,
-    EditButton,
 } from 'react-admin';
 
 export const EnvironmentList = () => (

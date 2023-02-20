@@ -1,8 +1,8 @@
+import Link from 'next/link';
 import React from 'react';
-import styles from '../../../styles/components/layout/Account.module.scss';
 import * as Feather from 'react-feather';
 import { TAccountSidebarItem } from '../../../constants/Types';
-import Link from 'next/link';
+import styles from '../../../styles/components/layout/Account.module.scss';
 
 export default function AccountLayoutSidebarItem({
     icon,

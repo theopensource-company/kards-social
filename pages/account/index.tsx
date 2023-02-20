@@ -1,23 +1,23 @@
+import moment from 'moment';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import moment from 'moment';
 
+import { Camera, Check, Icon, Save } from 'react-feather';
+import { FieldErrors, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { ButtonLarge } from '../../components/Button';
+import ProfilePicture from '../../components/Common/ProfilePicture';
+import { FormInputField } from '../../components/Form/InputField';
+import AccountLayout from '../../components/Layout/Account';
+import ChangeProfilePictureModal from '../../components/Modal/Variants/ChangeProfilePictureModal';
+import { usernameValidationSections } from '../../constants/KeypressValidators/username';
+import { TFormItemTheming } from '../../constants/Types';
 import {
     useAuthState,
     useDelayedRefreshAuthenticatedUser,
 } from '../../hooks/KardsUser';
-import AccountLayout from '../../components/Layout/Account';
 import { UpdateAuthenticatedUser } from '../../lib/KardsUser';
-import { FormInputField } from '../../components/Form/InputField';
-import { TFormItemTheming } from '../../constants/Types';
-import { ButtonLarge } from '../../components/Button';
-import { useTranslation } from 'react-i18next';
-import { Check, Icon, Save, Camera } from 'react-feather';
-import { FieldErrors, useForm } from 'react-hook-form';
 import { keypressValidation } from '../../lib/KeypressValidation';
-import { usernameValidationSections } from '../../constants/KeypressValidators/username';
-import ChangeProfilePictureModal from '../../components/Modal/Variants/ChangeProfilePictureModal';
-import ProfilePicture from '../../components/Common/ProfilePicture';
 
 import styles from '../../styles/pages/Account/Profile.module.scss';
 

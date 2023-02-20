@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { LogoSmall } from '../../Logo';
-import styles from '../../../styles/components/layout/App/Navbar.module.scss';
-import { useIsAuthenticated } from '../../../hooks/KardsUser';
 import Link from 'next/link';
-import { SurrealSignout } from '../../../lib/Surreal';
-import { ButtonSmall } from '../../Button';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import SigninModal from '../../Modal/Variants/SigninModal';
+import { useIsAuthenticated } from '../../../hooks/KardsUser';
+import { SurrealSignout } from '../../../lib/Surreal';
+import styles from '../../../styles/components/layout/App/Navbar.module.scss';
+import { ButtonSmall } from '../../Button';
 import ProfilePicture from '../../Common/ProfilePicture';
+import { LogoSmall } from '../../Logo';
+import SigninModal from '../../Modal/Variants/SigninModal';
 import NavbarImageDropdown from './ImageDropdown';
 
 export default function AppLayoutNavbar() {

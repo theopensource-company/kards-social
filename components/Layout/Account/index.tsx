@@ -1,12 +1,12 @@
+import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
-import { TPageLayoutAccount } from '../../../constants/Types';
-import styles from '../../../styles/components/layout/Account.module.scss';
-import SidebarItem from './SidebarItem';
-import { AccountSidebarItems } from '../../../constants/AccountSidebar';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/router';
+import { AccountSidebarItems } from '../../../constants/AccountSidebar';
+import { TPageLayoutAccount } from '../../../constants/Types';
 import { useAuthState } from '../../../hooks/KardsUser';
+import styles from '../../../styles/components/layout/Account.module.scss';
+import SidebarItem from './SidebarItem';
 
 export default function AccountLayout({
     children,

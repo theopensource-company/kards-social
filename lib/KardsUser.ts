@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Result } from 'surrealdb.js';
 import { TKardsUserDetails, TUpdateKardsUser } from '../constants/Types';
 import {
     SurrealDatabase,
@@ -6,7 +7,6 @@ import {
     SurrealNamespace,
     SurrealQuery,
 } from './Surreal';
-import { Result } from 'surrealdb.js';
 
 export const UserDetails = async (): Promise<TKardsUserDetails | null> => {
     const result = await SurrealQuery<TKardsUserDetails>('SELECT * FROM user');

@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import Button from '../components/Button';
 import ArrowBack from '../components/Icon/ArrowBack';
-import { toast } from 'react-toastify';
 
-import styles from '../styles/pages/JoinWaitlist.module.scss';
 import axios from 'axios';
-import Logo from '../components/Logo';
+import { Check, Icon, Send } from 'react-feather';
+import { FieldErrors, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { FormInputField } from '../components/Form/InputField';
 import LayoutContentMiddle from '../components/Layout/ContentMiddle';
+import Logo from '../components/Logo';
 import {
+    SurrealDatabase,
     SurrealEndpoint,
     SurrealNamespace,
-    SurrealDatabase,
     SurrealQuery,
 } from '../lib/Surreal';
-import { useTranslation } from 'react-i18next';
-import { FieldErrors, useForm } from 'react-hook-form';
-import { Check, Icon, Send } from 'react-feather';
+import styles from '../styles/pages/JoinWaitlist.module.scss';
 
 type TWaitlistFields = {
     name: `${string} ${string}`;

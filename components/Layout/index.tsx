@@ -1,10 +1,10 @@
-import React from 'react';
 import Head from 'next/head';
+import React from 'react';
 
-import { Color } from '../../constants/Colors';
-import { TPageLayout } from '../../constants/Types';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
+import { Color } from '../../constants/Colors';
+import { TPageLayout } from '../../constants/Types';
 
 export default function Layout({
     title,

@@ -1,6 +1,6 @@
 import React from 'react';
-import DevLayout from './_layout';
 import { migrateDatabase } from '../../cli/_migratetool';
+import DevLayout from './_layout';
 
 export async function getStaticProps() {
     if (process.env.NODE_ENV == 'production')

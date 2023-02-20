@@ -1,11 +1,11 @@
-import React from 'react';
 import Link from 'next/link';
+import React from 'react';
 
-import styles from '../styles/pages/Landing.module.scss';
-import Logo from '../components/Logo';
-import LayoutContentMiddle from '../components/Layout/ContentMiddle';
-import { useFeatureFlag } from '../hooks/Environment';
 import { useTranslation } from 'react-i18next';
+import LayoutContentMiddle from '../components/Layout/ContentMiddle';
+import Logo from '../components/Logo';
+import { useFeatureFlag } from '../hooks/Environment';
+import styles from '../styles/pages/Landing.module.scss';
 
 export default function Landing() {
     const preLaunchPage = useFeatureFlag('preLaunchPage');

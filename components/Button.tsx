@@ -1,9 +1,9 @@
-import React, { MouseEventHandler } from 'react';
 import Image from 'next/image';
+import React, { MouseEventHandler } from 'react';
 
-import styles from '../styles/components/Button.module.scss';
-import { ColorType } from '../constants/Colors';
 import { StaticImageData } from 'next/image';
+import { ColorType } from '../constants/Colors';
+import styles from '../styles/components/Button.module.scss';
 import Spinner from './Icon/Spinner';
 
 export type ButtonSize = 'Small' | 'Large';

@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import Button from '../../components/Button';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import Button from '../../components/Button';
 
-import styles from '../../styles/pages/Auth/Signin.module.scss';
-import Logo from '../../components/Logo';
+import { Check, Icon, LogIn } from 'react-feather';
+import { FieldErrors, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { FormInputField } from '../../components/Form/InputField';
-import { SurrealSignin } from '../../lib/Surreal';
+import Logo from '../../components/Logo';
 import {
     useDelayedRefreshAuthenticatedUser,
     useIsAuthenticated,
 } from '../../hooks/KardsUser';
-import { useTranslation } from 'react-i18next';
-import { useForm, FieldErrors } from 'react-hook-form';
-import { Check, Icon, LogIn } from 'react-feather';
+import { SurrealSignin } from '../../lib/Surreal';
+import styles from '../../styles/pages/Auth/Signin.module.scss';
 
 type TSigninFields = {
     identifier: string;

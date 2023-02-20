@@ -8,11 +8,9 @@
     "debug": "concurrently --names \"kards,surrl\" \"pnpm run dev-run-next\" \"pnpm run dev-run-surreal\"",
     "dev-run-next": "cross-env NEXT_PUBLIC_ENV=\"dev\" next dev -p 12000",
     "dev-run-surreal": "surreal start --log debug --user root --pass root --bind 0.0.0.0:12001 file:dev.db",
-
     "ts": "tsc --watch",
     "lint": "eslint . --ext ts --ext tsx --max-warnings 0",
     "storybook": "start-storybook -p 12002 -s ./public",
-
     "build": "next build && next export && next-sitemap && pnpm build-storybook && rm -rf out/dev",
     "build-storybook": "build-storybook -s public -o out/developers/storybook --modern --docs"
   },
@@ -57,6 +55,7 @@
     "@storybook/preset-scss": "^1.0.3",
     "@storybook/react": "^6.5.13",
     "@storybook/testing-library": "^0.0.13",
+    "@theopensource-company/surrealdb-cloudflare": "^1.0.4",
     "@types/node": "18.7.13",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
@@ -65,6 +64,8 @@
     "@typescript-eslint/eslint-plugin": "^5.44.0",
     "@typescript-eslint/parser": "^5.44.0",
     "babel-loader": "^8.3.0",
+    "concurrently": "^7.6.0",
+    "cross-env": "^7.0.3",
     "css-loader": "^6.7.2",
     "eslint": "8.23.0",
     "eslint-config-next": "13.0.0",
@@ -77,17 +78,15 @@
     "eslint-plugin-storybook": "^0.6.7",
     "eslint-plugin-unused-imports": "^2.0.0",
     "mini-css-extract-plugin": "^2.7.0",
+    "node-fetch": "^3.3.0",
     "prettier": "^2.8.0",
+    "prettier-plugin-organize-imports": "^3.2.2",
     "require-from-string": "^2.0.2",
     "sass": "1.54.5",
     "sass-loader": "^13.2.0",
     "style-loader": "^3.3.1",
     "typescript": "4.8.2",
-    "webpack": "^5.75.0",
-    "@theopensource-company/surrealdb-cloudflare": "^1.0.4",
-    "concurrently": "^7.6.0",
-    "cross-env": "^7.0.3",
-    "node-fetch": "^3.3.0"
+    "webpack": "^5.75.0"
   },
   "peerDependencies": {
     "css-loader": "^6.7.2",

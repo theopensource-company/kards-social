@@ -1,5 +1,5 @@
-import React from 'react';
 import Image from 'next/image';
+import React from 'react';
 import { ImageVariant, TImage } from '../../constants/Types';
 
 export default function KardsImage({

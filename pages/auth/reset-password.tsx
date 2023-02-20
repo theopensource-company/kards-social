@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { ButtonLarge } from '../../components/Button';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import { ButtonLarge } from '../../components/Button';
 
-import styles from '../../styles/pages/Auth/ResetPassword.module.scss';
-import Logo from '../../components/Logo';
-import { FormInputField } from '../../components/Form/InputField';
-import { SurrealQuery } from '../../lib/Surreal';
-import { useTranslation } from 'react-i18next';
+import { Check, Icon, Save, Send } from 'react-feather';
 import { FieldErrors, useForm } from 'react-hook-form';
-import { Icon, Send, Check, Save } from 'react-feather';
-import { UpdateUnauthenticatedUserPassword } from '../../lib/KardsUser';
+import { useTranslation } from 'react-i18next';
+import { FormInputField } from '../../components/Form/InputField';
+import Logo from '../../components/Logo';
 import usePasswordValidator from '../../hooks/FieldValidation/password';
+import { UpdateUnauthenticatedUserPassword } from '../../lib/KardsUser';
+import { SurrealQuery } from '../../lib/Surreal';
+import styles from '../../styles/pages/Auth/ResetPassword.module.scss';
 
 type TPreVerifiedForm = {
     email: string;

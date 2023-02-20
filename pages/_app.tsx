@@ -1,22 +1,22 @@
-import React from 'react';
-import '../styles/globals.scss';
+import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
+import React from 'react';
+import { I18nextProvider } from 'react-i18next';
+import 'react-image-crop/dist/ReactCrop.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
+import { DevButton } from '../components/DevButton';
+import { IAmRoot } from '../components/IAmRoot';
 import Cross from '../components/Icon/Cross';
 import Info from '../components/Icon/Info';
+import AppLayoutNavbar from '../components/Layout/Navbar';
+import { TFeatureFlagOptions } from '../constants/Types';
+import { FeatureFlagContext, FeatureFlagProvider } from '../hooks/Environment';
+import { AuthProvider } from '../hooks/KardsUser';
 import '../hooks/Surreal'; //Initialize surrealdb instance
 import { InitializeSurreal } from '../hooks/Surreal';
-import { AuthProvider } from '../hooks/KardsUser';
-import { I18nextProvider } from 'react-i18next';
 import { i18n } from '../locales';
-import { DevButton } from '../components/DevButton';
-import { NextPage } from 'next';
-import AppLayoutNavbar from '../components/Layout/Navbar';
-import { IAmRoot } from '../components/IAmRoot';
-import { FeatureFlagContext, FeatureFlagProvider } from '../hooks/Environment';
-import { TFeatureFlagOptions } from '../constants/Types';
-import 'react-image-crop/dist/ReactCrop.css';
+import '../styles/globals.scss';
 
 export default function KardsSocial({
     Component,

@@ -1,7 +1,7 @@
 import React, { forwardRef, useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { TFormInput } from '../../constants/Types';
 import styles from '../../styles/components/form/InputField.module.scss';
-import { v4 as uuidv4 } from 'uuid';
 
 export const FormInputField = forwardRef<HTMLInputElement, TFormInput>(
     (
