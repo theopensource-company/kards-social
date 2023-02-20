@@ -1,10 +1,10 @@
 import Surreal, { Result } from 'surrealdb.js';
 
 export const SurrealEndpoint = `${
-    process.env.NEXT_PUBLIC_SURREAL_ENDPOINT ?? 'https://euc1-1-db.kards.social'
+    process.env.NEXT_PUBLIC_SURREAL_ENDPOINT ?? 'http://localhost:12001'
 }/rpc`;
 export const SurrealNamespace =
-    process.env.NEXT_PUBLIC_SURREAL_NAMESPACE ?? 'theopensource-company';
+    process.env.NEXT_PUBLIC_SURREAL_NAMESPACE ?? 'kards-deployment_local';
 export const SurrealDatabase =
     process.env.NEXT_PUBLIC_SURREAL_DATABASE ?? 'kards-social';
 export const SurrealInstance = new Surreal(SurrealEndpoint);

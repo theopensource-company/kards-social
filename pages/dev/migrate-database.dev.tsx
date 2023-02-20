@@ -1,7 +1,6 @@
 import React from 'react';
 import DevLayout from './_layout';
-import { migrateDatabase } from '../../../cli/_migratetool';
-import path from 'path';
+import { migrateDatabase } from '../../cli/_migratetool';
 
 export async function getStaticProps() {
     if (process.env.NODE_ENV == 'production')
@@ -26,7 +25,7 @@ export async function getStaticProps() {
         },
         false,
         true,
-        path.dirname(process.cwd())
+        process.cwd()
     );
 
     return {
