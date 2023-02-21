@@ -8,6 +8,7 @@ export async function getStaticProps() {
         return {
             props: {
                 notFound: true,
+                routes: {},
             },
         };
 
