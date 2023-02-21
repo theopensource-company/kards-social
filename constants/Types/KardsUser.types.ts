@@ -1,14 +1,13 @@
-import { TEmail, TPersonFullname } from './Common.types';
+import { TEmail, TPersonFullname, TRecordID } from './Common.types';
 import { TImageBaseURL } from './Image.types';
 
-export type TKardsUserID = `user:${string}`;
+export type TKardsUserID = TRecordID<'user'>;
 export type TKardsUser = {
     id: TKardsUserID;
     name: TPersonFullname; //It's not strict about what comes after it, but this way it must contain at least one space (first & lastname)
     email: TEmail;
     username: string;
-    picture?: `image:${string}`;
-    picture_base_url: TImageBaseURL;
+    picture?: TImageBaseURL;
     created: Date;
     updated: Date;
 };
