@@ -1,8 +1,10 @@
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useIsAuthenticated } from '../../../hooks/KardsUser';
-import { SurrealSignout } from '../../../lib/Surreal';
+import {
+    useAuthenticatedKardsUser,
+    useSignout,
+} from '../../../hooks/Queries/Auth';
 import styles from '../../../styles/components/layout/App/Navbar.module.scss';
 import { ButtonSmall } from '../../Button';
 import ProfilePicture from '../../Common/ProfilePicture';
@@ -11,19 +13,15 @@ import SigninModal from '../../Modal/Variants/SigninModal';
 import NavbarImageDropdown from './ImageDropdown';
 
 export default function AppLayoutNavbar() {
-    const authenticated = useIsAuthenticated();
+    const { data: authenticatedUser, refetch: refetchAuthenticatedUser } =
+        useAuthenticatedKardsUser();
     const [showSignin, setShowSignin] = useState<boolean>(false);
+    const { mutate: signout, data: signoutSuccess } = useSignout();
     const { t } = useTranslation('components');
 
-    function Signout(e: React.MouseEvent<HTMLAnchorElement>) {
-        e.preventDefault();
-        SurrealSignout().then(() => {
-            // TODO: invalidate is currently broken, change when fixed: https://github.com/surrealdb/surrealdb/issues/1314
-            // should refresh details and navigate with next router.
-            // refreshUserDetails()
-            location.href = '/';
-        });
-    }
+    useEffect(() => {
+        refetchAuthenticatedUser();
+    }, [signoutSuccess, refetchAuthenticatedUser]);
 
     const OpenSignin = () => {
         setShowSignin(true);
@@ -39,14 +37,14 @@ export default function AppLayoutNavbar() {
                 <LogoSmall className={styles.logo} />
             </Link>
             <div>
-                {authenticated ? (
+                {authenticatedUser ? (
                     <NavbarImageDropdown
-                        image={ProfilePicture({ rounded: false })}
+                        image={<ProfilePicture rounded={false} />}
                     >
                         <Link href="/account">
                             {t('layout.app.navbar.account')}
                         </Link>
-                        <a href="#" onClick={Signout}>
+                        <a href="#" onClick={() => signout()}>
                             {t('layout.app.navbar.signout')}
                         </a>
                     </NavbarImageDropdown>

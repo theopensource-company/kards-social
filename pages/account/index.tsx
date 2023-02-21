@@ -12,28 +12,23 @@ import AccountLayout from '../../components/Layout/Account';
 import ChangeProfilePictureModal from '../../components/Modal/Variants/ChangeProfilePictureModal';
 import { usernameValidationSections } from '../../constants/KeypressValidators/username';
 
-import {
-    useAuthState,
-    useDelayedRefreshAuthenticatedUser,
-} from '../../hooks/KardsUser';
 import { UpdateAuthenticatedUser } from '../../lib/KardsUser';
 import { keypressValidation } from '../../lib/KeypressValidation';
 
 import { TFormItemTheming } from '../../constants/Types/Form.types';
+import { TUpdateKardsUser } from '../../constants/Types/KardsUser.types';
+import { useAuthenticatedKardsUser } from '../../hooks/Queries/Auth';
 import styles from '../../styles/pages/Account/Profile.module.scss';
 
-type TProfileFields = {
-    name: `${string} ${string}`;
-    username: string;
-    email: string;
-};
-
 export default function Account() {
-    const auth = useAuthState();
-    const refreshAccount = useDelayedRefreshAuthenticatedUser();
+    const {
+        data: user,
+        isLoading: isUserLoading,
+        refetch: refetchAuthenticatedUser,
+    } = useAuthenticatedKardsUser();
     const [ActiveIcon, setIcon] = useState<Icon | false>(Save);
     const { register, handleSubmit, getValues, setValue } =
-        useForm<TProfileFields>();
+        useForm<TUpdateKardsUser>();
     const { t } = useTranslation('pages');
     const [showUploadModal, setShowUploadModal] = useState<boolean>(false);
 
@@ -43,11 +38,11 @@ export default function Account() {
         size: 'Small',
     };
 
-    const onSuccess = async (values: TProfileFields) => {
+    const onSuccess = async (values: TUpdateKardsUser) => {
         (async () => {
             setIcon(false);
 
-            if (values.email !== auth.details?.email)
+            if (values.email !== user?.email)
                 toast.warn(t('account.profile.submitted.error-email'));
 
             if (
@@ -56,7 +51,7 @@ export default function Account() {
                     username: values.username,
                 })
             ) {
-                refreshAccount();
+                refetchAuthenticatedUser();
                 toast.success(t('account.profile.submitted.success'));
                 return true;
             } else {
@@ -72,7 +67,7 @@ export default function Account() {
         });
     };
 
-    const onFailure = async (faulty: FieldErrors<TProfileFields>) => {
+    const onFailure = async (faulty: FieldErrors<TUpdateKardsUser>) => {
         if (faulty.name)
             toast.error(t('account.profile.fields.name.faulty') as string);
         if (faulty.username)
@@ -83,7 +78,7 @@ export default function Account() {
 
     return (
         <AccountLayout activeKey="profile">
-            {auth.details && (
+            {!isUserLoading && user && (
                 <div>
                     <div className={styles.intro}>
                         <div
@@ -103,12 +98,12 @@ export default function Account() {
                         </div>
 
                         <div className={styles.introInfo}>
-                            <h1>{auth.details.name}</h1>
+                            <h1>{user.name}</h1>
                             <p>
                                 {t('account.profile.member-since-days', {
                                     days:
                                         moment(new Date()).diff(
-                                            moment(auth.details?.created),
+                                            moment(user.created),
                                             'days'
                                         ) + 1,
                                 })}
@@ -131,7 +126,7 @@ export default function Account() {
                             label={
                                 t('account.profile.fields.name.label') as string
                             }
-                            defaultValue={auth.details.name}
+                            defaultValue={user.name}
                             {...InputTheme}
                             {...register('name', {
                                 validate: (v) =>
@@ -149,7 +144,7 @@ export default function Account() {
                                     'account.profile.fields.username.label'
                                 ) as string
                             }
-                            defaultValue={auth.details.username}
+                            defaultValue={user.username}
                             {...InputTheme}
                             {...register('username', {
                                 validate: (v) =>
@@ -176,7 +171,7 @@ export default function Account() {
                                     'account.profile.fields.email.label'
                                 ) as string
                             }
-                            defaultValue={auth.details.email}
+                            defaultValue={user.email}
                             {...InputTheme}
                             {...register('email', {
                                 validate: (v) =>

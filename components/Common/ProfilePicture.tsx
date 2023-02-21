@@ -2,7 +2,7 @@ import React from 'react';
 import { User as UserIcon } from 'react-feather';
 
 import { ImageVariant, TImage } from '../../constants/Types/Image.types';
-import { useAuthenticatedUser } from '../../hooks/KardsUser';
+import { useAuthenticatedKardsUser } from '../../hooks/Queries/Auth';
 import KardsImage from './Image';
 
 export default function ProfilePicture({
@@ -14,7 +14,7 @@ export default function ProfilePicture({
     alt?: string;
     rounded?: boolean;
 }) {
-    const user = useAuthenticatedUser();
+    const { data: user } = useAuthenticatedKardsUser();
 
     return user?.picture ? (
         <KardsImage

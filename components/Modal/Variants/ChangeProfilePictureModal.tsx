@@ -13,7 +13,7 @@ import { Id, toast } from 'react-toastify';
 import Modal from '../';
 
 import { TKardsUser } from '../../../constants/Types/KardsUser.types';
-import { useDelayedRefreshAuthenticatedUser } from '../../../hooks/KardsUser';
+import { useAuthenticatedKardsUser } from '../../../hooks/Queries/Auth';
 import {
     CREATE_IMAGE_REFETCH_INTERVAL,
     CREATE_IMAGE_REFETCH_LIMIT,
@@ -33,7 +33,7 @@ export default function ChangeProfilePictureModal({
 }) {
     const { t } = useTranslation('components');
     const [uploaded, setUploaded] = useState<File | null>(null);
-    const refreshUserDetails = useDelayedRefreshAuthenticatedUser();
+    const { refetch: refetchAuthenticatedUser } = useAuthenticatedKardsUser();
     const [blob, setBlob] = useState<Blob | null>(null);
     const [isUploading, setIsUploading] = useState<boolean>(false);
     const toastId = React.useRef(null as unknown as Id);
@@ -184,7 +184,7 @@ export default function ChangeProfilePictureModal({
                 }, 250);
 
                 onClose();
-                refreshUserDetails();
+                refetchAuthenticatedUser();
 
                 toast.update(toastId.current, {
                     progress: 0,
@@ -208,7 +208,7 @@ export default function ChangeProfilePictureModal({
         }, 250);
 
         onClose();
-        refreshUserDetails();
+        refetchAuthenticatedUser();
 
         toast.success(t('modal.change-profile-picture.picture-removed'));
     };

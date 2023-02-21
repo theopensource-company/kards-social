@@ -12,38 +12,5 @@ export const SurrealInstance = new AwaitedSurreal({
     endpoint: SurrealEndpoint,
     namespace: SurrealNamespace,
     database: SurrealDatabase,
+    token: async () => localStorage.getItem('kusrsess'),
 });
-
-export const SurrealSignin = async (auth: {
-    identifier: string;
-    password: string;
-}): Promise<boolean> =>
-    new Promise((resolve) => {
-        SurrealInstance.signin({
-            NS: SurrealNamespace,
-            DB: SurrealDatabase,
-            SC: 'user',
-            ...auth,
-        })
-            .then((res) => {
-                localStorage.setItem('kusrsess', res);
-                resolve(true);
-            })
-            .catch((error) => {
-                console.error(error);
-                resolve(false);
-            });
-    });
-
-export const SurrealSignout = async (): Promise<boolean> =>
-    new Promise((resolve) => {
-        SurrealInstance.invalidate()
-            .then(async () => {
-                localStorage.removeItem('kusrsess');
-                resolve(false);
-            })
-            .catch((error) => {
-                console.error(error);
-                resolve(true);
-            });
-    });

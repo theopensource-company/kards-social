@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { AccountSidebarItems } from '../../../constants/AccountSidebar';
 
 import { TPageLayoutAccount } from '../../../constants/Types/Page.types';
-import { useAuthState } from '../../../hooks/KardsUser';
+import { useAuthenticatedKardsUser } from '../../../hooks/Queries/Auth';
 import styles from '../../../styles/components/layout/Account.module.scss';
 import SidebarItem from './SidebarItem';
 
@@ -14,19 +14,20 @@ export default function AccountLayout({
     activeKey,
 }: TPageLayoutAccount) {
     const { t } = useTranslation('components');
-    const auth = useAuthState();
+    const { data: user, isLoading: isUserLoading } =
+        useAuthenticatedKardsUser();
     const router = useRouter();
 
     useEffect(() => {
-        if (!auth.authenticated) {
+        if (!isUserLoading && !user) {
             toast.info(t('layout.account.error-unauthenticated'));
             router.push('/auth/signin');
         }
-    }, [auth, router, t]);
+    }, [isUserLoading, user, router, t]);
 
     return (
         <>
-            {auth.details && (
+            {user && (
                 <div className={styles.container}>
                     <div className={styles.sidebar}>
                         {AccountSidebarItems.map((item) => (

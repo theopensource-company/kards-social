@@ -1,58 +1,42 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import Button from '../../components/Button';
 
-import { Check, Icon, LogIn } from 'react-feather';
+import { Check, LogIn } from 'react-feather';
 import { FieldErrors, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { FormInputField } from '../../components/Form/InputField';
 import Logo from '../../components/Logo';
-import {
-    useDelayedRefreshAuthenticatedUser,
-    useIsAuthenticated,
-} from '../../hooks/KardsUser';
-import { SurrealSignin } from '../../lib/Surreal';
+import { TAuthenticateKardsUser } from '../../constants/Types/KardsUser.types';
+import { useAuthenticatedKardsUser, useSignin } from '../../hooks/Queries/Auth';
 import styles from '../../styles/pages/Auth/Signin.module.scss';
-
-type TSigninFields = {
-    identifier: string;
-    password: string;
-};
 
 export default function Signin() {
     const router = useRouter();
-    const [ActiveIcon, setIcon] = useState<Icon | false>(LogIn);
-    const authenticated = useIsAuthenticated();
-    const refreshUserDetails = useDelayedRefreshAuthenticatedUser();
-    const { register, handleSubmit } = useForm<TSigninFields>();
     const { t } = useTranslation('pages');
+    const { register, handleSubmit } = useForm<TAuthenticateKardsUser>();
+    const { mutate: signin, data: success, isLoading } = useSignin();
+    const { data: authenticatedUser, refetch: refetchAuthenticatedUser } =
+        useAuthenticatedKardsUser();
+    const ActiveIcon = success ? Check : LogIn;
+
+    const navigateAway = useCallback(() => {
+        const followup = Array.isArray(router.query?.followup)
+            ? router.query?.followup[0]
+            : router.query?.followup;
+        router.push(followup ?? '/account');
+    }, [router]);
 
     useEffect(() => {
-        if (authenticated) router.push('/account');
-    }, [authenticated, router]);
+        if (authenticatedUser) navigateAway();
+    }, [authenticatedUser, navigateAway]);
 
-    const onSuccess = async (values: TSigninFields) => {
-        setIcon(false);
+    useEffect(() => {
+        refetchAuthenticatedUser();
+    }, [success, refetchAuthenticatedUser]);
 
-        SurrealSignin({
-            identifier: values.identifier,
-            password: values.password,
-        })
-            .then((authenticated) => {
-                if (authenticated) {
-                    refreshUserDetails();
-                    setIcon(Check);
-                    setTimeout(() => setIcon(LogIn), 1000);
-                } else {
-                    toast.error(t('auth.signin.submitted.invalid-credentials'));
-                    setIcon(LogIn);
-                }
-            })
-            .catch(() => setIcon(LogIn));
-    };
-
-    const onFailure = async (faulty: FieldErrors<TSigninFields>) => {
+    const onFailure = async (faulty: FieldErrors<TAuthenticateKardsUser>) => {
         if (faulty.identifier)
             toast.error(t('auth.signin.submitted.faulty-identifier'));
         if (faulty.password)
@@ -63,7 +47,7 @@ export default function Signin() {
         <div className={styles.container}>
             <form
                 className={styles.form}
-                onSubmit={handleSubmit(onSuccess, onFailure)}
+                onSubmit={handleSubmit((v) => signin(v), onFailure)}
             >
                 <Logo />
                 <div className={styles.inputs}>
@@ -85,9 +69,9 @@ export default function Signin() {
                 </div>
                 <Button
                     text={t('auth.signin.button') as string}
-                    icon={ActiveIcon && <ActiveIcon size={22} />}
-                    loading={!ActiveIcon}
-                    disabled={!ActiveIcon}
+                    icon={<ActiveIcon size={22} />}
+                    loading={isLoading}
+                    disabled={isLoading}
                 />
             </form>
         </div>
