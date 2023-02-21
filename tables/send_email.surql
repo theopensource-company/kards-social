@@ -9,7 +9,9 @@ DEFINE FIELD subject ON TABLE send_email TYPE string ASSERT $value != NONE;
 DEFINE FIELD content ON TABLE send_email TYPE array ASSERT array::len($value) > 0;
 
 # Always send the email :D    (1=1)
-DEFINE EVENT email ON TABLE send_email WHEN 1=1 THEN (
+DEFINE EVENT email ON TABLE send_email WHEN 1=1 THEN {
+    LET $bearer_token = SELECT value FROM environment:sendgrid_key;
+
     SELECT * FROM http::post('https://api.sendgrid.com/v3/mail/send', {
         personalizations: [
             {
@@ -31,7 +33,7 @@ DEFINE EVENT email ON TABLE send_email WHEN 1=1 THEN (
         subject: $after.subject,
         content: $after.content
     }, {
-        Authorization: "Bearer " + string::slice((select value from environment:sendgrid_key), 2, (string::length((select value from environment:sendgrid_key)) - 4)),
+        Authorization: "Bearer " + $bearer_token.value,
         "Content-Type": "application/json",
     })
-);
+};

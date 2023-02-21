@@ -7,16 +7,16 @@ DEFINE TABLE create_image SCHEMAFULL
 DEFINE FIELD owner ON TABLE create_image TYPE string VALUE $before OR $auth.id;
 
 # Always create the image :D    (1=1)
-DEFINE EVENT email ON TABLE create_image WHEN 1=1 THEN (
+DEFINE EVENT email ON TABLE create_image WHEN 1=1 THEN {
+    LET $accountid = SELECT value FROM environment:cloudflare_account_id;
+    LET $apitoken = SELECT value FROM environment:cloudflare_images_api_token;
+    LET $link = 'https://api.cloudflare.com/client/v4/accounts/' + $accountid.value + '/images/v2/direct_upload';
+
     CREATE image CONTENT {
         owner: $after.owner,
         from_create_record: $after.id,
-        endpoint: function(http::post(string::replace(
-            'https://api.cloudflare.com/client/v4/accounts/{{accountid}}/images/v2/direct_upload',
-            '{{accountid}}',
-            string::slice((select value from environment:cloudflare_account_id), 2, -2)
-        ), NONE, {
-            Authorization: 'Bearer ' + string::slice((select value from environment:cloudflare_images_api_token), 2, -2)
+        endpoint: function(http::post($link, NONE, {
+            Authorization: 'Bearer ' + $apitoken.value
         })) {
             const parsed = JSON.parse(arguments[0]);
             return parsed.success ? {
@@ -30,4 +30,4 @@ DEFINE EVENT email ON TABLE create_image WHEN 1=1 THEN (
             };
         }
     }
-);
+};
