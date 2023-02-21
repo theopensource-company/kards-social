@@ -11,13 +11,14 @@ import { FormInputField } from '../../components/Form/InputField';
 import AccountLayout from '../../components/Layout/Account';
 import ChangeProfilePictureModal from '../../components/Modal/Variants/ChangeProfilePictureModal';
 import { usernameValidationSections } from '../../constants/KeypressValidators/username';
-
-import { UpdateAuthenticatedUser } from '../../lib/KardsUser';
 import { keypressValidation } from '../../lib/KeypressValidation';
 
 import { TFormItemTheming } from '../../constants/Types/Form.types';
 import { TUpdateKardsUser } from '../../constants/Types/KardsUser.types';
-import { useAuthenticatedKardsUser } from '../../hooks/Queries/Auth';
+import {
+    useAuthenticatedKardsUser,
+    useUpdateAuthenticatedKardsUser,
+} from '../../hooks/Queries/Auth';
 import styles from '../../styles/pages/Account/Profile.module.scss';
 
 export default function Account() {
@@ -26,6 +27,8 @@ export default function Account() {
         isLoading: isUserLoading,
         refetch: refetchAuthenticatedUser,
     } = useAuthenticatedKardsUser();
+    const { mutate: updateAuthenticatedUser } =
+        useUpdateAuthenticatedKardsUser();
     const [ActiveIcon, setIcon] = useState<Icon | false>(Save);
     const { register, handleSubmit, getValues, setValue } =
         useForm<TUpdateKardsUser>();
@@ -39,32 +42,30 @@ export default function Account() {
     };
 
     const onSuccess = async (values: TUpdateKardsUser) => {
-        (async () => {
-            setIcon(false);
+        setIcon(false);
 
-            if (values.email !== user?.email)
-                toast.warn(t('account.profile.submitted.error-email'));
+        if (values.email !== user?.email)
+            toast.warn(t('account.profile.submitted.error-email'));
 
-            if (
-                await UpdateAuthenticatedUser({
-                    name: values.name,
-                    username: values.username,
-                })
-            ) {
-                refetchAuthenticatedUser();
-                toast.success(t('account.profile.submitted.success'));
-                return true;
-            } else {
-                toast.error(t('account.profile.submitted.error-failed'));
+        updateAuthenticatedUser(
+            {
+                name: values.name,
+                username: values.username,
+            },
+            {
+                onSuccess: () => {
+                    toast.success(t('account.profile.submitted.success'));
+                    refetchAuthenticatedUser();
+
+                    setTimeout(() => setIcon(Save), 1000);
+                    setIcon(Check);
+                },
+                onError: () => {
+                    toast.error(t('account.profile.submitted.error-failed'));
+                    setIcon(Save);
+                },
             }
-        })().then((success) => {
-            if (success) {
-                setIcon(Check);
-                setTimeout(() => setIcon(Save), 1000);
-            } else {
-                setIcon(Save);
-            }
-        });
+        );
     };
 
     const onFailure = async (faulty: FieldErrors<TUpdateKardsUser>) => {

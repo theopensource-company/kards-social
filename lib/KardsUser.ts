@@ -1,58 +1,11 @@
 import axios from 'axios';
 import { Result } from 'surrealdb.js';
 import {
-    TKardsUser,
-    TUpdateKardsUser,
-} from '../constants/Types/KardsUser.types';
-import {
     SurrealDatabase,
     SurrealEndpoint,
     SurrealInstance,
     SurrealNamespace,
 } from './Surreal';
-
-export const UserDetails = async (): Promise<TKardsUser | null> => {
-    const result = await SurrealInstance.opiniatedQuery<TKardsUser>(
-        'SELECT * FROM user'
-    );
-    const preParse =
-        result && result[0].result ? result[0].result[0] : null ?? null;
-    if (preParse) {
-        preParse.created = new Date(preParse.created);
-        preParse.updated = new Date(preParse.updated);
-    }
-
-    return preParse;
-};
-
-export const UpdateAuthenticatedUser = async (
-    user: TUpdateKardsUser
-): Promise<TKardsUser | false> => {
-    if (user.email) {
-        alert('Cannot yet update email field');
-        return false;
-    }
-
-    const result =
-        await SurrealInstance.opiniatedQuery<TKardsUser>(`UPDATE user SET 
-        ${Object.keys(user).map((prop) => {
-            const val = JSON.stringify({ ...user }[prop]);
-            switch (prop) {
-                default:
-                    return `${prop}=${val}`;
-            }
-        })}
-        WHERE id = $auth.id`);
-
-    const preParse =
-        result && result[0].result ? result[0].result[0] : false ?? false;
-    if (preParse) {
-        preParse.created = new Date(preParse.created);
-        preParse.updated = new Date(preParse.updated);
-    }
-
-    return preParse;
-};
 
 export const UpdateAuthenticatedUserPassword = async (arg: {
     oldpassword: string;
