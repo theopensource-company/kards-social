@@ -14,7 +14,7 @@ DEFINE FIELD password ON TABLE user TYPE string ASSERT $value != NONE
     FOR select NONE 
     FOR update WHERE $scope = 'admin' 
       OR ($scope = 'verify_reset_password' && id = $auth.id)
-      OR string::length(<string> (select * from user where id = $auth.id and crypto::argon2::compare(password, $oldpassword))) > 2
+      OR string::len(<string> (select * from user where id = $auth.id and crypto::argon2::compare(password, $oldpassword))) > 2
 ;
 
 DEFINE FIELD picture ON TABLE user TYPE string ASSERT $value = NONE OR $value = /^image:.*/;
