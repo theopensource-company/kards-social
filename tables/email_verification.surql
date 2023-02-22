@@ -14,14 +14,18 @@ DEFINE EVENT waitlist ON TABLE email_verification WHEN $after.template = 'waitli
     }
 );
 
-DEFINE EVENT reset_password ON TABLE email_verification WHEN $after.template = 'reset_password' THEN (
-    CREATE send_email_verification CONTENT {
-        email: string::slice((SELECT email FROM user WHERE email = $after.email), 2, -2),
-        recipient: string::slice((SELECT name FROM user WHERE email = $after.email), 2, -2),
-        template: $after.template,
-        origin: $after.origin
-    }
-);
+DEFINE EVENT reset_password ON TABLE email_verification WHEN $after.template = 'reset_password' THEN {
+    LET $user = SELECT name, email FROM user WHERE email = $after.email;
+
+    IF ($user[0].email) THEN
+        CREATE send_email_verification CONTENT {
+            email: $user[0].email,
+            recipient: $user[0].name,
+            template: $after.template,
+            origin: $after.origin
+        };
+    END;
+};
 
 ///////////////////////////////////
 ////  SEND EMAIL VERIFICATION  ////
