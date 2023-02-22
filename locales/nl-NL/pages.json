@@ -64,7 +64,6 @@
           }
         },
         "submitted": {
-          "error-criteria-not-met": "Je nieuwe wachtwoord voldoet niet aan de gestelde criteria.",
           "success": "Je wachtwoord is bijgewerkt!",
           "button": "Wachtwoord bijwerken"
         }

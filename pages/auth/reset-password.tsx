@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next';
 import { FormInputField } from '../../components/Form/InputField';
 import Logo from '../../components/Logo';
 import usePasswordValidator from '../../hooks/FieldValidation/password';
-import { UpdateUnauthenticatedUserPassword } from '../../lib/KardsUser';
 import { SurrealInstance } from '../../lib/Surreal';
 import styles from '../../styles/pages/Auth/ResetPassword.module.scss';
 
@@ -98,30 +97,28 @@ export default function JoinWaitlist() {
 
             if (!isValidPassword(values)) return;
 
-            const result = await UpdateUnauthenticatedUserPassword({
-                email: typeof email == 'object' ? email[0] : email,
-                secret: typeof secret == 'object' ? secret[0] : secret,
-                newpassword: values.newpassword,
-            });
-
-            if (!result) return false && toast.error('Network request failed');
-
-            if (!result.credentials_correct)
-                return false && toast.error('Link expired');
-
-            if (!result.replacement_valid)
-                return (
-                    false &&
-                    toast.error(
-                        t(
-                            'auth.reset-password.post-verified.submitted.error-criteria-not-met'
-                        )
-                    )
-                );
+            await SurrealInstance.opiniatedQuery<{
+                id: `action_reset_password:${string}`;
+                email: `${string}@${string}.${string}`;
+                secret: string;
+                password: string;
+            }>(
+                `CREATE action_reset_password CONTENT {
+                    email: $email,
+                    secret: $secret,
+                    password: $password
+                }`,
+                {
+                    email: typeof email == 'object' ? email[0] : email,
+                    secret: typeof secret == 'object' ? secret[0] : secret,
+                    password: values.newpassword,
+                }
+            );
 
             toast.success(
                 t('auth.reset-password.post-verified.submitted.success')
             );
+
             router.push('/auth/signin');
             return true;
         })().then(() => setIcon(Send));
