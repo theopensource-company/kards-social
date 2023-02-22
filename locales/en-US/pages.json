@@ -64,7 +64,6 @@
           }
         },
         "submitted": {
-          "error-criteria-not-met": "Your new password does not meet the set criteria.",
           "success": "Your password has been updated!",
           "button": "Update password"
         }

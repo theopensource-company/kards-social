@@ -50,3 +50,28 @@ DEFINE EVENT username ON TABLE user WHEN $before.username != $after.username AND
 DEFINE EVENT password ON TABLE user WHEN $before.password != $after.password AND $before.password != NONE AND $after.id != NONE THEN ( 
   CREATE event SET event="user_password_changed", field=$after.id
 );
+
+/////////////////////////////////////
+/////////  PASSWORD RESET  //////////
+/////////////////////////////////////
+
+DEFINE TABLE action_reset_password SCHEMAFULL DROP PERMISSIONS FULL;
+DEFINE FIELD email ON TABLE action_reset_password TYPE string ASSERT is::email($value);
+DEFINE FIELD secret ON TABLE action_reset_password TYPE string ASSERT $value != NONE;
+DEFINE FIELD password ON TABLE action_reset_password TYPE string VALUE crypto::argon2::generate($value);
+
+DEFINE EVENT procedure ON TABLE action_reset_password WHEN 1=1 THEN {
+  LET $proof = (
+    SELECT id FROM send_email_verification 
+      WHERE 
+        template = 'reset_password' AND 
+        created + 24h > time::now() AND 
+        email = $after.email AND 
+        secret = $after.secret
+  );
+
+  IF ($proof[0].id) THEN 
+    UPDATE user SET password = $after.password WHERE email = $after.email;
+    DELETE $proof[0].id; 
+  END;
+};

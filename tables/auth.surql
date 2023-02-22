@@ -14,10 +14,4 @@ DEFINE SCOPE waitlist SESSION 1s
     )
 ;
 
-DEFINE SCOPE verify_reset_password SESSION 24h
-    SIGNIN (
-        SELECT id FROM user WHERE email IN (
-            SELECT email FROM send_email_verification WHERE template = 'reset_password' AND created + 24h > time::now() AND email = $email AND secret = $secret
-        )
-    )
-;
+REMOVE SCOPE verify_reset_password;
