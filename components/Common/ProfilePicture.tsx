@@ -18,7 +18,7 @@ export default function ProfilePicture({
 
     return user?.picture ? (
         <KardsImage
-            baseURL={user.picture_base_url}
+            baseURL={user.picture}
             alt={alt ?? `${user.username}'s profile picture`}
             style={{
                 ...(style ?? {}),

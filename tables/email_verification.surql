@@ -39,7 +39,13 @@ DEFINE FIELD secret ON send_email_verification TYPE string VALUE $before OR rand
 DEFINE FIELD template ON send_email_verification TYPE string ASSERT $value = 'waitlist' OR $value = 'reset_password';
 DEFINE FIELD origin ON send_email_verification TYPE string ASSERT $value != NONE;
 
-DEFINE EVENT waitlist ON TABLE send_email_verification WHEN $after.template = 'waitlist' THEN (
+DEFINE EVENT waitlist ON TABLE send_email_verification WHEN $after.template = 'waitlist' THEN {
+    LET $env_origin = SELECT value FROM environment:origin;
+    LET $origin = $env_origin.value || $after.origin;
+    LET $link = $origin + "/join-waitlist?email=" + $after.email + "&secret=" + $after.secret;
+    LET $template = SELECT content FROM email_templates:waitlist;
+    LET $html = string::replace($template.content, "{{verificationlink}}", $link);
+
     CREATE send_email CONTENT {
         to_name: $after.recipient,
         to_email: $after.email,
@@ -47,41 +53,23 @@ DEFINE EVENT waitlist ON TABLE send_email_verification WHEN $after.template = 'w
         content: [
             {
                 type: "text/plain",
-                value: "Confirm your email on the waitlist with the following link: " + string::replace(
-                    string::replace(
-                        string::replace("{{origin}}/join-waitlist?email={{email}}&secret={{secret}}", "{{secret}}", $after.secret),
-                        "{{origin}}",
-                        string::slice((select value from environment:origin), 2, (string::length((select value from environment:origin)) - 4)) || $after.origin
-                    ),
-                    "{{email}}",
-                    $after.email
-                )
+                value: "Confirm your email on the waitlist with the following link: " + $link
             },
             {
                 type: "text/html",
-                value: string::replace(
-                    string::replace(
-                        string::slice((select content from email_templates:waitlist), 2, -5),
-                        '\\"',
-                        '"'
-                    ),
-                    "{{verificationlink}}",
-                    string::replace(
-                        string::replace(
-                            string::replace("{{origin}}/join-waitlist?email={{email}}&secret={{secret}}", "{{secret}}", $after.secret),
-                            "{{origin}}",
-                            string::slice((select value from environment:origin), 2, (string::length((select value from environment:origin)) - 4)) || $after.origin
-                        ),
-                        "{{email}}",
-                        $after.email
-                    )
-                )
+                value: $html
             }
         ]
     }
-);
+};
 
-DEFINE EVENT reset_password ON TABLE send_email_verification WHEN $after.template = 'reset_password' && is::email($after.email) THEN (
+DEFINE EVENT reset_password ON TABLE send_email_verification WHEN $after.template = 'reset_password' THEN {
+    LET $env_origin = SELECT value FROM environment:origin;
+    LET $origin = $env_origin.value || $after.origin;
+    LET $link = $origin + "/auth/reset-password?email=" + $after.email + "&secret=" + $after.secret;
+    LET $template = SELECT content FROM email_templates:reset_password;
+    LET $html = string::replace($template.content, "{{verificationlink}}", $link);
+
     CREATE send_email CONTENT {
         to_name: $after.recipient,
         to_email: $after.email,
@@ -89,40 +77,12 @@ DEFINE EVENT reset_password ON TABLE send_email_verification WHEN $after.templat
         content: [
             {
                 type: "text/plain",
-                value: "Reset your password with the following link: " + string::replace(
-                    string::replace(
-                        string::replace("{{origin}}/auth/reset-password?email={{email}}&secret={{secret}}", "{{secret}}", $after.secret),
-                        "{{origin}}",
-                        string::slice((select value from environment:origin), 2, (string::length((select value from environment:origin)) - 4)) || $after.origin
-                    ),
-                    "{{email}}",
-                    $after.email
-                )
+                value: "Reset your password with the following link: " + $link
             },
             {
                 type: "text/html",
-                value: string::replace(
-                    string::replace(
-                        string::replace(
-                            string::slice((select content from email_templates:reset_password), 2, -5),
-                            '\\"',
-                            '"'
-                        ),
-                        "{{verificationlink}}",
-                        string::replace(
-                            string::replace(
-                                string::replace("{{origin}}/auth/reset-password?email={{email}}&secret={{secret}}", "{{secret}}", $after.secret),
-                                "{{origin}}",
-                                string::slice((select value from environment:origin), 2, (string::length((select value from environment:origin)) - 4)) || $after.origin
-                            ),
-                            "{{email}}",
-                            $after.email
-                        )
-                    ),
-                    "\\\"",
-                    "\""
-                )
+                value: $html
             }
         ]
     }
-);
+};

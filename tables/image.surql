@@ -5,7 +5,10 @@ DEFINE TABLE image SCHEMAFULL
 
 DEFINE FIELD owner ON TABLE image TYPE string    ASSERT $value = /^user:.*/ VALUE $before OR $value;
 DEFINE FIELD from_create_record   ON TABLE image TYPE string ASSERT $value = /^create_image:.*/ VALUE $before OR $value;
-DEFINE FIELD endpoint.success     ON TABLE image TYPE bool   ASSERT $value != NONE;
 DEFINE FIELD endpoint.id          ON TABLE image TYPE string ASSERT $value != NONE;
+DEFINE FIELD endpoint.accessURL   ON TABLE image TYPE string ASSERT $value != NONE;
 DEFINE FIELD endpoint.uploadURL   ON TABLE image TYPE string ASSERT $value != NONE;
+DEFINE FIELD endpoint.testing     ON TABLE image TYPE object FLEXIBLE;
 DEFINE FIELD endpoint             ON TABLE image TYPE object VALUE  $before OR $value;
+
+REMOVE FIELD endpoint.success     ON TABLE image;

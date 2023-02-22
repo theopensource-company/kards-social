@@ -1,5 +1,7 @@
 import { ImageProps } from 'next/image';
+import { TRecordID } from './Common.types';
 
+export type TImageID = TRecordID<'image'>;
 export type TImageBaseURL = `https://imagedelivery.net/${string}/${string}`;
 export const ImageVariant = {
     Loading: 256,

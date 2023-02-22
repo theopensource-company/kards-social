@@ -14,19 +14,18 @@ DEFINE FIELD password ON TABLE user TYPE string ASSERT $value != NONE
     FOR select NONE 
     FOR update WHERE $scope = 'admin' 
       OR ($scope = 'verify_reset_password' && id = $auth.id)
-      OR string::length(<string> (select * from user where id = $auth.id and crypto::argon2::compare(password, $oldpassword))) > 2
+      OR string::len(<string> (select * from user where id = $auth.id and crypto::argon2::compare(password, $oldpassword))) > 2
 ;
 
-DEFINE FIELD picture ON TABLE user TYPE string ASSERT $value = NONE OR $value = /^image:.*/;
-DEFINE FIELD picture_base_url ON TABLE user VALUE string::replace(
-  string::replace(
-    "https://imagedelivery.net/{{cloudflare_account_hash}}/{{picture_id}}",
-    "{{picture_id}}",
-    string::slice((SELECT endpoint.id as id FROM image where [$parent.picture] contains id), 2, -2)
-  ),
-  "{{cloudflare_account_hash}}",
-  string::slice((select value from environment:cloudflare_account_hash), 2, -2)
-);
+// A user can set the ID of an image record as the value for "picture", and the VALUE query block will either convert this to a nullish value or to a picture base url
+// This process happens when authenticated as a scope user, which results in a user only being able to select their own pictures.
+// Two flies in one hit :D
+DEFINE FIELD picture ON TABLE user VALUE {
+  LET $url = SELECT endpoint.accessURL as url FROM $value;
+  RETURN $url[0].url;
+};
+
+REMOVE FIELD picture_base_url ON TABLE user;
 
 DEFINE FIELD created ON TABLE user TYPE datetime VALUE $before OR time::now();
 DEFINE FIELD updated ON TABLE user TYPE datetime VALUE time::now();
