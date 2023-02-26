@@ -3,7 +3,7 @@ import React from 'react';
 import { InitializeSurrealAdmin } from '../admin/Surreal';
 const App = dynamic(() => import('../admin/App'), { ssr: false });
 
-const AdminPage = () => {
+const Page = () => {
     return (
         <InitializeSurrealAdmin>
             <App />
@@ -11,6 +11,6 @@ const AdminPage = () => {
     );
 };
 
-AdminPage.hideNavbar = true;
+Page.hideNavbar = true;
 
-export default AdminPage;
+export default Page;
