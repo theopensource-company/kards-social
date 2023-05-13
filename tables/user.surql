@@ -6,7 +6,7 @@ DEFINE TABLE user SCHEMAFULL
     FOR delete WHERE ($scope = 'user' && id = $auth.id) OR $scope = 'admin' 
     FOR create WHERE $scope = 'admin';
 
-DEFINE FIELD name ON TABLE user TYPE string AND array::len(string::words($value)) > 1;
+DEFINE FIELD name ON TABLE user TYPE string ASSERT array::len(string::words($value)) > 1;
 DEFINE FIELD email ON TABLE user TYPE string ASSERT is::email($value);
 DEFINE FIELD username ON TABLE user TYPE string ASSERT $value = /^[a-z0-9](?:[a-z0-9._-]{1,18}[a-z0-9.])$/;
 DEFINE FIELD password ON TABLE user TYPE string
@@ -59,17 +59,19 @@ DEFINE FIELD secret ON TABLE action_reset_password TYPE string;
 DEFINE FIELD password ON TABLE action_reset_password TYPE string VALUE crypto::argon2::generate($value);
 
 DEFINE EVENT procedure ON TABLE action_reset_password WHEN 1=1 THEN {
-  LET $proof = (
+  LET $proof = 
     SELECT id FROM send_email_verification 
       WHERE 
         template = 'reset_password' AND 
         created + 24h > time::now() AND 
         email = $after.email AND 
-        secret = $after.secret
-  );
+        secret = $after.secret;
 
-  IF ($proof[0].id) THEN 
-    UPDATE user SET password = $after.password WHERE email = $after.email;
-    DELETE $proof[0].id; 
+  LET $id = $proof[0].id;
+  IF ($id) THEN 
+    {
+      UPDATE user SET password = $after.password WHERE email = $after.email;
+      DELETE $id; 
+    } 
   END;
 };
