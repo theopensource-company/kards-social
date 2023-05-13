@@ -6,10 +6,10 @@ DEFINE TABLE user SCHEMAFULL
     FOR delete WHERE ($scope = 'user' && id = $auth.id) OR $scope = 'admin' 
     FOR create WHERE $scope = 'admin';
 
-DEFINE FIELD name ON TABLE user TYPE string ASSERT $value != NONE AND array::len(string::words($value)) > 1;
+DEFINE FIELD name ON TABLE user TYPE string AND array::len(string::words($value)) > 1;
 DEFINE FIELD email ON TABLE user TYPE string ASSERT is::email($value);
-DEFINE FIELD username ON TABLE user TYPE string ASSERT $value != NONE AND $value = /^[a-z0-9](?:[a-z0-9._-]{1,18}[a-z0-9.])$/;
-DEFINE FIELD password ON TABLE user TYPE string ASSERT $value != NONE
+DEFINE FIELD username ON TABLE user TYPE string ASSERT $value = /^[a-z0-9](?:[a-z0-9._-]{1,18}[a-z0-9.])$/;
+DEFINE FIELD password ON TABLE user TYPE string
   PERMISSIONS 
     FOR select NONE 
     FOR update WHERE $scope = 'admin' 
@@ -30,8 +30,6 @@ REMOVE FIELD picture_base_url ON TABLE user;
 DEFINE FIELD created ON TABLE user TYPE datetime VALUE $before OR time::now();
 DEFINE FIELD updated ON TABLE user TYPE datetime VALUE time::now();
 
-REMOVE INDEX email ON TABLE user;
-REMOVE INDEX username ON TABLE user;
 DEFINE INDEX email ON TABLE user COLUMNS email UNIQUE;
 DEFINE INDEX username ON TABLE user COLUMNS username UNIQUE;
 
@@ -57,7 +55,7 @@ DEFINE EVENT password ON TABLE user WHEN $before.password != $after.password AND
 
 DEFINE TABLE action_reset_password SCHEMAFULL DROP PERMISSIONS FULL;
 DEFINE FIELD email ON TABLE action_reset_password TYPE string ASSERT is::email($value);
-DEFINE FIELD secret ON TABLE action_reset_password TYPE string ASSERT $value != NONE;
+DEFINE FIELD secret ON TABLE action_reset_password TYPE string;
 DEFINE FIELD password ON TABLE action_reset_password TYPE string VALUE crypto::argon2::generate($value);
 
 DEFINE EVENT procedure ON TABLE action_reset_password WHEN 1=1 THEN {

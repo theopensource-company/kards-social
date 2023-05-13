@@ -1,9 +1,9 @@
 DEFINE TABLE email_verification SCHEMAFULL DROP;
 
 DEFINE FIELD email ON email_verification TYPE string ASSERT is::email($value);
-DEFINE FIELD recipient ON email_verification TYPE string ASSERT $value != "NONE";
+DEFINE FIELD recipient ON email_verification TYPE string;
 DEFINE FIELD template ON email_verification TYPE string ASSERT $value = 'waitlist' OR $value = 'reset_password';
-DEFINE FIELD origin ON email_verification TYPE string ASSERT $value != NONE;
+DEFINE FIELD origin ON email_verification TYPE string;
 
 DEFINE EVENT waitlist ON TABLE email_verification WHEN $after.template = 'waitlist' THEN (
     CREATE send_email_verification CONTENT {
@@ -38,10 +38,10 @@ DEFINE TABLE send_email_verification SCHEMAFULL
 DEFINE FIELD created ON send_email_verification TYPE datetime VALUE $before OR time::now();
 // No verification here because it would leak if a user exists for the reset_password event :D
 DEFINE FIELD email ON send_email_verification TYPE string;
-DEFINE FIELD recipient ON send_email_verification TYPE string ASSERT $value != "NONE";
+DEFINE FIELD recipient ON send_email_verification TYPE string;
 DEFINE FIELD secret ON send_email_verification TYPE string VALUE $before OR rand::string(32);
 DEFINE FIELD template ON send_email_verification TYPE string ASSERT $value = 'waitlist' OR $value = 'reset_password';
-DEFINE FIELD origin ON send_email_verification TYPE string ASSERT $value != NONE;
+DEFINE FIELD origin ON send_email_verification TYPE string;
 
 DEFINE EVENT waitlist ON TABLE send_email_verification WHEN $after.template = 'waitlist' THEN {
     LET $env_origin = SELECT value FROM environment:origin;
