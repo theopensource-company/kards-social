@@ -3,7 +3,7 @@ DEFINE TABLE send_email SCHEMALESS
 
 DEFINE FIELD from_name ON TABLE send_email TYPE string VALUE $value OR 'Kards Social';
 DEFINE FIELD from_email ON TABLE send_email TYPE string VALUE $value OR 'noreply@kards.social' ASSERT is::email($value);
-DEFINE FIELD to_name ON TABLE send_email TYPE string ASSERT;
+DEFINE FIELD to_name ON TABLE send_email TYPE string;
 DEFINE FIELD to_email ON TABLE send_email TYPE string ASSERT is::email($value);
 DEFINE FIELD subject ON TABLE send_email TYPE string;
 DEFINE FIELD content ON TABLE send_email TYPE array ASSERT array::len($value) > 0;
