@@ -24,7 +24,11 @@ type TWaitlistFields = {
     email: string;
 };
 
-export default function JoinWaitlist() {
+export { Page };
+
+function Page(bla) {
+    console.log(bla);
+    
     const router = useRouter();
     const { email, secret, success } = router.query;
     const [ActiveIcon, setIcon] = useState<Icon | boolean>(
@@ -213,4 +217,4 @@ export default function JoinWaitlist() {
     }
 }
 
-JoinWaitlist.hideNavbar = true;
+Page.hideNavbar = true;

@@ -7,7 +7,9 @@ import Logo from '../components/Logo';
 import { useFeatureFlag } from '../hooks/Environment';
 import styles from '../styles/pages/Landing.module.scss';
 
-export default function Landing() {
+export { Page };
+
+function Page() {
     const preLaunchPage = useFeatureFlag('preLaunchPage');
     const { t } = useTranslation('pages');
 
@@ -33,4 +35,4 @@ export default function Landing() {
     );
 }
 
-Landing.hideNavbar = 'withFeatureFlag:preLaunchPage';
+Page.hideNavbar = 'withFeatureFlag:preLaunchPage';
